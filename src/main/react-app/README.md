@@ -11,7 +11,7 @@ npm install
 
 
 ####  Open (http://localhost:8081) to view it in the browser.
-signin: http://localhost:8081/login
-signup: http://localhost:8081/register
+##  signin: http://localhost:8081/login
+##  signup: http://localhost:8081/register
 
 The page will reload if you make edits.
