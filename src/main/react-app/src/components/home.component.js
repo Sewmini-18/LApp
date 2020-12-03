@@ -17,7 +17,7 @@ export default class Home extends Component {
 
             <p>
               Welcome to the login solution requirement system... <br />Team Fork - No 25
-                    </p>
+            </p>
 
           </Jumbotron>
         </Row>
