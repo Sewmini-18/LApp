@@ -6,7 +6,8 @@ import CustomerForm from './customerForm'
 import Footer from './footer'
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Profile from '../profile.component'
+import Profile from '../profile.component';
+import Chart from '../chart'
 
 
 class Dashboard extends React.Component {
@@ -23,6 +24,7 @@ class Dashboard extends React.Component {
                         render={(props) => <Home {...props} />} />
                     <Route path={`${match.path}/profile`} component={Profile} />
                     <Route path={`${match.path}/customerform`} component={CustomerForm} />
+                    <Route path={`${match.path}/chart`} component={Chart} />
                 </Switch>
                 <Footer />
             </div>

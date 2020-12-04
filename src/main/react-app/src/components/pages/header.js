@@ -3,7 +3,7 @@ import { Navbar, NavDropdown, Nav, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import { Dvr } from '@material-ui/icons';
 import AuthService from '../../services/auth.service'
-
+import Chart from '../chart'
 
 
 class Header extends Component {
@@ -70,6 +70,8 @@ class Header extends Component {
                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="/home">Action</NavDropdown.Item>
                   <NavDropdown.Item href="home/profile">Another action</NavDropdown.Item>
+                  <NavDropdown.Item href="home/chart">Chart</NavDropdown.Item>
+
                 </NavDropdown>
 
               </Nav>

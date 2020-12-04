@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HorizontalBar } from 'react-chartjs-2'
 
 
-import LogData from './components/NAT64_1_20.json';
+import LogData from './NAT64_1_20.json';
 
 const HorizontalBarChart = ()=> {
 
