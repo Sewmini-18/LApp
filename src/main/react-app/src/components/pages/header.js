@@ -3,7 +3,7 @@ import { Navbar, NavDropdown, Nav, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import { Dvr } from '@material-ui/icons';
 import AuthService from '../../services/auth.service'
-import Chart from '../chart'
+
 
 
 class Header extends Component {
