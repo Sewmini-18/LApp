@@ -42,7 +42,10 @@
   },
   "description": "PORT=8081",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "mongodb": "^3.6.3",
+    "react-chartjs-2": "^2.11.1"
+  },
   "author": "",
   "license": "ISC"
 }
