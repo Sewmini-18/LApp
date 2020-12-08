@@ -101,7 +101,7 @@ class Home extends Component {
                                                 Analyze and view logs using charts
                                         </Card.Text>
                                             <br />
-                                            <Button to="" variant="success">Logs visualization</Button>
+                                            <Button href="home/chart" variant="success">Logs visualization</Button>
                                         </Card.Body>
 
                                     </Card>
