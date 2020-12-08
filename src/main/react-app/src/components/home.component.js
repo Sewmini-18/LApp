@@ -1,27 +1,135 @@
 import React, { Component } from 'react';
-import { Row, Jumbotron, } from 'react-bootstrap'
+import { Row, Button, Col, Container, Card, CardDeck } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom';
+import AuthService from '../services/auth.service'
+class Home extends Component {
+    constructor(props) {
+        super(props);
 
-export default class Home extends Component {
+        this.state = {
 
-  componentDidMount() {
-    document.title = 'Home'
-  }
+            showAdminBoard: false,
+            currentUser: undefined,
+        };
+    }
+    componentDidMount() {
+        document.title = 'Home'
+        const user = AuthService.getCurrentUser();
 
-  render() {
-    return (
-      <div className='container mgntop'>
-        <h2>Home</h2>
-        <Row>
-          <Jumbotron style={{ width: '64rem' }}>
-            <h1>Hello, User!</h1>
+        if (user) {
+            this.setState({
+                currentUser: user,
+                showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+            });
+        }
+    }
 
-            <p>
-              Welcome to the login solution requirement system... <br />Team Fork - No 25
-                    </p>
+    render() {
+        const { currentUser, showAdminBoard } = this.state;
 
-          </Jumbotron>
-        </Row>
-      </div>
-    );
-  }
+        return (
+            <div className='container mgntop'>
+                <Container>
+                    <Row>
+                        <Col>
+                            <Container>
+                                <CardDeck>
+                                    {currentUser && (
+                                        <Card border="info" style={{ width: '18rem' }}>
+                                            <Card.Body>
+                                                <Card.Title>View Log files</Card.Title>
+                                                <br />
+                                                <Card.Text>
+                                                    You can sort and view log files
+                                            </Card.Text>
+                                                <br />
+
+                                                <Button to="" variant="info"><a href="/home/view">View Log files</a></Button>
+
+                                            </Card.Body>
+
+                                        </Card>
+                                    )}
+                                    {showAdminBoard && (
+                                        <Card border="info" style={{ width: '18rem' }}>
+
+                                            <Card.Body>
+                                                <Card.Title>Export Log Files</Card.Title>
+                                                <br />
+                                                <Card.Text>
+                                                    Logs printing or export to extranal
+                                            </Card.Text>
+                                                <br />
+
+                                                <Button to="" variant="info">Export log files</Button>
+                                            </Card.Body>
+
+                                        </Card>
+                                    )}
+
+                                    {showAdminBoard && (
+                                        <Card border="info" style={{ width: '18rem' }}>
+
+                                            <Card.Body>
+                                                <Card.Title>Backup Log Files</Card.Title>
+                                                <br />
+                                                <Card.Text>
+                                                    Logs manually backup
+    </Card.Text>
+                                                <br />
+
+                                                <Button to="" variant="info">Backup log files</Button>
+                                            </Card.Body>
+
+                                        </Card>
+                                    )}
+
+                                </CardDeck>
+                            </Container></Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                        <Container>
+                            <CardDeck>
+                                {currentUser && (
+                                    <Card border="success" style={{ width: '18rem' }}>
+                                        <Card.Body>
+                                            <Card.Title>Logs Visualization</Card.Title>
+                                            <br />
+                                            <Card.Text>
+                                                Analyze and view logs using charts
+                                        </Card.Text>
+                                            <br />
+                                            <Button to="" variant="success">Logs visualization</Button>
+                                        </Card.Body>
+
+                                    </Card>
+                                )}
+                                {showAdminBoard && (
+                                    <Card border="success" style={{ width: '18rem' }}>
+
+                                        <Card.Body>
+                                            <Card.Title>Logs Pattern Identification</Card.Title>
+                                            <br />
+                                            <Card.Text>
+                                                View predicted plot for time and length of log files
+                                    </Card.Text>
+                                            <br />
+
+                                            <Button to="" variant="success">View predicted plot</Button>
+                                        </Card.Body>
+
+                                    </Card>
+                                )}
+
+                            </CardDeck>
+                        </Container>
+                    </Row>
+                </Container>
+
+            </div>
+        );
+    }
 }
+export default withRouter(Home);

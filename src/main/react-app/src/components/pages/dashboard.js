@@ -23,6 +23,7 @@ class Dashboard extends React.Component {
                         render={(props) => <Home {...props} />} />
                     <Route path={`${match.path}/profile`} component={Profile} />
                     <Route path={`${match.path}/customerform`} component={CustomerForm} />
+                    
                 </Switch>
                 <Footer />
             </div>
