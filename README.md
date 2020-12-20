@@ -4,7 +4,7 @@
 ```
 mvn spring-boot:run
 ```
-##Run React application development server
+## Run React application development server
 ```
 npm start
 ```
