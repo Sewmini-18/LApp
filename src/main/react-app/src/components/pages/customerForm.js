@@ -39,7 +39,7 @@ class CustomerForm extends Component {
 
     }
 
-    intialState = { cname: '', cemail: '', cphone: '', creason: '', alert: '' };
+    intialState = { cname: '', cemail: '', cphone: '', creason: '', cnic: '', alert: '' };
 
     componentDidMount() {
         document.title = "Form"
@@ -53,15 +53,16 @@ class CustomerForm extends Component {
         let curTime = new Date().toLocaleString();
 
         const customerReq = {
-            cname: this.state.cname,
-            cemail: cemail,
-            cphone: this.state.cphone,
-            creason: this.state.creason,
-            curTime: curTime
+            c_name: this.state.cname,
+            email: cemail,
+            phone: this.state.cphone,
+            reason: this.state.creason,
+            c_nic:this.state.cnic,
+            //curTime: curTime
 
         }
 
-        axios.post("http://localhost:8080/home/customerform", customerReq)
+        axios.post("http://localhost:8080/api/auth/customer", customerReq)
             .then(response => {
                 if (response.data != null) {
 
@@ -84,7 +85,7 @@ class CustomerForm extends Component {
 
     render() {
 
-        const { cname, cemail, cphone, creason, alert } = this.state;
+        const { cname, cemail, cnic, cphone, creason, alert } = this.state;
 
 
         return (
@@ -111,10 +112,10 @@ class CustomerForm extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="form-row">
-                                                        <div className="name">Contact Number</div>
+                                                        <div className="name">NIC No</div>
                                                         <div className="value">
                                                             <div className="input-group">
-                                                                <input className="input--style-5" type="text" value={cphone} name="cphone" placeholder="Contact No here" onChange={this.custChange} required />
+                                                                <input className="input--style-5" type="text" value={cnic} name="cnic" placeholder="NIC Number " onChange={this.custChange} required />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -126,6 +127,15 @@ class CustomerForm extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div className="form-row">
+                                                        <div className="name">Contact Number</div>
+                                                        <div className="value">
+                                                            <div className="input-group">
+                                                                <input className="input--style-5" type="text" value={cphone} name="cphone" placeholder="Contact No here" onChange={this.custChange} required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
                                                     <div className="form-row">
                                                         <div className="name">Reason / Request</div>
                                                         <div className="value">
