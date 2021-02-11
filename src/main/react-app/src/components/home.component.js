@@ -122,6 +122,22 @@ class Home extends Component {
 
                                     </Card>
                                 )}
+                                {showAdminBoard && (
+                                    <Card border="success" style={{ width: '18rem' }}>
+
+                                        <Card.Body>
+                                            <Card.Title>Customer Request</Card.Title>
+                                            <br />
+                                            <Card.Text>
+                                                View customer request details
+                                    </Card.Text>
+                                            <br />
+
+                                            <Button href="home/request" variant="success">view request details</Button>
+                                        </Card.Body>
+
+                                    </Card>
+                                )}
 
                             </CardDeck>
                         </Container>

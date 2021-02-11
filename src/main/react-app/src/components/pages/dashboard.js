@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from '../profile.component'
 import Chart from '../pages/chart'
+import CustomerRequestDetails from '../pages/customerRequestDetails'
 
 class Dashboard extends React.Component {
 
@@ -24,6 +25,7 @@ class Dashboard extends React.Component {
                     <Route path={`${match.path}/profile`} component={Profile} />
                     <Route path={`${match.path}/customerform`} component={CustomerForm} />
                     <Route path={`${match.path}/chart`} component={Chart} />
+                    <Route path={`${match.path}/request`} component={CustomerRequestDetails} />
 
                     
                 </Switch>
