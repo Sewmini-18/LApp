@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from '../profile.component'
 import Chart from '../pages/chart'
 import CustomerRequestDetails from '../pages/customerRequestDetails'
+import EditUser from '../pages/editUser'
 
 class Dashboard extends React.Component {
 
@@ -26,6 +27,7 @@ class Dashboard extends React.Component {
                     <Route path={`${match.path}/customerform`} component={CustomerForm} />
                     <Route path={`${match.path}/chart`} component={Chart} />
                     <Route path={`${match.path}/request`} component={CustomerRequestDetails} />
+                    <Route path={`${match.path}/edit`} component={EditUser} />
 
                     
                 </Switch>
