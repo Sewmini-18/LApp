@@ -4,6 +4,8 @@ import AuthService from '../services/auth.service';
 import './pages/css/profile.css'
 import { Figure, Card, Button } from 'react-bootstrap'
 import userPic from './pages/images/user.png'
+import axios from "axios";
+
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,7 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
+      name:'',
       currentUser: { username: '' }
     };
   }
@@ -19,9 +22,34 @@ export default class Profile extends Component {
     document.title = 'Profile'
     const currentUser = AuthService.getCurrentUser();
     console.log("id: "+currentUser.id);
-    if (!currentUser) this.setState({ redirect: './' });
-    this.setState({ currentUser: currentUser, userReady: true })
+    const userId = currentUser.id;
+        console.log("name: " + currentUser.name);
+        if (userId) {
+            this.findUserById(userId);
+        }
+        else if (!currentUser) this.setState({ redirect: './' });
+        this.setState({ currentUser: currentUser, userReady: true, name: this.state.name });
+       
   }
+
+  findUserById = (userId) => {
+    axios.get("http://localhost:8080/api/auth/" + userId).then(response => {
+        if (response.data != null) {
+            this.setState({
+                id: response.data.id,
+                name: response.data.name,
+                username: response.data.username,
+                nic: response.data.nic,
+                password:response.data.password
+            });
+        }
+    }).catch((error) => {
+        console.error("Error - " + error);
+        this.setState({ redirect: '/home' });
+    });
+    console.log("Hi Hi2 " + this.setState.name + " ll");
+}
+
 
   render() {
     if (this.state.redirect) {
@@ -53,8 +81,8 @@ export default class Profile extends Component {
                               Profile Picture
                             </Figure.Caption>
                           </Figure></div>
-                          <h4 className="f-w-600">{currentUser.name}</h4>
-                          <p><br/>{currentUser.roles}</p>
+                          <h4 className="f-w-600">{this.state.name}</h4>
+                          <p><br/>{this.state.roles}</p>
                         </div>
                       </div>
                       <div className="col-sm-8">
@@ -63,7 +91,7 @@ export default class Profile extends Component {
                           <div className="row">
                             <div className="col-sm-6">
                               <p className="m-b-10 f-w-600">Name</p>
-                              <h6 className="text-muted f-w-400">{currentUser.name}</h6><br /><br />
+                              <h6 className="text-muted f-w-400">{this.state.name}</h6><br /><br />
                             </div>
                             <div className="col-sm-6">
                               <p className="m-b-10 f-w-600">NIC Number</p>
@@ -74,7 +102,7 @@ export default class Profile extends Component {
                           <div className="row">
                             <div className="col-sm-6">
                               <p className="m-b-10 f-w-600">Email</p>
-                              <h6 className="text-muted f-w-400">{currentUser.username}</h6>
+                              <h6 className="text-muted f-w-400">{this.state.username}</h6>
                             </div>
                             <div className="col-sm-6 m-b-10">
                               <p className="m-b-10 f-w-600">Telephone</p>

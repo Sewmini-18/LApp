@@ -31,6 +31,20 @@ class AuthService {
     });
   }
 
+  update(username, name, nic, password) {
+
+    const currentUser = this.getCurrentUser();
+    const userId = currentUser.id;
+
+    return axios.put("http://localhost:8080/api/auth/" + userId , {
+      username,
+      name,
+      nic, 
+      password
+    });
+
+  }
+
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;
   }

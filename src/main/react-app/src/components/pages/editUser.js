@@ -45,6 +45,7 @@ export default class EditUser extends Component {
 
     resetUser = () => {
         this.setState(() => this.initialState);
+        //return this.props.history.push("/home/profile/edit/userId=?"+this.state.id);
     }
 
     componentDidMount() {
@@ -57,7 +58,7 @@ export default class EditUser extends Component {
             this.findUserById(userId);
         }
         else if (!currentUser) this.setState({ redirect: './' });
-        this.setState({ currentUser: currentUser, userReady: true })
+        this.setState({ currentUser: currentUser, userReady: true });
 
 
     }
@@ -70,7 +71,9 @@ export default class EditUser extends Component {
                     name: response.data.name,
                     username: response.data.username,
                     nic: response.data.nic,
+                    password:response.data.password
                 });
+                console.log("Hi Hi " + this.state.name + " ll");
             }
         }).catch((error) => {
             console.error("Error - " + error);
@@ -79,43 +82,54 @@ export default class EditUser extends Component {
         console.log("Hi Hi " + this.state.name + " ll");
     }
 
-    updateUser(e) {
-        e.preventDefault();
+    updateUser = event =>{
+        event.preventDefault();
+        console.log("Button clicked");
 
         this.setState({
             message: "",
             successful: false
-        });
+          });
 
+          if (validateForm(this.state.errors)) {
+            AuthService.update(
+              this.state.username,
+              this.state.name,
+              this.state.nic,
+              this.state.password
 
-
-        if (validateForm(this.state.errors)) {
-            AuthService.register(
-                this.state.name,
-                this.state.username,
             ).then(
-                response => {
-                    this.setState({
-                        message: response.data.message,
-                        successful: true
-                    });
-                },
-                error => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-
-                    this.setState({
-                        successful: false,
-                        message: resMessage
-                    });
-                }
+              response => {
+                this.setState({
+                  message: response.data.message,
+                  successful: true
+                });
+              },
+              error => {
+                const resMessage =
+                  (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                  error.message ||
+                  error.toString();
+      
+                this.setState({
+                  successful: false,
+                  message: resMessage
+                });
+            }
             );
         }
+        this.setState(this.initialState);
+        console.log("name: " +this.state.name);
+        //console.log("username: " +currentUser.username);
+        setTimeout(() => this.profile(), 3000);
     }
+
+    profile = () => {
+        return this.props.history.push("/home/profile");
+    };
+    
 
     handleProfile = event => {
         event.preventDefault();
@@ -158,7 +172,7 @@ export default class EditUser extends Component {
             <div className="container">
                 {(this.state.userReady) ?
                     <div>
-                        <Form onSubmit={this.updateUser} onReset={this.resetUser} id="FormId">
+                        <Form onSubmit={this.updateUser}  id="FormId">
 
                             <div>
 
@@ -203,7 +217,7 @@ export default class EditUser extends Component {
                                                                     <p className="m-b-10 f-w-600">NIC Number</p>
                                                                     <div>
                                                                         <InputGroup size="sm" className="mb-3" controlid="formGridnic">
-                                                                            <FormControl aria-label="Small" name='nic' value={this.state.nic} aria-describedby="inputGroup-sizing-sm" />
+                                                                            <FormControl aria-label="Small" value={this.state.nic}  aria-describedby="inputGroup-sizing-sm" />
                                                                         </InputGroup>
                                                                     </div>
                                                                 </div>
@@ -230,8 +244,7 @@ export default class EditUser extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="row mt-3 m-l-5">
-                                                                <Button variant="primary" type="submit" className="ml-3"  >Update</Button>
-                                                                <Button className="ml-3" type="reset" variant="warning">&nbsp; Reset &nbsp;</Button>
+                                                                <Button variant="primary" type="submit"  className="ml-3"  >Update</Button>
                                                                 <Button className="ml-3" href="../profile" variant="danger">Cancel</Button>
                                                             </div>
                                                         </div>
