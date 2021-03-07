@@ -11,7 +11,9 @@ import com.bezkoder.spring.jwt.mongodb.repository.RoleRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.UserRepository;
 import com.bezkoder.spring.jwt.mongodb.security.jwt.JwtUtils;
 import com.bezkoder.spring.jwt.mongodb.security.services.UserDetailsImpl;
+import com.bezkoder.spring.jwt.mongodb.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +45,9 @@ public class AuthController {
 
 	@Autowired
 	PasswordEncoder encoder;
+
+	@Autowired
+	UserDetailsServiceImpl userDetailsServiceImpl;
 
 	@Autowired
 	JwtUtils jwtUtils;
@@ -125,5 +130,38 @@ public class AuthController {
 
 		return userRepository.findById(id);
 	}
+
+	/*
+	@PutMapping("/{id}")
+	public User updateUser(@RequestBody User user, @RequestBody Role roles, @PathVariable String id){
+		user.setId(id);
+		//role = roles.getId();
+		//user role = roles.findByUsername(id);
+		userRepository.save(user);
+		return user;
+	}
+	*/
+	@PutMapping("/{id}")
+	public ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable String id){
+		Optional<User> userData = userRepository.findById(id);
+		if(userData.isPresent()){
+			System.out.println("reading");
+			User _user = userData.get();
+			//_user.setId(id);
+			_user.setUsername(user.getUsername());
+			_user.setName(user.getName());
+			_user.setNic(user.getNic());
+			_user.setPassword((encoder.encode(user.getPassword())));
+			//encoder.encode(signUpRequest.getPassword()))
+			return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+
+		}
+		else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+
 
 }
