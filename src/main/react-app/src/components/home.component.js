@@ -116,8 +116,8 @@ class Home extends Component {
                                                 View predicted plot for time and length of log files
                                     </Card.Text>
                                             <br />
-
-                                            <Button to="" variant="success">View predicted plot</Button>
+                                            <Button href="home/plot" variant="success">View predicted plot</Button>
+                                            
                                         </Card.Body>
 
                                     </Card>
@@ -137,8 +137,17 @@ class Home extends Component {
                                         </Card.Body>
 
                                     </Card>
-                                )}
 
+                                )}
+                                {showAdminBoard && (
+                                    <Card border="success" style={{ width: '18rem' }}>
+                                        <Card.Body>
+                                            <Card.Title>View Users</Card.Title><br />
+                                            <Card.Text>View users...</Card.Text><br />
+                                            <Button href="home/userdetails" variant="primary">view users</Button>
+                                        </Card.Body>
+                                    </Card>
+                                )}
                             </CardDeck>
                         </Container>
                     </Row>
