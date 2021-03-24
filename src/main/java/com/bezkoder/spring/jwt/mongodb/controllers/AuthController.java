@@ -125,6 +125,12 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
 
+	@GetMapping("/users")
+	public List<User> findAll() {
+
+		return userRepository.findAll();
+	}
+
 	@GetMapping("/{id}")
 	public Optional<User> findByUsername(@PathVariable String id) {
 
@@ -151,7 +157,7 @@ public class AuthController {
 			_user.setUsername(user.getUsername());
 			_user.setName(user.getName());
 			_user.setNic(user.getNic());
-			_user.setPassword((encoder.encode(user.getPassword())));
+			//_user.setPassword((encoder.encode(user.getPassword())));
 			//encoder.encode(signUpRequest.getPassword()))
 			return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
 
