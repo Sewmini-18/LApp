@@ -10,6 +10,7 @@ import Profile from '../profile.component'
 import Chart from '../pages/chart'
 import CustomerRequestDetails from '../pages/customerRequestDetails'
 import EditUser from '../pages/editUser'
+import UserDetails from '../pages/userDetails'
 
 class Dashboard extends React.Component {
 
@@ -28,6 +29,7 @@ class Dashboard extends React.Component {
                     <Route path={`${match.path}/chart`} component={Chart} />
                     <Route path={`${match.path}/request`} component={CustomerRequestDetails} />
                     <Route path={`${match.path}/edit`} component={EditUser} />
+                    <Route path={`${match.path}/userdetails`} component={UserDetails} />
 
                     
                 </Switch>
