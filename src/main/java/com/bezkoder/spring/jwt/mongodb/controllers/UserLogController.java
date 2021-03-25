@@ -20,7 +20,7 @@ public class UserLogController {
     UserLogRepository userLogRepository;
 
     @GetMapping("")
-    public ResponseEntity<?> getAlluserLogRecords() {
+    public ResponseEntity<?> getAllUserLogRecords() {
         try{
             List<UserLogRecord> userLogRecords = userLogRepository.findAll();
             return ResponseEntity.ok().body(userLogRecords);
