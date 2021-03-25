@@ -2,11 +2,10 @@ package com.bezkoder.spring.jwt.mongodb.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "Log")
+
+@Document(collection = "#{T(com.bezkoder.spring.jwt.mongodb.models.LogRecordCollection).getCollectionName()}")
 public class LogRecord {
-
     @Id
     private String _id;
     private double no;
