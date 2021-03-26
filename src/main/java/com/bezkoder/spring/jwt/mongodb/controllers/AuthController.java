@@ -173,10 +173,10 @@ public class AuthController {
         }
 
     @PutMapping("color/{id}")
-    public ResponseEntity<User> updateUserPhone (@RequestBody User user, @PathVariable String id){
+    public ResponseEntity<User> updateUserTheme (@RequestBody User user, @PathVariable String id){
         Optional<User> userData = userRepository.findById(id);
         if (userData.isPresent()) {
-            System.out.println("reading phone");
+            System.out.println("reading theme color");
             User _user = userData.get();
             //_user.setId(id);
             _user.setTheme(user.getTheme());
