@@ -31,7 +31,7 @@ class AuthService {
     });
   }
 
-  update(username, name, nic, password) {
+  update(username, name, nic) {
 
     const currentUser = this.getCurrentUser();
     const userId = currentUser.id;
@@ -39,8 +39,19 @@ class AuthService {
     return axios.put("http://localhost:8080/api/auth/" + userId , {
       username,
       name,
-      nic, 
-      password
+      nic
+    });
+
+  }
+
+  updateTheme(theme) {
+
+    const currentUser = this.getCurrentUser();
+    const userId = currentUser.id;
+
+    return axios.put("http://localhost:8080/api/auth/color/" + userId , {
+
+      theme
     });
 
   }

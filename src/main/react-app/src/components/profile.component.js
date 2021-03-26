@@ -40,7 +40,7 @@ export default class Profile extends Component {
                 name: response.data.name,
                 username: response.data.username,
                 nic: response.data.nic,
-                password:response.data.password
+               
             });
         }
     }).catch((error) => {
@@ -106,7 +106,7 @@ export default class Profile extends Component {
                             </div>
                             <div className="col-sm-6 m-b-10">
                               <p className="m-b-10 f-w-600">Telephone</p>
-                              <h6 className="text-muted f-w-400">{currentUser.id}</h6><br /><br />
+                              <h6 className="text-muted f-w-400">thelephone no</h6><br /><br />
                             </div>
                           </div>
                           <div className="row m-t-button m-l-5">
