@@ -19,9 +19,11 @@ public class SignupRequest {
     @Size(min = 10, max = 12)
     private String nic;
 
-
+    @Size(max = 12)
+private String theme;
 
     private Set<String> roles;
+
 
     @NotBlank
     @Size(min = 8, max = 40)
@@ -65,5 +67,13 @@ public class SignupRequest {
 
     public void setRole(Set<String> roles) {
       this.roles = roles;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
