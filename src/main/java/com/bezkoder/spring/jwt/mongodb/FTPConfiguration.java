@@ -66,6 +66,7 @@ public class FTPConfiguration {
         return logger;
     }
 
+    // comment from janitha
     @Bean
     public DefaultFtpSessionFactory sf() {
         DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
