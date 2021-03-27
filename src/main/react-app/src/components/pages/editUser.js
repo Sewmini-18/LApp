@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import AuthService from '../../services/auth.service';
 import '../pages/css/profile.css'
-import { Figure, InputGroup, FormControl, Button,ButtonGroup, Form } from 'react-bootstrap'
+import { Figure, InputGroup, FormControl, Button, ButtonGroup, Form } from 'react-bootstrap'
 import userPic from '../pages/images/user.png'
 import axios from "axios";
 
@@ -32,12 +32,14 @@ export default class EditUser extends Component {
         username: '',
         name: '',
         nic: '',
+        phone: '',
         id: '',
         currentUser: { id: '' },
         errors: {
             name: '',
             username: '',
             nic: '',
+            phone: '',
             req: '',
         }
 
@@ -71,7 +73,8 @@ export default class EditUser extends Component {
                     name: response.data.name,
                     username: response.data.username,
                     nic: response.data.nic,
-                    
+                    phone: response.data.phone
+
                 });
                 console.log("Hi Hi " + this.state.name + " ll");
             }
@@ -92,11 +95,13 @@ export default class EditUser extends Component {
         });
 
         if (validateForm(this.state.errors)) {
+            let username = this.state.username.toLowerCase();
             AuthService.update(
-                this.state.username,
+                username,
                 this.state.name,
                 this.state.nic,
-                
+                this.state.phone
+
 
             ).then(
                 response => {
@@ -128,7 +133,7 @@ export default class EditUser extends Component {
 
     setColor1 = color => {
         this.setState({ heading: "brown", background: "#f1f1f1", color: "red" });
-      };
+    };
 
     profile = () => {
         return this.props.history.push("/home/profile");
@@ -152,6 +157,12 @@ export default class EditUser extends Component {
                         ? 'Name must be 5 characters long!'
                         : '';
                 break;
+            case 'phone':
+                errors.phone =
+                    value.length < 10
+                        ? 'Phone Number must be 10 characters long!'
+                        : '';
+                break;
             case 'username':
                 errors.username =
                     validEmailRegex.test(value)
@@ -171,7 +182,7 @@ export default class EditUser extends Component {
             return <Redirect to={this.state.redirect} />
         }
 
-        const { currentUser, name, errors } = this.state;
+        const { name, errors } = this.state;
         return (
             <div className="container">
                 {(this.state.userReady) ?
@@ -242,10 +253,11 @@ export default class EditUser extends Component {
                                                                     <p className="m-b-10 f-w-600">Telephone</p>
                                                                     <div>
                                                                         <InputGroup size="sm" className="mb-3">
-                                                                            <FormControl aria-label="Small"  aria-describedby="inputGroup-sizing-sm" />
+                                                                            <FormControl aria-label="Small" name='phone' value={this.state.phone} onChange={this.handleProfile} aria-describedby="inputGroup-sizing-sm" />
                                                                         </InputGroup>
                                                                     </div>
-                                                                  
+                                                                    <div>{errors.phone.length > 0 &&
+                                                                        <span className='errorEdit'>{errors.phone}</span>}</div>
                                                                 </div>
                                                             </div>
 

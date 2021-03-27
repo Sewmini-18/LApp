@@ -36,15 +36,15 @@ export default class Signin extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
-
+    let date = new Date().toLocaleString() + '';
     this.handleChange = this.handleChange.bind(this);
 
 
     this.state = {
-      name: "",
       nic: "",
       username: "",
       password: "",
+      date:date,
       successful: false,
       message: "",
       isPasswordShown: false,
@@ -120,13 +120,15 @@ export default class Signin extends Component {
       successful: false
     });
 
-
+    
 
     if (validateForm(this.state.errors)) {
+      let username = this.state.username.toLowerCase();
       AuthService.register(
         this.state.name,
-        this.state.username,
+        username,
         this.state.nic,
+        this.state.date,
         this.state.password
       ).then(
         response => {

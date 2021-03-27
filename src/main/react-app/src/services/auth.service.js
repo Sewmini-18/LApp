@@ -22,16 +22,17 @@ class AuthService {
    
   }
 
-  register(name, username, nic, password) {
+  register(name, username, nic,date, password) {
     return axios.post(API_URL + "signup", {
       name,
       username,
       nic,
+      date,
       password
     });
   }
 
-  update(username, name, nic) {
+  update(username, name, nic, phone) {
 
     const currentUser = this.getCurrentUser();
     const userId = currentUser.id;
@@ -39,7 +40,8 @@ class AuthService {
     return axios.put("http://localhost:8080/api/auth/" + userId , {
       username,
       name,
-      nic
+      nic,
+      phone,
     });
 
   }
