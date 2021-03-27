@@ -16,7 +16,7 @@ import org.springframework.messaging.MessageChannel;
 
 import java.io.File;
 import java.util.List;
-
+//sample
 @Configuration
 public class FTPConfiguration {
     @ServiceActivator(inputChannel = "ftpLS")
