@@ -31,7 +31,22 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-integration</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-ftp</artifactId>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-module-kotlin</artifactId>
+					<groupId>com.fasterxml.jackson.module</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,13 +87,15 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<url>https://repo.spring.io/snapshot</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<url>https://repo.spring.io/milestone</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>
