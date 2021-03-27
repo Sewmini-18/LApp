@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from 'react-router-dom';
 import AuthService from '../../services/auth.service';
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import axios from 'axios';
+import RemoveCircleSharpIcon from '@material-ui/icons/RemoveCircleSharp';
 
 class UserDetails extends Component {
 
@@ -17,8 +18,8 @@ class UserDetails extends Component {
     componentDidMount() {
         document.title = 'User Details';
         const user = AuthService.getCurrentUser();
-        
-        
+
+
         if (user) {
             this.setState({
                 currentUser: user,
@@ -29,7 +30,7 @@ class UserDetails extends Component {
             .then(response => response.data)
             .then((data) => {
 
-                console.log('hijjhh');
+                console.log('view users');
                 this.setState({ userdetails: data });
             });
     }
@@ -41,16 +42,16 @@ class UserDetails extends Component {
             <div>
                 <h2>User Details</h2>
                 <div className="container mgntop">
-                    <Table striped bordered hover size="sm" >
+                    <Table responsive striped bordered hover size="sm" >
                         <thead >
-                            <tr style={{color:'white', background:'#343A40'}}>
-                                <th  className="ml-3">#</th>
+                            <tr style={{ color: 'white', background: '#343A40' }}>
+                                <th className="ml-3">#</th>
                                 <th>Name</th>
                                 <th>NIC</th>
                                 <th>Email</th>
-                              
-                                <th>Reason</th>
-                                <th><span className="ml-3">Modify</span></th>
+
+                                <th>Joined</th>
+                                <th  style={{textAlign:'center'}}><span>Modify</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,14 +63,19 @@ class UserDetails extends Component {
                                     this.state.userdetails.map((user, index) => (
 
                                         <tr key={user.id}>
-                                            
-                                            <td>{1+index++}</td>
+
+                                            <td>{1 + index++}</td>
                                             <td>{user.name}</td>
                                             <td>{user.nic}</td>
                                             <td>{user.username}</td>
-                                            <td>{user.roles.name}</td>
-                                            <td>
-                                            <Button size="sm" className="ml-3" href=".." variant="warning">Remove</Button>
+                                            <td>{user.date}</td>
+                                            <td style={{textAlign:'center'}}>
+                                                <OverlayTrigger  placement="right" overlay={<Tooltip>remove user</Tooltip>}>
+                                                    <span className="d-inline-block">
+                                                        <a href="/home/userdetails"><span  ><RemoveCircleSharpIcon color="disabled" type="button"
+                                                            style={{ alignItems: 'right', fontSize: '25px'}} /></span></a>
+                                                    </span>
+                                                </OverlayTrigger>
                                             </td>
                                         </tr>
                                     ))

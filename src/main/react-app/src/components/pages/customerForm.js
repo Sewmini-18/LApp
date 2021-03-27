@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './css/customerFormStyle.css';
 import { Button, withStyles } from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
-import { Row, Jumbotron } from 'react-bootstrap'
+import { Row, Jumbotron,OverlayTrigger,Tooltip } from 'react-bootstrap';
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 
 import ActionAlerts from '../alert'
 import axios from 'axios';
@@ -33,6 +34,7 @@ class CustomerForm extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = this.intialState;
         this.custChange = this.custChange.bind(this);
         this.submitCustomer = this.submitCustomer.bind(this);
@@ -50,15 +52,15 @@ class CustomerForm extends Component {
         event.preventDefault();
         console.log(this.state);
         let cemail = this.state.cemail.toLowerCase();
-        let curTime = new Date().toLocaleString();
+        let date = new Date().toLocaleString() + '';
 
         const customerReq = {
             c_name: this.state.cname,
             email: cemail,
             phone: this.state.cphone,
             reason: this.state.creason,
-            c_nic:this.state.cnic,
-            //curTime: curTime
+            c_nic: this.state.cnic,
+            date: date
 
         }
 
@@ -90,16 +92,24 @@ class CustomerForm extends Component {
 
         return (
             <div >
-                <div className="container mgntop">
-                    <h2>Add Customer Request</h2>
+                <div  className="container mgntop">
+                    <h4 style={{ textAlign: "center" }}>Request Details</h4>
+                    
                     <Row >
                         <div className="wrapper p-b-45">
-                            <Jumbotron style={{ width: '56rem' }}>
+                        <div style={{textAlign: 'right'}}>
+                        <OverlayTrigger overlay={<Tooltip>view customer request details</Tooltip>}>
+                        <span className="d-inline-block">
+                            <Button size="sm" border='outline-success' variant="success" style={{ fontSize:'10px', color:'violet'}} href="/home/request">View</Button>
+                        </span>
+                    </OverlayTrigger>
+                        </div>
+                            <Jumbotron style={{ width: '60rem' }}>
                                 <div>
                                     <div >
                                         <div className="card card-5">
                                             <div className="card-heading">
-                                                <h2 className="title">Customer Details Collection Form :</h2><br/>
+                                                <h2 className="title">Customer Details Collection Form :</h2><br />
                                             </div>
                                             <div className="card-body">
                                                 <form id="customerForm" >
@@ -135,7 +145,7 @@ class CustomerForm extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div className="form-row">
                                                         <div className="name">Reason / Request</div>
                                                         <div className="value">
@@ -147,6 +157,7 @@ class CustomerForm extends Component {
 
                                                     <div>
                                                         <ColorButton type="submit" onClick={this.submitCustomer} variant="contained" className="abutton"> Submit </ColorButton>
+                                                        
                                                     </div><br />
                                                     <div ><br />
                                                         {this.state.alert === "error" ? <ActionAlerts name="alert" value={alert}

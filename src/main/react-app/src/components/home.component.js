@@ -11,7 +11,7 @@ class Home extends Component {
 
             showAdminBoard: false,
             currentUser: undefined,
-            
+
         };
     }
 
@@ -25,65 +25,64 @@ class Home extends Component {
         document.title = 'Home'
         const currentUser = AuthService.getCurrentUser();
         console.log("theme:-" + currentUser.theme);
-       
+
         const userId = currentUser.id;
         if (userId) {
             this.findUserById(userId);
             this.setState({
                 currentUser: currentUser,
                 showAdminBoard: currentUser.roles.includes("ROLE_ADMIN"),
-                theme:this.state.theme
+                theme: this.state.theme
             });
         }
-        
+
     }
 
     findUserById = (userId) => {
         axios.get("http://localhost:8080/api/auth/" + userId).then(response => {
-          if (response.data != null) {
-            this.setState({
-                theme: response.data.theme
-            });
-            console.log("theme2:-" + this.state.theme);
- 
-            
-            let themec = this.state.theme;
-            switch (themec) {
-                case '#d3d5fd':
-                    themec = 'secondary';
-                    break;
-                case '#4592af':
-                    themec = 'primary'
-                    break;
-                case '#239d60':
-                    themec = 'success'
-                    break;
-                case '#3e3e3e':
-                    themec = 'dark'
-                    break;
-                default:
-                    break;
-            };
-            this.setState({theme:themec});
-            console.log("new color:- "+ themec);
-          }
-          if(this.state.theme == null){
-            this.setState({
-                theme:  '#d3d5fd'
-            });
-            let themec = this.state.theme;
-           
-            themec='secondary';
-            console.log("new color null:- "+ themec);
-            this.setState({theme:themec});
-            console.log("new " + this.state.theme);
-            console.log("new2 " + this.initialState.theme);
-          }
+            if (response.data != null) {
+                this.setState({
+                    theme: response.data.theme
+                });
+                console.log("theme2:-" + this.state.theme);
+
+
+                let themec = this.state.theme;
+                switch (themec) {
+                    case '#d3d5fd':
+                        themec = 'secondary';
+                        break;
+                    case '#0062cc':
+                        themec = 'primary'
+                        break;
+                    case '#239d60':
+                        themec = 'success'
+                        break;
+                    case '#3e3e3e':
+                        themec = 'dark'
+                        break;
+                    default:
+                        break;
+                };
+                this.setState({ theme: themec });
+                console.log("new color:- " + themec);
+            }
+            if (this.state.theme == null) {
+                this.setState({
+                    theme: '#d3d5fd'
+                });
+                let themec = this.state.theme;
+                themec = 'secondary';
+                console.log("new color null:- " + themec);
+                this.setState({ theme: themec });
+                console.log("new " + this.state.theme);
+                console.log("new2 " + this.initialState.theme);
+            }
         }).catch((error) => {
-          console.error("Error - " + error);
+            console.error("Error - " + error);
         });
 
-      }
+    }
 
 
 
@@ -93,10 +92,10 @@ class Home extends Component {
         const { currentUser, showAdminBoard, theme } = this.state;
         const mTop = {
             marginTop: "40px",
-            border:'2px'
-      
-          }
-        
+            border: '2px'
+
+        }
+
         return (
             <div className='container' style={mTop}>
                 <Container>
@@ -105,16 +104,16 @@ class Home extends Component {
                             <Container>
                                 <CardDeck>
                                     {currentUser && (
-                                        <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                        <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
                                             <Card.Body>
                                                 <Card.Title>View Log files</Card.Title>
                                                 <br />
                                                 <Card.Text>
                                                     You can sort and view log files
                                                 </Card.Text>
-                                                <br /><br/>
+                                                <br /><br />
 
-                                                <Button  href="/home/view" variant={theme}>View Log files</Button>
+                                                <Button href="/home/view" variant={theme}>View Log files</Button>
 
                                             </Card.Body>
 
@@ -122,7 +121,7 @@ class Home extends Component {
 
                                     )}
                                     {currentUser && (
-                                        <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                        <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
                                             <Card.Body>
                                                 <Card.Title>Logs Visualization</Card.Title>
                                                 <br />
@@ -139,7 +138,7 @@ class Home extends Component {
 
                                     )}
                                     {showAdminBoard && (
-                                        <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                        <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
                                             <Card.Body>
                                                 <Card.Title>Export Log Files</Card.Title>
@@ -149,15 +148,15 @@ class Home extends Component {
                                                 </Card.Text>
                                                 <br />
 
-                                                <Button href="/" variant={theme}>Export log files</Button>
-                                                
+                                                <Button href="/home" variant={theme}>Export log files</Button>
+
                                             </Card.Body>
 
                                         </Card>
                                     )}
 
                                     {showAdminBoard && (
-                                        <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                        <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
                                             <Card.Body>
                                                 <Card.Title>Backup Log Files</Card.Title>
@@ -165,9 +164,9 @@ class Home extends Component {
                                                 <Card.Text>
                                                     Logs manually backup
                                                 </Card.Text>
-                                                <br /><br/>
+                                                <br /><br />
 
-                                                <Button  href="/" variant={theme}>Backup log files</Button>
+                                                <Button href="/home" variant={theme}>Backup log files</Button>
                                             </Card.Body>
 
                                         </Card>
@@ -183,7 +182,7 @@ class Home extends Component {
                             <CardDeck>
 
                                 {showAdminBoard && (
-                                    <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
                                         <Card.Body>
                                             <Card.Title>Logs Pattern Identification</Card.Title>
@@ -199,7 +198,7 @@ class Home extends Component {
                                     </Card>
                                 )}
                                 {showAdminBoard && (
-                                    <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
                                         <Card.Body>
                                             <Card.Title>Customer Request Form</Card.Title>
@@ -215,7 +214,7 @@ class Home extends Component {
                                     </Card>
                                 )}
                                 {showAdminBoard && (
-                                    <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
                                         <Card.Body>
                                             <Card.Title>Customer Request Details</Card.Title>
@@ -232,7 +231,7 @@ class Home extends Component {
 
                                 )}
                                 {showAdminBoard && (
-                                    <Card border={theme} style={{ border:'1px', borderStyle:"solid", width: '18rem' }}>
+                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
                                         <Card.Body>
                                             <Card.Title>User Management</Card.Title><br />
                                             <Card.Text>View users details and manage users</Card.Text><br /><br />

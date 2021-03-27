@@ -20,10 +20,12 @@ public class SignupRequest {
     private String nic;
 
     @Size(max = 12)
-private String theme;
+    private String theme;
 
     private Set<String> roles;
 
+    private String phone;
+    private String date;
 
     @NotBlank
     @Size(min = 8, max = 40)
@@ -75,5 +77,21 @@ private String theme;
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

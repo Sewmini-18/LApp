@@ -71,6 +71,8 @@ public class AuthController {
                 userDetails.getUsername(),
                 userDetails.getName(),
                 userDetails.getNic(),
+                userDetails.getPhone(),
+                userDetails.getDate(),
                 userDetails.getTheme(),
                 roles
                 ));
@@ -94,6 +96,8 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getName(),
                 signUpRequest.getNic(),
+                signUpRequest.getPhone(),
+                signUpRequest.getDate(),
                 signUpRequest.getTheme(),
                 encoder.encode(signUpRequest.getPassword())
                 );
@@ -161,6 +165,7 @@ public class AuthController {
                 _user.setUsername(user.getUsername());
                 _user.setName(user.getName());
                 _user.setNic(user.getNic());
+                _user.setPhone(user.getPhone());
                 _user.setTheme(user.getTheme());
                 //_user.setPassword((encoder.encode(user.getPassword())));
                 //encoder.encode(signUpRequest.getPassword()))

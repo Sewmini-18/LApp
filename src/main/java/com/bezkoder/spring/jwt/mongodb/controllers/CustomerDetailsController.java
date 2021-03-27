@@ -29,7 +29,8 @@ public class CustomerDetailsController {
                 customerRequest.getC_name(),
                 customerRequest.getC_nic(),
                 customerRequest.getPhone(),
-                customerRequest.getReason()
+                customerRequest.getReason(),
+                customerRequest.getDate()
                 );
 
         customerRequestRepository.save(request);
