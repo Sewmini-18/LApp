@@ -28,7 +28,8 @@ public class User {
   @Size(max = 12)
   private String nic;
 
-
+  @Size(max=12)
+ private String theme;
 
   @NotBlank
   @Size(max = 120)
@@ -37,14 +38,20 @@ public class User {
   @DBRef
   private Set<Role> roles = new HashSet<>();
 
+  private String phone;
+  private String date;
+
   public User() {
   }
 
-  public User(String username,  String name, String nic, String password) {
+  public User(String username,  String name, String nic, String phone, String date, String theme, String password) {
     this.username = username;
     this.name = name;
     this.nic = nic;
     this.password = password;
+    this.theme = theme;
+    this.date = date;
+    this.phone = phone;
   }
 
   public String getId() {
@@ -94,4 +101,28 @@ public class User {
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
   }
+
+  public String getTheme() {
+    return theme;
+  }
+
+  public void setTheme(String theme) {
+    this.theme = theme;
+  }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

@@ -33,12 +33,15 @@ public class CustomerDetails {
     @Size(max = 150)
     private String reason;
 
-    public CustomerDetails(String email, String c_name, String c_nic, String phone, String reason) {
+    private String date;
+
+    public CustomerDetails(String email, String c_name, String c_nic, String phone, String reason, String date) {
         this.email = email;
         this.c_name = c_name;
         this.c_nic = c_nic;
         this.phone = phone;
         this.reason = reason;
+        this.date = date;
     }
 
     public String getId() {
@@ -75,5 +78,13 @@ public class CustomerDetails {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

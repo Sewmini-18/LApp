@@ -36,12 +36,10 @@ export default class Signin extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
-
     this.handleChange = this.handleChange.bind(this);
 
 
     this.state = {
-      name: "",
       nic: "",
       username: "",
       password: "",
@@ -120,12 +118,13 @@ export default class Signin extends Component {
       successful: false
     });
 
-
+    
 
     if (validateForm(this.state.errors)) {
+      let username = this.state.username.toLowerCase();
       AuthService.register(
         this.state.name,
-        this.state.username,
+        username,
         this.state.nic,
         this.state.password
       ).then(

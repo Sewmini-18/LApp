@@ -20,19 +20,25 @@ public class UserDetailsImpl implements UserDetails {
 
 	private String nic;
 	private String name;
+	private String theme;
+	private String phone;
+	private String date;
 
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(String id, String username, String name, String nic, String password,
+	public UserDetailsImpl(String id, String username, String name, String nic, String phone, String date, String theme, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.name = name;
 		this.nic = nic;
 		this.password = password;
+		this.theme = theme;
+		this.date=date;
+		this.phone = phone;
 		this.authorities = authorities;
 	}
 
@@ -46,6 +52,9 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(),
 				user.getName(),
 				user.getNic(),
+				user.getTheme(),
+				user.getPhone(),
+				user.getDate(),
 				user.getPassword(),
 				authorities);
 	}
@@ -77,6 +86,14 @@ public class UserDetailsImpl implements UserDetails {
 		return name;
 	}
 
+	public String getTheme() {
+		return theme;
+	}
+
+	public String getPhone(){return  phone;}
+
+	public String getDate(){return date;}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -106,4 +123,6 @@ public class UserDetailsImpl implements UserDetails {
 		UserDetailsImpl user = (UserDetailsImpl) o;
 		return Objects.equals(id, user.id);
 	}
+
+
 }

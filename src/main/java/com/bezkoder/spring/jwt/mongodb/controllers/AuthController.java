@@ -3,13 +3,11 @@ package com.bezkoder.spring.jwt.mongodb.controllers;
 import com.bezkoder.spring.jwt.mongodb.models.ERole;
 import com.bezkoder.spring.jwt.mongodb.models.Role;
 import com.bezkoder.spring.jwt.mongodb.models.User;
-import com.bezkoder.spring.jwt.mongodb.models.UserLogRecord;
 import com.bezkoder.spring.jwt.mongodb.payload.request.LoginRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.request.SignupRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.response.JwtResponse;
 import com.bezkoder.spring.jwt.mongodb.payload.response.MessageResponse;
 import com.bezkoder.spring.jwt.mongodb.repository.RoleRepository;
-import com.bezkoder.spring.jwt.mongodb.repository.UserLogRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.UserRepository;
 import com.bezkoder.spring.jwt.mongodb.security.jwt.JwtUtils;
 import com.bezkoder.spring.jwt.mongodb.security.services.UserDetailsImpl;
@@ -25,7 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -33,113 +34,119 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	@Autowired
-	AuthenticationManager authenticationManager;
-
-	@Autowired
-	UserRepository userRepository;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Autowired
-	UserLogRepository userLogRepository;
+    UserRepository userRepository;
 
-	@Autowired
-	RoleRepository roleRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
-	@Autowired
-	PasswordEncoder encoder;
 
-	@Autowired
-	UserDetailsServiceImpl userDetailsServiceImpl;
+    @Autowired
+    PasswordEncoder encoder;
 
-	@Autowired
-	JwtUtils jwtUtils;
+    @Autowired
+    UserDetailsServiceImpl userDetailsServiceImpl;
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    @Autowired
+    JwtUtils jwtUtils;
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-		String currentDate = new Date().toString();
-		UserLogRecord userLogRecord = new UserLogRecord(userDetails.getUsername(), currentDate);
-		userLogRepository.save(userLogRecord);
-		return ResponseEntity.ok(new JwtResponse(jwt,
-				userDetails.getId(),
-				userDetails.getUsername(),
-				userDetails.getName(),
-				userDetails.getNic(),
-				roles));
-	}
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
-		}
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
 
-		if (userRepository.existsByNic(signUpRequest.getNic())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: NIC is already in use!"));
-		}
 
-		// Create new user's account
-		User user = new User(signUpRequest.getUsername(),
-				signUpRequest.getName(),
-				signUpRequest.getNic(),
-				encoder.encode(signUpRequest.getPassword()));
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getName(),
+                userDetails.getNic(),
+                userDetails.getPhone(),
+                userDetails.getDate(),
+                userDetails.getTheme(),
+                roles
+                ));
+    }
 
-		Set<String> strRoles = signUpRequest.getRoles();
-		Set<Role> roles = new HashSet<>();
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
 
-		if (strRoles == null) {
-			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(userRole);
-		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
-					case "admin":
-						Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-								.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-						roles.add(adminRole);
+        if (userRepository.existsByNic(signUpRequest.getNic())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: NIC is already in use!"));
+        }
 
-						break;
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getName(),
+                signUpRequest.getNic(),
+                signUpRequest.getPhone(),
+                signUpRequest.getDate(),
+                signUpRequest.getTheme(),
+                encoder.encode(signUpRequest.getPassword())
+                );
 
-					default:
-						Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-								.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-						roles.add(userRole);
-				}
-			});
-		}
+        Set<String> strRoles = signUpRequest.getRoles();
+        Set<Role> roles = new HashSet<>();
 
-		user.setRoles(roles);
-		userRepository.save(user);
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-	}
+                        break;
 
-	@GetMapping("/users")
-	public List<User> findAll() {
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
 
-		return userRepository.findAll();
-	}
+        user.setRoles(roles);
+        userRepository.save(user);
 
-	@GetMapping("/{id}")
-	public Optional<User> findByUsername(@PathVariable String id) {
 
-		return userRepository.findById(id);
-	}
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        }
+
+        @GetMapping("/users")
+        public List<User> findAll () {
+
+            return userRepository.findAll();
+        }
+
+        @GetMapping("/{id}")
+        public Optional<User> findByUsername (@PathVariable String id){
+
+            return userRepository.findById(id);
+        }
 
 	/*
 	@PutMapping("/{id}")
@@ -151,27 +158,59 @@ public class AuthController {
 		return user;
 	}
 	*/
-	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable String id){
-		Optional<User> userData = userRepository.findById(id);
-		if(userData.isPresent()){
-			System.out.println("reading");
-			User _user = userData.get();
-			//_user.setId(id);
-			_user.setUsername(user.getUsername());
-			_user.setName(user.getName());
-			_user.setNic(user.getNic());
-			//_user.setPassword((encoder.encode(user.getPassword())));
-			//encoder.encode(signUpRequest.getPassword()))
-			return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+        @PutMapping("/{id}")
+        public ResponseEntity<User> updateUser (@RequestBody User user, @PathVariable String id){
+            Optional<User> userData = userRepository.findById(id);
+            if (userData.isPresent()) {
+                System.out.println("reading");
+                User _user = userData.get();
+                //_user.setId(id);
+                _user.setUsername(user.getUsername());
+                _user.setName(user.getName());
+                _user.setNic(user.getNic());
+                _user.setPhone(user.getPhone());
+                _user.setTheme(user.getTheme());
+                //_user.setPassword((encoder.encode(user.getPassword())));
+                //encoder.encode(signUpRequest.getPassword()))
+                return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
 
-		}
-		else{
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-	}
+        }
+
+    @PutMapping("color/{id}")
+    public ResponseEntity<User> updateUserTheme (@RequestBody User user, @PathVariable String id){
+        Optional<User> userData = userRepository.findById(id);
+        if (userData.isPresent()) {
+            System.out.println("reading theme color");
+            User _user = userData.get();
+            //_user.setId(id);
+            _user.setTheme(user.getTheme());
+            //_user.setPassword((encoder.encode(user.getPassword())));
+            //encoder.encode(signUpRequest.getPassword()))
+            return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable String id) {
+        try {
+            userRepository.deleteById(id);
+            System.out.println("Deleted user: "+ id);
+            ResponseEntity.ok(new MessageResponse("User deleted!"));
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 
 
-
-}
+    }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import AuthService from '../../services/auth.service';
 import '../pages/css/profile.css'
-import { Figure, InputGroup, FormControl, Button, Form } from 'react-bootstrap'
+import { Figure, InputGroup, FormControl, Button, ButtonGroup, Form } from 'react-bootstrap'
 import userPic from '../pages/images/user.png'
 import axios from "axios";
 
@@ -27,17 +27,19 @@ export default class EditUser extends Component {
 
     initialState = {
         redirect: null,
-      userReady: false,
+        userReady: false,
         message: "",
         username: '',
         name: '',
         nic: '',
+        phone: '',
         id: '',
         currentUser: { id: '' },
         errors: {
             name: '',
             username: '',
             nic: '',
+            phone: '',
             req: '',
         }
 
@@ -71,7 +73,8 @@ export default class EditUser extends Component {
                     name: response.data.name,
                     username: response.data.username,
                     nic: response.data.nic,
-                    password:response.data.password
+                    phone: response.data.phone
+
                 });
                 console.log("Hi Hi " + this.state.name + " ll");
             }
@@ -82,54 +85,60 @@ export default class EditUser extends Component {
         console.log("Hi Hi " + this.state.name + " ll");
     }
 
-    updateUser = event =>{
+    updateUser = event => {
         event.preventDefault();
         console.log("Button clicked");
 
         this.setState({
             message: "",
             successful: false
-          });
+        });
 
-          if (validateForm(this.state.errors)) {
+        if (validateForm(this.state.errors)) {
+            let username = this.state.username.toLowerCase();
             AuthService.update(
-              this.state.username,
-              this.state.name,
-              this.state.nic,
-              this.state.password
+                username,
+                this.state.name,
+                this.state.nic,
+                this.state.phone
+
 
             ).then(
-              response => {
-                this.setState({
-                  message: response.data.message,
-                  successful: true
-                });
-              },
-              error => {
-                const resMessage =
-                  (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                  error.message ||
-                  error.toString();
-      
-                this.setState({
-                  successful: false,
-                  message: resMessage
-                });
-            }
+                response => {
+                    this.setState({
+                        message: response.data.message,
+                        successful: true
+                    });
+                },
+                error => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+
+                    this.setState({
+                        successful: false,
+                        message: resMessage
+                    });
+                }
             );
         }
         this.setState(this.initialState);
-        console.log("name: " +this.state.name);
+        console.log("name: " + this.state.name);
         //console.log("username: " +currentUser.username);
         setTimeout(() => this.profile(), 3000);
     }
 
+    setColor1 = color => {
+        this.setState({ heading: "brown", background: "#f1f1f1", color: "red" });
+    };
+
     profile = () => {
         return this.props.history.push("/home/profile");
     };
-    
+
 
     handleProfile = event => {
         event.preventDefault();
@@ -146,6 +155,12 @@ export default class EditUser extends Component {
                 errors.name =
                     value.length < 5
                         ? 'Name must be 5 characters long!'
+                        : '';
+                break;
+            case 'phone':
+                errors.phone =
+                    value.length < 10
+                        ? 'Phone Number must be 10 characters long!'
                         : '';
                 break;
             case 'username':
@@ -167,12 +182,12 @@ export default class EditUser extends Component {
             return <Redirect to={this.state.redirect} />
         }
 
-        const { currentUser, name, errors } = this.state;
+        const { name, errors } = this.state;
         return (
             <div className="container">
                 {(this.state.userReady) ?
                     <div>
-                        <Form onSubmit={this.updateUser}  id="FormId">
+                        <Form onSubmit={this.updateUser} id="FormId">
 
                             <div>
 
@@ -217,7 +232,7 @@ export default class EditUser extends Component {
                                                                     <p className="m-b-10 f-w-600">NIC Number</p>
                                                                     <div>
                                                                         <InputGroup size="sm" className="mb-3" controlid="formGridnic">
-                                                                            <FormControl aria-label="Small" value={this.state.nic}  aria-describedby="inputGroup-sizing-sm" />
+                                                                            <FormControl aria-label="Small" value={this.state.nic} aria-describedby="inputGroup-sizing-sm" />
                                                                         </InputGroup>
                                                                     </div>
                                                                 </div>
@@ -238,15 +253,18 @@ export default class EditUser extends Component {
                                                                     <p className="m-b-10 f-w-600">Telephone</p>
                                                                     <div>
                                                                         <InputGroup size="sm" className="mb-3">
-                                                                            <FormControl aria-label="Small" placeholder={currentUser.id} aria-describedby="inputGroup-sizing-sm" />
+                                                                            <FormControl aria-label="Small" name='phone' value={this.state.phone} onChange={this.handleProfile} aria-describedby="inputGroup-sizing-sm" />
                                                                         </InputGroup>
                                                                     </div>
+                                                                    <div>{errors.phone.length > 0 &&
+                                                                        <span className='errorEdit'>{errors.phone}</span>}</div>
                                                                 </div>
                                                             </div>
-                                                            <div className="row mt-3 m-l-5">
-                                                                <Button variant="primary" type="submit"  className="ml-3"  >Update</Button>
-                                                                <Button className="ml-3" href="../profile" variant="danger">Cancel</Button>
-                                                            </div>
+
+                                                        </div>
+                                                        <div className="row mt-3 m-l-5">
+                                                            <Button variant="primary" type="submit" className="ml-3"  >Update</Button>
+                                                            <Button className="ml-3" href="../profile" variant="danger">Cancel</Button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -255,6 +273,7 @@ export default class EditUser extends Component {
                                     </div>
                                 </div>
                             </div>
+
                         </Form>
                     </div>
                     : null}

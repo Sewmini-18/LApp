@@ -12,8 +12,10 @@ export default class Profile extends Component {
 
     this.state = {
       redirect: null,
+      theme: '#d3d5fd',
       userReady: false,
-      name:'',
+      name: '',
+      phone:'',
       currentUser: { username: '' }
     };
   }
@@ -21,34 +23,56 @@ export default class Profile extends Component {
   componentDidMount() {
     document.title = 'Profile'
     const currentUser = AuthService.getCurrentUser();
-    console.log("id: "+currentUser.id);
+    console.log("id: " + currentUser.id);
     const userId = currentUser.id;
-        console.log("name: " + currentUser.name);
-        if (userId) {
-            this.findUserById(userId);
-        }
-        else if (!currentUser) this.setState({ redirect: './' });
-        this.setState({ currentUser: currentUser, userReady: true, name: this.state.name });
-       
+    console.log("name: " + currentUser.name);
+    if (userId) {
+      this.findUserById(userId);
+    }
+    else if (!currentUser) this.setState({ redirect: './' });
+    this.setState({ currentUser: currentUser, userReady: true, name: this.state.name });
+
   }
 
   findUserById = (userId) => {
     axios.get("http://localhost:8080/api/auth/" + userId).then(response => {
-        if (response.data != null) {
-            this.setState({
-                id: response.data.id,
-                name: response.data.name,
-                username: response.data.username,
-                nic: response.data.nic,
-                password:response.data.password
-            });
-        }
+      if (response.data != null) {
+        this.setState({
+          id: response.data.id,
+          name: response.data.name,
+          username: response.data.username,
+          nic: response.data.nic,
+          phone: response.data.phone,
+          theme: response.data.theme
+
+        });
+        let themec = this.state.theme;
+        switch (themec) {
+            case '#d3d5fd':
+                themec = 'secondary';
+                break;
+            case '#0062cc':
+                themec = 'primary'
+                break;
+            case '#239d60':
+                themec = 'success'
+                break;
+            case '#3e3e3e':
+                themec = 'dark'
+                break;
+            default:
+                break;
+        };
+        this.setState({ theme: themec });
+        console.log("new color:- " + themec);
+      }
+     
     }).catch((error) => {
-        console.error("Error - " + error);
-        this.setState({ redirect: '/home' });
+      console.error("Error - " + error);
+      this.setState({ redirect: '/home' });
     });
     console.log("Hi Hi2 " + this.setState.name + " ll");
-}
+  }
 
 
   render() {
@@ -56,7 +80,7 @@ export default class Profile extends Component {
       return <Redirect to={this.state.redirect} />
     }
 
-    const { currentUser } = this.state;
+    const { currentUser, theme } = this.state;
 
     return (
       <div className="container">
@@ -69,7 +93,7 @@ export default class Profile extends Component {
                   <div className="col-xl-12 col-md-12">
                     <div className="row m-l-0 m-r-0">
                       <div className="col-sm-4 bg-c-lite-green user-profile">
-                        <div className="card-block text-center text-white">
+                        <div style={{color:'black'}}className="card-block text-center ">
                           <div className="m-b-25"><Figure>
                             <Figure.Image
                               width={120}
@@ -82,7 +106,7 @@ export default class Profile extends Component {
                             </Figure.Caption>
                           </Figure></div>
                           <h4 className="f-w-600">{this.state.name}</h4>
-                          <p><br/>{this.state.roles}</p>
+                          <p><br />{this.state.roles}</p>
                         </div>
                       </div>
                       <div className="col-sm-8">
@@ -106,12 +130,12 @@ export default class Profile extends Component {
                             </div>
                             <div className="col-sm-6 m-b-10">
                               <p className="m-b-10 f-w-600">Telephone</p>
-                              <h6 className="text-muted f-w-400">{currentUser.id}</h6><br /><br />
+                              <h6 className="text-muted f-w-400">{this.state.phone}</h6><br /><br />
                             </div>
                           </div>
                           <div className="row m-t-button m-l-5">
 
-                            <Button href={"edit/userId=?"+currentUser.id} variant="primary">Edit Profile</Button>
+                          <Button href={"edit/userId=?" + currentUser.id} variant={theme}>Edit Profile</Button>
 
 
                           </div>
