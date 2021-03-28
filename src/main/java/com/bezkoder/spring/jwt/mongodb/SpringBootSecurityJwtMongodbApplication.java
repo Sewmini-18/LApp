@@ -15,6 +15,8 @@ public class SpringBootSecurityJwtMongodbApplication {
 		SpringApplication.run(SpringBootSecurityJwtMongodbApplication.class, args);
 	}
 
+	//comment from janitha for test
+
 	@Bean
 	public ApplicationRunner runner(FTPConfiguration.Gate gate, FTPConfiguration.GateFile gateFile) {
 		return args -> {
