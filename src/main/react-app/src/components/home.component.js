@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Row, Button, Col, Container, Card, CardDeck } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom';
 import AuthService from '../services/auth.service';
 import axios from "axios";
+import { withRouter, Link } from "react-router-dom";
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -102,24 +103,103 @@ class Home extends Component {
                     <Row>
                         <Col>
                             <Container>
+                                <Row>
+                                    <Col>
+                                        <Container>
+                                            <CardDeck>
+                                                {currentUser && (
+                                                    <Card border="info" style={{ width: "18rem" }}>
+                                                        <Card.Body>
+                                                            <Card.Title>View Log files</Card.Title>
+                                                            <br />
+                                                            <Card.Text>You can sort and view log files</Card.Text>
+                                                            <br />
+
+                                                            <Link to={'/home/folder'}>
+                                                                <Button to="" variant="info">
+                                                                    View Log files
+                                                                </Button>
+                                                            </Link>
+                                                        </Card.Body>
+                                                    </Card>
+                                                )}
+                                                {showAdminBoard && (
+                                                    <Card border="info" style={{ width: "18rem" }}>
+                                                        <Card.Body>
+                                                            <Card.Title>Export Log Files</Card.Title>
+                                                            <br />
+                                                            <Card.Text>
+                                                                Logs printing or export to extranal
+                                                            </Card.Text>
+                                                            <br />
+
+                                                            <Button to="" variant="info">
+                                                                Export log files
+                                                            </Button>
+                                                        </Card.Body>
+                                                    </Card>
+                                                )}
+
+                                                {showAdminBoard && (
+                                                    <Card border="info" style={{ width: "18rem" }}>
+                                                        <Card.Body>
+                                                            <Card.Title>Backup Log Files</Card.Title>
+                                                            <br />
+                                                            <Card.Text>Logs manually backup</Card.Text>
+                                                            <br />
+
+                                                            <Button to="" variant="info">
+                                                                Backup log files
+                                                            </Button>
+                                                        </Card.Body>
+                                                    </Card>
+                                                )}
+                                            </CardDeck>
+                                        </Container>
+                                    </Col>
+                                </Row>
+                                <br/>
+                                <br/>
+                                <Row>
+                                    <Col>
+                                        <Container>
+                                            <CardDeck>
+                                                {currentUser && (
+                                                    <Card border="info" style={{ width: "18rem" }}>
+                                                        <Card.Body>
+                                                            <Card.Title>View User Login History</Card.Title>
+                                                            <br />
+                                                            <Card.Text>You can view users login history</Card.Text>
+                                                            <br />
+                                                            <Link to={'/home/user_history'}>
+                                                                <Button to="" variant="info">
+                                                                    View Login History
+                                                                </Button>
+                                                            </Link>
+
+                                                        </Card.Body>
+                                                    </Card>
+                                                )}
+                                                {showAdminBoard && (
+                                                    <Card border="info" style={{ width: "18rem" }}>
+                                                        <Card.Body>
+                                                            <Card.Title>View User Login History</Card.Title>
+                                                            <br />
+                                                            <Card.Text>You can view users login history</Card.Text>
+                                                            <br />
+
+                                                            <Button to="" variant="info">
+                                                                <a href="/home/user_history">View Login History</a>
+                                                            </Button>
+                                                        </Card.Body>
+                                                    </Card>
+                                                )}
+                                            </CardDeck>
+                                        </Container>
+                                    </Col>
+                                </Row>
                                 <CardDeck>
-                                    {currentUser && (
-                                        <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
-                                            <Card.Body>
-                                                <Card.Title>View Log files</Card.Title>
-                                                <br />
-                                                <Card.Text>
-                                                    You can sort and view log files
-                                                </Card.Text>
-                                                <br /><br />
 
-                                                <Button href="/home/view" variant={theme}>View Log files</Button>
-
-                                            </Card.Body>
-
-                                        </Card>
-
-                                    )}
                                     {currentUser && (
                                         <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
                                             <Card.Body>
