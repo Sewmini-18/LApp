@@ -46,7 +46,8 @@ class Signup extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
+      let username = this.state.username.toLowerCase();
+      AuthService.login(username, this.state.password).then(
         () => {
           this.props.history.push("/home");
           window.location.reload();

@@ -49,7 +49,8 @@ class Header extends Component {
       }
       if (this.state.theme == null) {
         this.setState({
-          theme: '#d3d5fd'
+          theme: '#d3d5fd',
+          redirect:'/home/profile'
         });
         console.log("newt " + this.state.theme);
         console.log("new2t " + this.initialState);

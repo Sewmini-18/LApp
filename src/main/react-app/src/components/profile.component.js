@@ -66,17 +66,7 @@ export default class Profile extends Component {
         this.setState({ theme: themec });
         console.log("new color:- " + themec);
       }
-      if (this.state.theme == null) {
-        this.setState({
-            theme: '#d3d5fd'
-        });
-        let themec = this.state.theme;
-        themec = 'secondary';
-        console.log("new color null:- " + themec);
-        this.setState({ theme: themec });
-        console.log("new " + this.state.theme);
-        console.log("new2 " + this.initialState.theme);
-    }
+     
     }).catch((error) => {
       console.error("Error - " + error);
       this.setState({ redirect: '/home' });

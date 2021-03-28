@@ -36,7 +36,6 @@ export default class Signin extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
-    let date = new Date().toLocaleString() + '';
     this.handleChange = this.handleChange.bind(this);
 
 
@@ -44,7 +43,6 @@ export default class Signin extends Component {
       nic: "",
       username: "",
       password: "",
-      date:date,
       successful: false,
       message: "",
       isPasswordShown: false,
@@ -128,7 +126,6 @@ export default class Signin extends Component {
         this.state.name,
         username,
         this.state.nic,
-        this.state.date,
         this.state.password
       ).then(
         response => {

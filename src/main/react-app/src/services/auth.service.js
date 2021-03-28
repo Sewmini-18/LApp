@@ -22,12 +22,11 @@ class AuthService {
    
   }
 
-  register(name, username, nic,date, password) {
+  register(name, username, nic, password) {
     return axios.post(API_URL + "signup", {
       name,
       username,
       nic,
-      date,
       password
     });
   }

@@ -30,11 +30,7 @@ export default class Footer extends Component {
             });
              //console.log("footer color "+this.state.theme);
           }
-          if (this.state.theme == null) {
-            this.setState({
-              theme: '#d3d5fd'
-            });
-          }
+     
         }).catch((error) => {
           console.error("Error - " + error);
         });
