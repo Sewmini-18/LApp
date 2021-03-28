@@ -4,6 +4,7 @@ import AuthService from '../../services/auth.service';
 import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import axios from 'axios';
 import RemoveCircleSharpIcon from '@material-ui/icons/RemoveCircleSharp';
+import FaceIcon from '@material-ui/icons/Face';
 
 class UserDetails extends Component {
 
@@ -35,6 +36,28 @@ class UserDetails extends Component {
             });
     }
 
+    
+deleteUser = (userId) => {
+        //this.props.deleteBook(bookId);
+        
+        axios.delete("http://localhost:8080/api/auth/"+userId)
+            .then(response => {
+                if(response.data != null) {
+                    this.setState({"show":true});
+                    setTimeout(() => this.setState({"show":false}), 3000);
+                   
+                } else {
+                    this.setState({"show":false});
+                }
+            }) .then((data) => {
+
+                console.log('deleted user: '+ userId);
+                this.setState({ userdetails: data });
+            });
+        };
+
+    
+
     render() {
 
         const { currentUser } = this.state;
@@ -51,7 +74,7 @@ class UserDetails extends Component {
                                 <th>Email</th>
 
                                 <th>Joined</th>
-                                <th  style={{textAlign:'center'}}><span>Modify</span></th>
+                                <th style={{ textAlign: 'center' }}><span>Modify</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,19 +87,36 @@ class UserDetails extends Component {
 
                                         <tr key={user.id}>
 
-                                            <td>{1 + index++}</td>
-                                            <td>{user.name}</td>
-                                            <td>{user.nic}</td>
-                                            <td>{user.username}</td>
-                                            <td>{user.date}</td>
-                                            <td style={{textAlign:'center'}}>
-                                                <OverlayTrigger  placement="right" overlay={<Tooltip>remove user</Tooltip>}>
-                                                    <span className="d-inline-block">
-                                                        <a href="/home/userdetails"><span  ><RemoveCircleSharpIcon color="disabled" type="button"
-                                                            style={{ alignItems: 'right', fontSize: '25px'}} /></span></a>
-                                                    </span>
-                                                </OverlayTrigger>
-                                            </td>
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{1 + index++}</b></td> : <td>{1 + index++}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.name}</b></td> : <td>{user.name}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.nic}</b></td> : <td>{user.nic}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.username}</b></td> : <td>{user.username}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.date}</b></td> : <td>{user.date}</td>}
+
+                                            {user.id === currentUser.id ?
+                                                <td style={{ textAlign: 'center', color:'black', background:'#A9C2E3' }}>
+                                                    <OverlayTrigger placement="right" overlay={<Tooltip>You</Tooltip>}>
+                                                        <span className="d-inline-block">
+                                                            <a ><span  ><FaceIcon color="disabled"
+                                                                style={{ alignItems: 'right', fontSize: '25px' }} /></span></a>
+                                                        </span>
+                                                    </OverlayTrigger>
+                                                </td>
+                                                :
+                                                <td style={{ textAlign: 'center' }}>
+                                                    <OverlayTrigger placement="right" overlay={<Tooltip>remove user</Tooltip>}>
+                                                        <span className="d-inline-block">
+                                                            <a ><span  ><RemoveCircleSharpIcon color="disabled" type="button" onClick={this.deleteUser.bind(this, user.id)}
+                                                                style={{ alignItems: 'right', fontSize: '25px' }} /></span></a>
+                                                        </span>
+                                                    </OverlayTrigger>
+                                                </td>
+                                            }
+
+
+
+
+
                                         </tr>
                                     ))
                             }

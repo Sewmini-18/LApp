@@ -1,6 +1,8 @@
 package com.bezkoder.spring.jwt.mongodb.controllers;
 
-import com.bezkoder.spring.jwt.mongodb.models.*;
+import com.bezkoder.spring.jwt.mongodb.models.ERole;
+import com.bezkoder.spring.jwt.mongodb.models.Role;
+import com.bezkoder.spring.jwt.mongodb.models.User;
 import com.bezkoder.spring.jwt.mongodb.payload.request.LoginRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.request.SignupRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.response.JwtResponse;
@@ -130,6 +132,7 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
 
+
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         }
 
@@ -191,6 +194,20 @@ public class AuthController {
 
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable String id) {
+        try {
+            userRepository.deleteById(id);
+            System.out.println("Deleted user: "+ id);
+            ResponseEntity.ok(new MessageResponse("User deleted!"));
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
