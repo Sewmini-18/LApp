@@ -13,5 +13,7 @@ npm install
 ######  Open (http://localhost:8081) to view it in the browser.
 ######  signin: http://localhost:8081/login
 ######  signup: http://localhost:8081/register
+######  logsfolders: http://localhost:8081/home/folder
+######  UserLoginHistory: http://localhost:8081/home/user_history
 
 The page will reload if you make edits.
