@@ -7,10 +7,6 @@ import Dashboard from './components/pages/dashboard';
 import Signin from './components/pages/signin';
 import Signup from './components/pages/signup';
 
-import Folder from './components/view/folder.component';
-import Routes from "./components/view/routes.component";
-import Header from "./components/pages/header.js";
-import UserHistory from './components/view/userHistory.component'
 
 
 class App extends Component {
@@ -40,8 +36,8 @@ class App extends Component {
                 Redirect from = "/"
                 to = "/login" / >
                 <
-                /Switch> <
-                /div>
+                /Switch> < /
+                div >
             );
         }
     }
