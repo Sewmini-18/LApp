@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import { createModel, generateData, trainModel, data } from "./tensor";
 import { OPTIMIZERS } from "./optimizers";
 import * as tf from "@tensorflow/tfjs-core";
+import './tensstyle.css'
 
 data()
 
