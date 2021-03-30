@@ -9,40 +9,67 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from '../profile.component'
 import Chart from '../pages/chart'
 import CustomerRequestDetails from '../pages/customerRequestDetails'
-import EditUser from '../pages/editUser'
-import UserDetails from '../pages/userDetails'
+import EditUser from '../pages/editUser';
+import View from '../view/view.component';
+import Folder from '../view/folder.component';
+import UserHistory from "../view/userHistory.component";
+
+
 
 class Dashboard extends React.Component {
 
-    render() {
-        const { match } = this.props
-        return (
+        render() {
+            const { match } = this.props
+            return ( <
+                div >
+                <
+                Header appTitle = "Home" / >
+                <
+                Switch >
+                <
+                Route exact path = { `${match.path}` }
+                render = {
+                    (props) => < Home {...props }
+                    />} /
+                    >
+                    <
+                    Route path = { `${match.path}/profile` }
+                    component = { Profile }
+                    /> <
+                    Route
+                    path = { `${match.path}/customerform` }
+                    component = { CustomerForm }
+                    /> <
+                    Route path = { `${match.path}/chart` }
+                    component = { Chart }
+                    /> <
+                    Route path = { `${match.path}/user_history` }
+                    component = { UserHistory }
+                    /> <
+                    Route path = { `${match.path}/folder` }
+                    component = { Folder }
+                    /> <
+                    Route path = { `${match.path}/view/:id` }
+                    component = { View }
+                    /> <
+                    Route
+                    path = { `${match.path}/request` }
+                    component = { CustomerRequestDetails }
+                    /> <
+                    Route path = { `${match.path}/edit` }
+                    component = { EditUser }
+                    /> <
+                    /Switch> <
+                    Footer / >
+                    <
+                    /div>
+                );
+            }
+        }
 
-            <div >
-                <Header appTitle="Home" />
-                <Switch>
-                    <Route
-                        exact path={`${match.path}`}
-                        render={(props) => <Home {...props} />} />
-                    <Route path={`${match.path}/profile`} component={Profile} />
-                    <Route path={`${match.path}/customerform`} component={CustomerForm} />
-                    <Route path={`${match.path}/chart`} component={Chart} />
-                    <Route path={`${match.path}/request`} component={CustomerRequestDetails} />
-                    <Route path={`${match.path}/edit`} component={EditUser} />
-                    <Route path={`${match.path}/userdetails`} component={UserDetails} />
-
-                    
-                </Switch>
-                <Footer />
-            </div>
-
-        )
-    }
-}
-
-Dashboard.propTypes = {
-    match: PropTypes.any.isRequired
-}
+        Dashboard.propTypes = {
+            match: PropTypes.any.isRequired
+        }
 
 
-export default Dashboard;
+        export default Dashboard;
