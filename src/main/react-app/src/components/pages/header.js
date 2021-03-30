@@ -160,7 +160,7 @@ class Header extends Component {
 
               </Nav>
               <Form className="nav-link" id="FormId" method="put">
-                <ButtonGroup border="light" size="lg" style={{ border: "2px" }}>
+                <ButtonGroup border="light" size="xm" style={{ border: "2px" }}>
                   <Button variant="light" type="submit" onClick={() => this.setColor1()}></Button>
                   <Button variant="primary" type="submit" onClick={() => this.setColor2()}></Button>
                   <Button variant="success" type="submit" onClick={() => this.setColor3()}></Button>
