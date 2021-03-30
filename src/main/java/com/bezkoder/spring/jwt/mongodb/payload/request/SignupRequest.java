@@ -3,6 +3,9 @@ package com.bezkoder.spring.jwt.mongodb.payload.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 public class SignupRequest {
@@ -20,10 +23,12 @@ public class SignupRequest {
     private String nic;
 
     @Size(max = 12)
-private String theme;
+    private String theme;
 
     private Set<String> roles;
 
+    private String phone;
+    private String date;
 
     @NotBlank
     @Size(min = 8, max = 40)
@@ -70,10 +75,28 @@ private String theme;
     }
 
     public String getTheme() {
-        return theme;
+        return "#d3d5fd";
     }
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDate() {
+        DateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy hh.mm aa");
+        String date = dateFormat2.format(new Date()).toString();
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

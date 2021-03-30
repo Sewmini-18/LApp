@@ -46,7 +46,8 @@ class Signup extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
+      let username = this.state.username.toLowerCase();
+      AuthService.login(username, this.state.password).then(
         () => {
           this.props.history.push("/home");
           window.location.reload();
@@ -101,19 +102,20 @@ class Signup extends Component {
                 </div>
               </div>
 
-              <div>
-
+              <div> <br />
+                {/*  
                 <Row>
                   <Col>
                     <div className="text-right"><a href="/">forget password? </a> &nbsp;&nbsp;</div><br />
                   </Col>
                 </Row>
+              */}
               </div>
               <div className="form-login">
                 <Row>
-
+                 
                   <Col className="text-right" xs={6}>
-                    <div className="form-group">
+                    <div className="form-group"> <br />
                       <button
                         className="btn abutton"
                         disabled={this.state.username.length === 0 || this.state.password === 0}
@@ -124,8 +126,8 @@ class Signup extends Component {
                     </div>
 
                   </Col>
-                  <Col className="text-center"><p> &nbsp;You don't have an account?
-                <a className="alink " href="/register"> Register</a></p></Col>
+                  <Col className="text-center"><p> <br/> &nbsp;You don't have an account?
+                    <a className="alink " href="/register"> Register</a></p></Col>
                 </Row>
               </div>
 

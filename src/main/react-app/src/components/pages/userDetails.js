@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { withRouter } from 'react-router-dom';
 import AuthService from '../../services/auth.service';
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import axios from 'axios';
+import RemoveCircleSharpIcon from '@material-ui/icons/RemoveCircleSharp';
+import FaceIcon from '@material-ui/icons/Face';
 
 class UserDetails extends Component {
 
@@ -17,8 +19,8 @@ class UserDetails extends Component {
     componentDidMount() {
         document.title = 'User Details';
         const user = AuthService.getCurrentUser();
-        
-        
+
+
         if (user) {
             this.setState({
                 currentUser: user,
@@ -29,10 +31,32 @@ class UserDetails extends Component {
             .then(response => response.data)
             .then((data) => {
 
-                console.log('hijjhh');
+                console.log('view users');
                 this.setState({ userdetails: data });
             });
     }
+
+    
+deleteUser = (userId) => {
+        //this.props.deleteBook(bookId);
+        
+        axios.delete("http://localhost:8080/api/auth/"+userId)
+            .then(response => {
+                if(response.data != null) {
+                    this.setState({"show":true});
+                    setTimeout(() => this.setState({"show":false}), 3000);
+                   
+                } else {
+                    this.setState({"show":false});
+                }
+            }) .then((data) => {
+
+                console.log('deleted user: '+ userId);
+                this.setState({ userdetails: data });
+            });
+        };
+
+    
 
     render() {
 
@@ -41,16 +65,16 @@ class UserDetails extends Component {
             <div>
                 <h2>User Details</h2>
                 <div className="container mgntop">
-                    <Table striped bordered hover size="sm" >
+                    <Table responsive striped bordered hover size="sm" >
                         <thead >
-                            <tr style={{color:'white', background:'#343A40'}}>
-                                <th  className="ml-3">#</th>
+                            <tr style={{ color: 'white', background: '#343A40' }}>
+                                <th className="ml-3">#</th>
                                 <th>Name</th>
                                 <th>NIC</th>
                                 <th>Email</th>
-                              
-                                <th>Reason</th>
-                                <th><span className="ml-3">Modify</span></th>
+
+                                <th>Joined</th>
+                                <th style={{ textAlign: 'center' }}><span>Modify</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,15 +86,37 @@ class UserDetails extends Component {
                                     this.state.userdetails.map((user, index) => (
 
                                         <tr key={user.id}>
-                                            
-                                            <td>{1+index++}</td>
-                                            <td>{user.name}</td>
-                                            <td>{user.nic}</td>
-                                            <td>{user.username}</td>
-                                            <td>{user.roles.name}</td>
-                                            <td>
-                                            <Button size="sm" className="ml-3" href=".." variant="warning">Remove</Button>
-                                            </td>
+
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{1 + index++}</b></td> : <td>{1 + index++}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.name}</b></td> : <td>{user.name}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.nic}</b></td> : <td>{user.nic}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.username}</b></td> : <td>{user.username}</td>}
+                                            {user.id === currentUser.id ? <td style={{color:'black', background:'#A9C2E3'}}><b>{user.date}</b></td> : <td>{user.date}</td>}
+
+                                            {user.id === currentUser.id ?
+                                                <td style={{ textAlign: 'center', color:'black', background:'#A9C2E3' }}>
+                                                    <OverlayTrigger placement="right" overlay={<Tooltip>You</Tooltip>}>
+                                                        <span className="d-inline-block">
+                                                            <a ><span  ><FaceIcon color="disabled"
+                                                                style={{ alignItems: 'right', fontSize: '25px' }} /></span></a>
+                                                        </span>
+                                                    </OverlayTrigger>
+                                                </td>
+                                                :
+                                                <td style={{ textAlign: 'center' }}>
+                                                    <OverlayTrigger placement="right" overlay={<Tooltip>remove user</Tooltip>}>
+                                                        <span className="d-inline-block">
+                                                            <a ><span  ><RemoveCircleSharpIcon color="disabled" type="button" onClick={this.deleteUser.bind(this, user.id)}
+                                                                style={{ alignItems: 'right', fontSize: '25px' }} /></span></a>
+                                                        </span>
+                                                    </OverlayTrigger>
+                                                </td>
+                                            }
+
+
+
+
+
                                         </tr>
                                     ))
                             }

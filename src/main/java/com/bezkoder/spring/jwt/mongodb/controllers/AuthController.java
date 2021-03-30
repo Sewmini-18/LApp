@@ -1,11 +1,15 @@
 package com.bezkoder.spring.jwt.mongodb.controllers;
 
-import com.bezkoder.spring.jwt.mongodb.models.*;
+import com.bezkoder.spring.jwt.mongodb.models.ERole;
+import com.bezkoder.spring.jwt.mongodb.models.Role;
+import com.bezkoder.spring.jwt.mongodb.models.User;
+import com.bezkoder.spring.jwt.mongodb.models.UserLogRecord;
 import com.bezkoder.spring.jwt.mongodb.payload.request.LoginRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.request.SignupRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.response.JwtResponse;
 import com.bezkoder.spring.jwt.mongodb.payload.response.MessageResponse;
 import com.bezkoder.spring.jwt.mongodb.repository.RoleRepository;
+import com.bezkoder.spring.jwt.mongodb.repository.UserLogRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.UserRepository;
 import com.bezkoder.spring.jwt.mongodb.security.jwt.JwtUtils;
 import com.bezkoder.spring.jwt.mongodb.security.services.UserDetailsImpl;
@@ -21,10 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -41,6 +42,8 @@ public class AuthController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserLogRepository userLogRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -65,12 +68,17 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        String currentDate = new Date().toString();
+        UserLogRecord userLogRecord = new UserLogRecord(userDetails.getUsername(), currentDate);
+        userLogRepository.save(userLogRecord);
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getName(),
                 userDetails.getNic(),
+                userDetails.getPhone(),
+                userDetails.getDate(),
                 userDetails.getTheme(),
                 roles
                 ));
@@ -94,6 +102,8 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getName(),
                 signUpRequest.getNic(),
+                signUpRequest.getPhone(),
+                signUpRequest.getDate(),
                 signUpRequest.getTheme(),
                 encoder.encode(signUpRequest.getPassword())
                 );
@@ -125,6 +135,7 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
+
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         }
@@ -161,6 +172,7 @@ public class AuthController {
                 _user.setUsername(user.getUsername());
                 _user.setName(user.getName());
                 _user.setNic(user.getNic());
+                _user.setPhone(user.getPhone());
                 _user.setTheme(user.getTheme());
                 //_user.setPassword((encoder.encode(user.getPassword())));
                 //encoder.encode(signUpRequest.getPassword()))
@@ -186,6 +198,20 @@ public class AuthController {
 
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable String id) {
+        try {
+            userRepository.deleteById(id);
+            System.out.println("Deleted user: "+ id);
+            ResponseEntity.ok(new MessageResponse("User deleted!"));
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

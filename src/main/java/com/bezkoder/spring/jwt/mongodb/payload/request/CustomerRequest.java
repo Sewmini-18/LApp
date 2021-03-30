@@ -26,6 +26,8 @@ public class CustomerRequest {
     @Size(max = 150)
     private String reason;
 
+    private String date;
+
     public String getEmail() {
         return email;
     }
@@ -68,6 +70,14 @@ public class CustomerRequest {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
 

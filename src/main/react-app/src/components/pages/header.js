@@ -47,9 +47,10 @@ class Header extends Component {
           theme: response.data.theme
         });
       }
-      if(this.state.theme == null){
+      if (this.state.theme == null) {
         this.setState({
-            theme:  '#d3d5fd'
+          theme: '#d3d5fd',
+          redirect:'/home/profile'
         });
         console.log("newt " + this.state.theme);
         console.log("new2t " + this.initialState);
@@ -79,7 +80,7 @@ class Header extends Component {
 
   setColor2 = event => {
     const theme = {
-      theme: '#4592af',
+      theme: '#0062cc',
     };
     const currentUser = AuthService.getCurrentUser();
     const userId = currentUser.id;
@@ -141,9 +142,9 @@ class Header extends Component {
       <div>
         <div className="header" >
 
-          <Navbar name='theme' value={this.state.theme} style={{ background: this.state.theme, color:'red' }} expand="lg">
+          <Navbar name='theme' value={this.state.theme} style={{ background: this.state.theme, color: 'red' }} expand="lg">
             <Navbar.Brand href="/home">
-              <Dvr fontSize="large" style={{ color:theme=== '#d3d5fd'? 'black':'#f1f1f1' }} />
+              <Dvr fontSize="large" style={{ color: theme === '#d3d5fd' ? 'black' : '#f1f1f1' }} />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -151,32 +152,32 @@ class Header extends Component {
               <Nav className="mr-auto" >
                 {currentUser && (
                   <Nav.Link href="/home/profile">
-                    <span style={{ color:theme=== '#d3d5fd'? 'black':'#f1f1f1' }}>Profile {"   "}   </span> </Nav.Link>
+                    <span style={{ color: theme === '#d3d5fd' ? 'black' : '#f1f1f1' }}>Profile {"   "}   </span> </Nav.Link>
                 )}
 
 
-                  <span>&nbsp;&nbsp;</span>
+                <span>&nbsp;&nbsp;</span>
 
-                </Nav>
-                <Form className="nav-link" id="FormId" method="put">
-                  <ButtonGroup border="light" size="lg" style={{ border: "2px" }}>
-                    <Button variant="light" type="submit" onClick={() => this.setColor1()}></Button>
-                    <Button variant="primary" type="submit" onClick={() => this.setColor2()}></Button>
-                    <Button variant="success" type="submit" onClick={() => this.setColor3()}></Button>
-                    <Button variant="secondary" type="submit" onClick={() => this.setColor4()}></Button>
-                  </ButtonGroup>
-                </Form>
-                <a href="/login" style={{color:theme ==='#d3d5fd'? 'black':'#f1f1f1'}} className="nav-link" onClick={this.logOut}>
-                  <span>SignOut</span>
-                </a>
+              </Nav>
+              <Form className="nav-link" id="FormId" method="put">
+                <ButtonGroup border="light" size="lg" style={{ border: "2px" }}>
+                  <Button variant="light" type="submit" onClick={() => this.setColor1()}></Button>
+                  <Button variant="primary" type="submit" onClick={() => this.setColor2()}></Button>
+                  <Button variant="success" type="submit" onClick={() => this.setColor3()}></Button>
+                  <Button variant="secondary" type="submit" onClick={() => this.setColor4()}></Button>
+                </ButtonGroup>
+              </Form>
+              <a href="/login" style={{ color: theme === '#d3d5fd' ? 'black' : '#f1f1f1' }} className="nav-link" onClick={this.logOut}>
+                <span>SignOut</span>
+              </a>
             </Navbar.Collapse>
 
           </Navbar>
         </div>
-          <Col sm={6} style={mTop}></Col>
-        </div>
-        );
+        <Col sm={6} style={mTop}></Col>
+      </div>
+    );
   }
 }
 
-        export default withRouter(Header);
+export default withRouter(Header);

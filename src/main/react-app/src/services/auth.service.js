@@ -31,7 +31,7 @@ class AuthService {
     });
   }
 
-  update(username, name, nic) {
+  update(username, name, nic, phone) {
 
     const currentUser = this.getCurrentUser();
     const userId = currentUser.id;
@@ -39,7 +39,8 @@ class AuthService {
     return axios.put("http://localhost:8080/api/auth/" + userId , {
       username,
       name,
-      nic
+      nic,
+      phone,
     });
 
   }
