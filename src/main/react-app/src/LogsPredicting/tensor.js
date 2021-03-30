@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 import { OPTIMIZERS } from "./optimizers";
 
-import modeData from './modelData.json';
+import modeData from './modeldata.json';
 
 export function data(){
     // const getData = await fetch(modeData);
