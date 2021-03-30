@@ -103,103 +103,25 @@ class Home extends Component {
                     <Row>
                         <Col>
                             <Container>
-                                <Row>
-                                    <Col>
-                                        <Container>
-                                            <CardDeck>
-                                                {currentUser && (
-                                                    <Card border="info" style={{ width: "18rem" }}>
-                                                        <Card.Body>
-                                                            <Card.Title>View Log files</Card.Title>
-                                                            <br />
-                                                            <Card.Text>You can sort and view log files</Card.Text>
-                                                            <br />
 
-                                                            <Link to={'/home/folder'}>
-                                                                <Button to="" variant="info">
-                                                                    View Log files
-                                                                </Button>
-                                                            </Link>
-                                                        </Card.Body>
-                                                    </Card>
-                                                )}
-                                                {showAdminBoard && (
-                                                    <Card border="info" style={{ width: "18rem" }}>
-                                                        <Card.Body>
-                                                            <Card.Title>Export Log Files</Card.Title>
-                                                            <br />
-                                                            <Card.Text>
-                                                                Logs printing or export to extranal
-                                                            </Card.Text>
-                                                            <br />
-
-                                                            <Button to="" variant="info">
-                                                                Export log files
-                                                            </Button>
-                                                        </Card.Body>
-                                                    </Card>
-                                                )}
-
-                                                {showAdminBoard && (
-                                                    <Card border="info" style={{ width: "18rem" }}>
-                                                        <Card.Body>
-                                                            <Card.Title>Backup Log Files</Card.Title>
-                                                            <br />
-                                                            <Card.Text>Logs manually backup</Card.Text>
-                                                            <br />
-
-                                                            <Button to="" variant="info">
-                                                                Backup log files
-                                                            </Button>
-                                                        </Card.Body>
-                                                    </Card>
-                                                )}
-                                            </CardDeck>
-                                        </Container>
-                                    </Col>
-                                </Row>
-                                <br/>
-                                <br/>
-                                <Row>
-                                    <Col>
-                                        <Container>
-                                            <CardDeck>
-                                                {currentUser && (
-                                                    <Card border="info" style={{ width: "18rem" }}>
-                                                        <Card.Body>
-                                                            <Card.Title>View User Login History</Card.Title>
-                                                            <br />
-                                                            <Card.Text>You can view users login history</Card.Text>
-                                                            <br />
-                                                            <Link to={'/home/user_history'}>
-                                                                <Button to="" variant="info">
-                                                                    View Login History
-                                                                </Button>
-                                                            </Link>
-
-                                                        </Card.Body>
-                                                    </Card>
-                                                )}
-                                                {showAdminBoard && (
-                                                    <Card border="info" style={{ width: "18rem" }}>
-                                                        <Card.Body>
-                                                            <Card.Title>View User Login History</Card.Title>
-                                                            <br />
-                                                            <Card.Text>You can view users login history</Card.Text>
-                                                            <br />
-
-                                                            <Button to="" variant="info">
-                                                                <a href="/home/user_history">View Login History</a>
-                                                            </Button>
-                                                        </Card.Body>
-                                                    </Card>
-                                                )}
-                                            </CardDeck>
-                                        </Container>
-                                    </Col>
-                                </Row>
                                 <CardDeck>
+                                    {currentUser && (
+                                                                            <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
+                                                                                <Card.Body>
+                                                                                    <Card.Title>View Logs</Card.Title>
+                                                                                    <br />
+                                                                                    <Card.Text>
+                                                                                        You can sort and view log files.
+                                                                                    </Card.Text>
+                                                                                    <br />
 
+                                                                                    <Button href="/home/folder" variant={theme}>View log files.</Button>
+
+                                                                                </Card.Body>
+
+                                                                            </Card>
+
+                                                                        )}
                                     {currentUser && (
                                         <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
                                             <Card.Body>
@@ -235,22 +157,7 @@ class Home extends Component {
                                         </Card>
                                     )}
 
-                                    {showAdminBoard && (
-                                        <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
-                                            <Card.Body>
-                                                <Card.Title>Backup Log Files</Card.Title>
-                                                <br />
-                                                <Card.Text>
-                                                    Logs manually backup
-                                                </Card.Text>
-                                                <br /><br />
-
-                                                <Button href="/home" variant={theme}>Backup log files</Button>
-                                            </Card.Body>
-
-                                        </Card>
-                                    )}
 
                                 </CardDeck>
                             </Container></Col>
@@ -262,37 +169,66 @@ class Home extends Component {
                             <CardDeck>
 
                                 {showAdminBoard && (
-                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
+                                                                       <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
-                                        <Card.Body>
-                                            <Card.Title>Logs Pattern Identification</Card.Title>
-                                            <br />
-                                            <Card.Text>
-                                                View predicted plot for time and length of log files
-                                            </Card.Text>
-                                            <br />
-                                            <Button href="/home/plot" variant={theme}>View predicted plot</Button>
+                                                                           <Card.Body>
+                                                                               <Card.Title>Backup Log Files</Card.Title>
+                                                                               <br />
+                                                                               <Card.Text>
+                                                                                   Logs manually backup
+                                                                               </Card.Text>
+                                                                               <br /><br />
 
-                                        </Card.Body>
+                                                                               <Button href="/home" variant={theme}>Backup log files</Button>
+                                                                           </Card.Body>
 
-                                    </Card>
-                                )}
+                                                                       </Card>
+                                                                   )}
                                 {showAdminBoard && (
-                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
+                                                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
-                                        <Card.Body>
-                                            <Card.Title>Customer Request Form</Card.Title>
-                                            <br />
-                                            <Card.Text>
-                                                Collect customer requests details
-                                            </Card.Text>
-                                            <br /><br />
-                                            <Button href="/home/customerform" variant={theme}>Request Form</Button>
+                                                                        <Card.Body>
+                                                                            <Card.Title>Logs Pattern Identification</Card.Title>
+                                                                            <br />
+                                                                            <Card.Text>
+                                                                                View predicted plot for time and length of log files
+                                                                            </Card.Text>
+                                                                            <br />
+                                                                            <Button href="/home/plot" variant={theme}>View predicted plot</Button>
 
-                                        </Card.Body>
+                                                                        </Card.Body>
 
-                                    </Card>
-                                )}
+                                                                    </Card>
+                                                                )}
+
+
+                                {showAdminBoard && (
+                                                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
+
+                                                                        <Card.Body>
+                                                                            <Card.Title>Customer Request Form</Card.Title>
+                                                                            <br />
+                                                                            <Card.Text>
+                                                                                Collect customer requests details
+                                                                            </Card.Text>
+                                                                            <br /><br />
+                                                                            <Button href="/home/customerform" variant={theme}>Request Form</Button>
+
+                                                                        </Card.Body>
+
+                                                                    </Card>
+                                                                )}
+
+                            </CardDeck>
+                        </Container>
+                    </Row>
+<br/><br/>
+<Row>
+                        <Container>
+                            <CardDeck>
+
+
+
                                 {showAdminBoard && (
                                     <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
 
@@ -310,6 +246,7 @@ class Home extends Component {
                                     </Card>
 
                                 )}
+
                                 {showAdminBoard && (
                                     <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
                                         <Card.Body>
@@ -319,6 +256,22 @@ class Home extends Component {
                                         </Card.Body>
                                     </Card>
                                 )}
+                                {showAdminBoard && (
+                                                                                                    <Card border={theme} style={{ border: '1px', borderStyle: "solid", width: '18rem' }}>
+
+                                                                                                        <Card.Body>
+                                                                                                            <Card.Title>View User Login History</Card.Title>
+                                                                                                            <br />
+                                                                                                            <Card.Text>
+                                                                                                                You can view user login history.
+                                                                                                            </Card.Text>
+                                                                                                            <br /><br />
+                                                                                                            <Button href="/home/user_history" variant={theme}>View Login History</Button>
+
+                                                                                                        </Card.Body>
+
+                                                                                                    </Card>
+                                                                                                )}
                             </CardDeck>
                         </Container>
                     </Row>

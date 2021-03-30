@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from '../profile.component'
 import Chart from '../pages/chart'
 import CustomerRequestDetails from '../pages/customerRequestDetails'
+import UserDetails from '../pages/userDetails.js'
 import EditUser from '../pages/editUser';
 import View from '../view/view.component';
 import Folder from '../view/folder.component';
@@ -30,8 +31,7 @@ class Dashboard extends React.Component {
                 Route exact path = { `${match.path}` }
                 render = {
                     (props) => < Home {...props }
-                    />} /
-                    >
+                    />} / >
                     <
                     Route path = { `${match.path}/profile` }
                     component = { Profile }
@@ -58,8 +58,9 @@ class Dashboard extends React.Component {
                     /> <
                     Route path = { `${match.path}/edit` }
                     component = { EditUser }
-                    /> <
-                    /Switch> <
+                    />
+                    < Route path = { `${match.path}/userdetails` } component = { UserDetails } />
+                    < /Switch > <
                     Footer / >
                     <
                     /div>
