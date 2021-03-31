@@ -5,6 +5,7 @@ import com.bezkoder.spring.jwt.mongodb.payload.request.CustomerRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.response.MessageResponse;
 import com.bezkoder.spring.jwt.mongodb.repository.CustomerRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,20 @@ public class CustomerDetailsController {
         System.out.println("Get all Customer Requests...");
 
         return customerRequestRepository.findAll();
+    }
+
+    @DeleteMapping("/request/{id}")
+    public ResponseEntity<HttpStatus> removeRequest(@PathVariable String id) {
+        try {
+            customerRequestRepository.deleteById(id);
+            System.out.println("Deleted request of : "+ id);
+            ResponseEntity.ok(new MessageResponse("request deleted!"));
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 

@@ -6,9 +6,9 @@ class AuthService {
     return axios
       .post(API_URL + "signin", {
         username,
-        password
+        password,
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
@@ -19,7 +19,6 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("user");
-   
   }
 
   register(name, username, nic, password) {
@@ -27,38 +26,33 @@ class AuthService {
       name,
       username,
       nic,
-      password
+      password,
     });
   }
 
   update(username, name, nic, phone) {
-
     const currentUser = this.getCurrentUser();
     const userId = currentUser.id;
 
-    return axios.put("http://localhost:8080/api/auth/" + userId , {
+    return axios.put("http://localhost:8080/api/auth/" + userId, {
       username,
       name,
       nic,
       phone,
     });
-
   }
 
   updateTheme(theme) {
-
     const currentUser = this.getCurrentUser();
     const userId = currentUser.id;
 
-    return axios.put("http://localhost:8080/api/auth/color/" + userId , {
-
-      theme
+    return axios.put("http://localhost:8080/api/auth/color/" + userId, {
+      theme,
     });
-
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+    return JSON.parse(localStorage.getItem("user"));
   }
 }
 

@@ -52,9 +52,9 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(),
 				user.getName(),
 				user.getNic(),
-				user.getTheme(),
 				user.getPhone(),
 				user.getDate(),
+				user.getTheme(),
 				user.getPassword(),
 				authorities);
 	}

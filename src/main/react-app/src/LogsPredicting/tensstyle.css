@@ -1,51 +1,61 @@
-body {
+/*body {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+*/
 
-h1,
-h2 {
+.h1,
+.h2 {
     color: #36005a;
 }
 
-h1 {
+.h1 {
     font-size: 1.8em;
 }
 
-h2 {
+.h2 {
     font-size: 1.5em;
 }
 
-td {
+.tdx {
     width: 50px;
     text-align: center;
     border: 1px solid #c6c6c6;
 }
 
-section {
+.sectionx {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 3px;
+    text-align: center;
     padding: 10px 5px;
-    margin: 10px;
+    margin: 20px;
     box-shadow: 3px 3px 12px 0px #1e0032;
+    background-color: #f8f8f8;
+    color: black;
 }
 
-input,
-select,
-button {
+.inputx,
+.selectx {
     border-radius: 5px;
     width: 280px;
     height: 30px;
     background-color: #fff;
     text-align: center;
+    min-height: 40px;
 }
 
-input:hover,
-select:hover,
-button:hover {
+.btnx {}
+
+.inputx:hover,
+.selectx:hover {
     background-color: #eee7ff;
+    min-height: 40px;
+}
+
+.inputx:focus {
+    background: #ebe4e4;
+    padding: -10px;
 }
