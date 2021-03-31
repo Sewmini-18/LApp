@@ -48,10 +48,12 @@ public class User {
     this.username = username;
     this.name = name;
     this.nic = nic;
+    this.phone = phone;
+    this.date = date;
     this.password = password;
     this.theme = theme;
-    this.date = date;
-    this.phone = phone;
+
+
   }
 
   public String getId() {

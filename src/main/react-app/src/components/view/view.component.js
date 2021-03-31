@@ -13,7 +13,8 @@ import CsvDownload from "react-json-to-csv";
 
 class View extends Component {
   state = {
-    ipData: [], loading: false
+    ipData: [],
+    loading: false,
   };
   async componentDidMount() {
     await axios
@@ -29,9 +30,9 @@ class View extends Component {
       .catch(function (error) {
         console.log(error);
       });
-      this.setState({
-        loading: true,
-      });
+    this.setState({
+      loading: true,
+    });
   }
   render() {
     const data = {

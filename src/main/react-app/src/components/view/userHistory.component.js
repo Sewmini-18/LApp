@@ -4,8 +4,6 @@ import { MDBDataTable, MDBNavLink } from "mdbreact";
 import { Link } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 
-
-
 class UserHistory extends Component {
   state = { userDetails: [], loading: false };
   async componentDidMount() {
@@ -71,5 +69,5 @@ class UserHistory extends Component {
     );
   }
 }
- 
+
 export default UserHistory;

@@ -21,8 +21,8 @@ public class JwtResponse {
 		this.name = name;
 		this.nic = nic;
 		this.phone = phone;
-		this.theme = theme;
 		this.date=date;
+		this.theme = theme;
 		this.roles = roles;
 
 	}
