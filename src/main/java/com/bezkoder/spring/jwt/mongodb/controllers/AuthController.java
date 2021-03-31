@@ -152,30 +152,19 @@ public class AuthController {
             return userRepository.findById(id);
         }
 
-	/*
-	@PutMapping("/{id}")
-	public User updateUser(@RequestBody User user, @RequestBody Role roles, @PathVariable String id){
-		user.setId(id);
-		//role = roles.getId();
-		//user role = roles.findByUsername(id);
-		userRepository.save(user);
-		return user;
-	}
-	*/
         @PutMapping("/{id}")
         public ResponseEntity<User> updateUser (@RequestBody User user, @PathVariable String id){
             Optional<User> userData = userRepository.findById(id);
             if (userData.isPresent()) {
-                System.out.println("reading");
+                System.out.println("reading user");
                 User _user = userData.get();
-                //_user.setId(id);
+
                 _user.setUsername(user.getUsername());
                 _user.setName(user.getName());
                 _user.setNic(user.getNic());
                 _user.setPhone(user.getPhone());
                 _user.setTheme(user.getTheme());
-                //_user.setPassword((encoder.encode(user.getPassword())));
-                //encoder.encode(signUpRequest.getPassword()))
+
                 return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
 
             } else {
@@ -203,7 +192,7 @@ public class AuthController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable String id) {
+    public ResponseEntity<HttpStatus> removeUser(@PathVariable String id) {
         try {
             userRepository.deleteById(id);
             System.out.println("Deleted user: "+ id);
