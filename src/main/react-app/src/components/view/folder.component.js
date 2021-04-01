@@ -50,36 +50,30 @@ class Folder extends Component {
                     action: ( <
                         Link to = {
                             { pathname: `/home/view/${data._id}` } } >
-                        <
-                        u style = {
-                            { color: 'blue' } } > view < /u> <
-                        /Link>
+                        <u style = {
+                            { color: 'blue' } } > view </u>
+                    </Link>
                     ),
                 })),
             ],
         };
-        return ( <
-            div >
-            <
-            div className = "container" >
-            <
-            div classname = "row g-3" >
-            <
-            div classname = "col" >
-            <
-            h2 className = "text-center my-5 text-weight-3 text-dark" >
-            Data Folders <
-            /h2> <
-            /div> <
-            /div> <
-            /div> <
-            div className = "container p-3" > {
-                this.state.loading ? ( <
-                    div >
-                    <
-                    MDBDataTable responsive striped bordered hover data = { data }
-                    /> <
-                    CsvDownload filename = "data.csv"
+        return (
+            <div>
+            <div className = "container" >
+            <div classname = "row g-3" >
+            <div classname = "col" >
+            <h2 className = "text-center my-5 text-weight-3 text-dark" >
+            Data Folders
+            </h2>
+            </div>
+            </div>
+            </div>
+
+              <div className = "container p-3" > {
+                this.state.loading ? (
+                    <div >
+                    <MDBDataTable responsive striped bordered hover data = { data }/>
+                    <CsvDownload filename = "data.csv"
                     style = {
                         {
                             display: "inline-block",
@@ -91,27 +85,23 @@ class Folder extends Component {
                         }
                     }
                     data = { this.state.folders } >
-                    <
-                    button type = "button"
-                    className = "btn btn-dark" >
-                    Download Data < i className = "fas fa-download p-2" > < /i> <
-                    /button> <
-                    /CsvDownload> <
-                    /div>
-                ) : ( <
-                    div className = "text-center"
+                    <button type = "button"
+                    className = "btn btn-dark" >Download Data
+                    <i className = "fas fa-download p-2" > </i>
+                    </button>
+
+                    </CsvDownload>
+                  </div>
+                ) : ( <div className = "text-center"
                     style = {
                         { marginTop: "20%" } } >
-                    <
-                    HashLoader color = { "#292b2c" }
+                    <HashLoader color = { "#292b2c" }
                     loading = { true }
                     size = { 150 }
-                    /> <
-                    /div>
+                    /> </div>
                 )
-            } <
-            /div> <
-            /div>
+            } </div>
+            </div>
         );
     }
 }
