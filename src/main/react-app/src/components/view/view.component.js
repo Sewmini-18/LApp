@@ -6,9 +6,6 @@ import "jspdf-autotable";
 import HashLoader from "react-spinners/HashLoader";
 import CsvDownload from "react-json-to-csv";
 
-
-
-
 class View extends Component {
   state = {
     ipData: [], loading: false
@@ -67,17 +64,6 @@ class View extends Component {
     doc.save("report.pdf");
 
   }
-
-  exportFTP = () =>{
-    const data = this.state.ipData;
-    axios.post(`https://localhost:8080/api/sendToFTP`, { data })
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-  }
-
-
   render() {
     const data = {
       columns: [
@@ -167,7 +153,6 @@ class View extends Component {
                       </button>
                     </CsvDownload>
                     <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportPDF()}> Download as pdf</button>
-                    <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportFTP()}> Export to FTP</button>
                   </div>
               ) : (
                   <div className="text-center" style={{marginTop: "20%", marginBottom:"30%"}}>
