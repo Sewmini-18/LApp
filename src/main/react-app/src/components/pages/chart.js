@@ -1,54 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import { HorizontalBar } from 'react-chartjs-2'
+import React, {Component} from "react";
+import axios from "axios";
+import {MDBDataTable, MDBNavLink} from "mdbreact";
+import {Link} from "react-router-dom";
+import HashLoader from "react-spinners/HashLoader";
+import CsvDownload from "react-json-to-csv";
 
 
-import LogData from './NAT64_1_20.json';
+class Folder extends Component {
+    state = {folders: [], loading: false};
 
-const HorizontalBarChart = ()=> {
+    async componentDidMount() {
+        await axios
+            .get("http://localhost:8080/api/auth/file")
+            .then((res) => {
+                //console.log(res);
+                this.setState({
+                    folders: res.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        this.setState({
+            loading: true
+        })
+    }
 
-    const [labels, setLabels] = useState([]);
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() =>  {
-        if(loading){
-            const tempData = [];
-            const tempLabels = [];
-            for(let i=0; i< LogData.length; i++){
-                tempData.push(parseInt(LogData[i].Destination, 10));
-                tempLabels.push(LogData[i].Source);
-            }
-            setData(tempData);
-            setLabels(tempLabels);
-            setLoading(false);
-            // LogData.forEach(e => {
-            //     console.log(1)
-            //     setData([...data, parseInt(e.Length, 10)]);
-            //     setLabels([...labels, e.Source]);
-            // })
-        }
-    })
-
-    return  (
-        <div>
-            <HorizontalBar
-                data={{
-                    labels:labels,
-                    datasets: [{
-                        label: '# of Votes',
-                        data:data,
-                        backgroundColor: 'light blue',
-                        borderColor: 'red'
-                    }],
-                }}
-                height={2000}
-                width={500}
-                options={{ maintainAspectRatio: false }}
-
-            />
-        </div>
-    )
+    render() {
+        const data = {
+            columns: [{
+                label: "File Name",
+                field: "fileName",
+                sort: "asc",
+            },
+                {
+                    label: "Date",
+                    field: "date",
+                    sort: "asc",
+                },
+                {
+                    label: "Action",
+                    field: "action",
+                    sort: "asc",
+                },
+            ],
+            rows: [
+                ...this.state.folders.map((data, i) => ({
+                    fileName: data.fileName,
+                    date: data.date,
+                    action: (
+                        <Link to={
+                            {pathname: `/home/chartcomponent/${data._id}`}}>
+                            <u style={{color: 'blue'}}> view chart</u>
+                        </Link>
+                    ),
+                })),
+            ],
+        };
+        return (<div>
+                <div className="container">
+                    <div classname="row g-3">
+                        <div classname="col">
+                            <h2 className="text-center my-5 text-weight-3 text-dark">
+                                Data Folders
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div className="container p-3"> {
+                    this.state.loading ? (
+                        <div>
+                            <MDBDataTable responsive striped bordered hover data={data}/>
+                            <CsvDownload filename="data.csv"
+                                         style={
+                                             {
+                                                 display: "inline-block",
+                                                 cursor: "pointer",
+                                                 color: "#ffffff",
+                                                 fontSize: "15px",
+                                                 fontWeight: "bold",
+                                                 padding: "3px 6px",
+                                             }
+                                         }
+                                         data={this.state.folders}>
+                                <button type="button"
+                                        className="btn btn-dark">
+                                    Download Data < i className="fas fa-download p-2"> </i>
+                                </button>
+                            </CsvDownload></div>
+                    ) : (<div className="text-center"
+                              style={
+                                  {marginTop: "20%"}}>
+                            <HashLoader color={"#292b2c"}
+                                        loading={true}
+                                        size={150}
+                            />
+                        </div>
+                    )
+                }
+                </div>
+            </div>
+        );
+    }
 }
 
-
-export default HorizontalBarChart;
+export default Folder;
