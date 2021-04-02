@@ -15,6 +15,7 @@ import View from "../view/view.component";
 import Folder from "../view/folder.component";
 import UserHistory from "../view/userHistory.component";
 import TensorflowApp from "../../LogsPredicting/tensorflowApp";
+import chartcomponent from "../view/chart.component";
 
 class Dashboard extends React.Component {
   render() {
@@ -34,6 +35,7 @@ class Dashboard extends React.Component {
           <Route path={`${match.path}/user_history`} component={UserHistory} />
           <Route path={`${match.path}/folder`} component={Folder} />
           <Route path={`${match.path}/view/:id`} component={View} />
+          <Route path={`${match.path}/chartcomponent/:id`} component={chartcomponent} />
           <Route
             path={`${match.path}/request`}
             component={CustomerRequestDetails}
