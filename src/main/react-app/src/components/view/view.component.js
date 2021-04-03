@@ -64,6 +64,17 @@ class View extends Component {
     doc.save("report.pdf");
 
   }
+
+  exportFTP = () =>{
+        const data = this.state.ipData.toString();
+        alert("Data Send to FTP server");
+        axios.post(`https://localhost:8080/sendToFTP`, { data })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+
+            })
+  }
   render() {
     const data = {
       columns: [
@@ -153,6 +164,7 @@ class View extends Component {
                       </button>
                     </CsvDownload>
                     <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportPDF()}> Download as pdf</button>
+                      <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportFTP()}> Download as pdf</button>
                   </div>
               ) : (
                   <div className="text-center" style={{marginTop: "20%", marginBottom:"30%"}}>
