@@ -15,7 +15,7 @@ import View from "../view/view.component";
 import Folder from "../view/folder.component";
 import UserHistory from "../view/userHistory.component";
 import TensorflowApp from "../../LogsPredicting/tensorflowApp";
-import chartcomponent from "../view/chart.component";
+import chartcomponent from "./chart.component";
 
 class Dashboard extends React.Component {
   render() {

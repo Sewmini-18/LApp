@@ -1,4 +1,7 @@
-package com.bezkoder.spring.jwt.mongodb;
+package com.bezkoder.spring.jwt.mongodb.LogImport;
+import io.pkts.Pcap;
+import io.pkts.buffer.Buffer;
+import io.pkts.framer.PcapFramer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -13,6 +16,8 @@ import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 
 //sample
@@ -30,6 +35,7 @@ public class FTPConfiguration {
     @ServiceActivator(inputChannel = "ftpMGET")
     @Bean
     public FtpOutboundGateway getFiles() {
+
         FtpOutboundGateway gateway = new FtpOutboundGateway(sf(), "mget", "payload");
         gateway.setAutoCreateDirectory(true);
         gateway.setLocalDirectory(new File("./downloads/"));
