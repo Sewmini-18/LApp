@@ -163,7 +163,6 @@ public class AuthController {
                 _user.setName(user.getName());
                 _user.setNic(user.getNic());
                 _user.setPhone(user.getPhone());
-                _user.setTheme(user.getTheme());
 
                 return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
 
@@ -179,10 +178,8 @@ public class AuthController {
         if (userData.isPresent()) {
             System.out.println("reading theme color");
             User _user = userData.get();
-            //_user.setId(id);
             _user.setTheme(user.getTheme());
-            //_user.setPassword((encoder.encode(user.getPassword())));
-            //encoder.encode(signUpRequest.getPassword()))
+
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
 
         } else {
