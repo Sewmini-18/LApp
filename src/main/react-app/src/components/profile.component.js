@@ -116,14 +116,9 @@ export default class Profile extends Component {
                                   </Figure.Caption>
                                 </Figure>
                               </div>
-                              <h4 className="f-w-600">{this.state.name}</h4>
+                              <h4 className="f-w-600 name-style">{this.state.name}</h4>
                               <br />
-                              <ul>
-                                {currentUser.roles &&
-                                  currentUser.roles.map((role, index) => (
-                                    <li key={index}>1: {role}</li>
-                                  ))}
-                              </ul>
+                            
                               {currentUser.roles.includes("ROLE_ADMIN") ? (
                                 <p>Admin</p>
                               ) : (
