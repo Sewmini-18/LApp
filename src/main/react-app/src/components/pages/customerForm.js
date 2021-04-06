@@ -217,8 +217,8 @@ class CustomerForm extends Component {
                               Submit{" "}
                             </ColorButton>
                           </div>
-                          <br />
-                          <div>
+                          <br /><br/>
+                          <div style={{alignItems:'center'}}>
                             {" "}
                             <br />{" "}
                             {this.state.alert === "error" ? (
@@ -227,7 +227,7 @@ class CustomerForm extends Component {
                                 value={alert}
                                 children={{
                                   severity: "error",
-                                  message: "Something went wrong",
+                                  message: "Something went wrong...!",
                                 }}
                               />
                             ) : null}{" "}
