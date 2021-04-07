@@ -14,7 +14,7 @@ public class LogRecord {
     private String destination;
     private String protocol;
     private double length;
-    private String info;
+    //private String info;
 
     public String get_id() {
         return _id;
@@ -72,11 +72,11 @@ public class LogRecord {
         this.length = length;
     }
 
-    public String getInfo() {
+    /*public String getInfo() {
         return info;
     }
 
     public void setInfo(String info) {
         this.info = info;
-    }
+    }*/
 }

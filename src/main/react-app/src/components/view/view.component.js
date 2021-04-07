@@ -40,9 +40,9 @@ class View extends Component {
     doc.setFontSize(14);
 
     const title = "Report";
-    const headers = [["No", "Time","Source","Destination","Protocol","Length","Info"]];
+    const headers = [["Time","Source","Destination","Protocol","Length"]];
 
-    const data = this.state.ipData.map(elt=> [elt.no, elt.time,elt.source,elt.destination,elt.protocol,elt.length,elt.info]);
+    const data = this.state.ipData.map(elt=> [elt.time,elt.source,elt.destination,elt.protocol,elt.length]);
 
     let content = {
       startY: 50,
@@ -50,12 +50,10 @@ class View extends Component {
       body: data,
       columnStyles:{
         0: {cellWidth: 45},
-        1: {cellWidth: 45},
+        1: {cellWidth: 95},
         2: {cellWidth: 95},
-        3: {cellWidth: 95},
-        4: {cellWidth: 50},
-        5: {cellWidth: 50},
-        6: {cellWidth: 150},
+        3: {cellWidth: 50},
+        4: {cellWidth: 50}
       }
 
     }
@@ -78,11 +76,6 @@ class View extends Component {
   render() {
     const data = {
       columns: [
-        {
-          label: "No",
-          field: "no",
-          sort: "asc",
-        },
         {
           label: "Time",
           field: "time",
@@ -108,21 +101,14 @@ class View extends Component {
           field: "length",
           sort: "asc",
         },
-        {
-          label: "Info",
-          field: "info",
-          sort: "asc",
-        },
       ],
       rows: [
         ...this.state.ipData.map((data, i) => ({
-          no: data.no,
           time: data.time,
           source: data.source,
           destination: data.destination,
           protocol: data.protocol,
           length: data.length,
-          info: data.info,
         })),
       ],
     };
@@ -164,7 +150,7 @@ class View extends Component {
                       </button>
                     </CsvDownload>
                     <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportPDF()}> Download as pdf</button>
-                      <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportFTP()}> Download as pdf</button>
+                      <button style={{marginRight:"2%",marginTop:"0.25%"}} type="button" className="btn btn--blue" onClick={() => this.exportFTP()}> Export to FTP</button>
                   </div>
               ) : (
                   <div className="text-center" style={{marginTop: "20%", marginBottom:"30%"}}>
