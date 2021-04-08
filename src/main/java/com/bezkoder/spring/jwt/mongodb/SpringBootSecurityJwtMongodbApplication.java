@@ -62,41 +62,48 @@ public class SpringBootSecurityJwtMongodbApplication {
     void run(File file, JSONArray arr) throws IOException {
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
         Pcap pcap = Pcap.openStream(file);
-        JSONObject obj = new JSONObject();
+
         String fileName = file.getName();
         pcap.loop(
                 packet -> {
-                    String Time = null;
+                    JSONObject obj = new JSONObject();
+                    /*String Time = null;
                     String Source = null;
                     String Destination = null;
                     String dataProtocol = null;
-                    Long Length = null;
+                    Long Length = null;*/
 
                     if (packet.hasProtocol(Protocol.TCP)) {
                         TCPPacket packet1 = (TCPPacket) packet.getPacket(Protocol.TCP);
-                        Time = formatter.format(new Date(packet1.getArrivalTime() / 1000));
-                        Source = packet1.getSourceIP();
-                        Destination = packet1.getDestinationIP();
-                        dataProtocol = packet1.getProtocol().toString();
-                        Length = packet1.getTotalLength();
+                        String Time = formatter.format(new Date(packet1.getArrivalTime() / 1000));
+                        String Source = packet1.getSourceIP();
+                        String Destination = packet1.getDestinationIP();
+                        String dataProtocol = packet1.getProtocol().toString();
+                        Long Length = packet1.getTotalLength();
+
+                        obj.put("time", Time);
+                        obj.put("source", Source);
+                        obj.put("destination", Destination);
+                        obj.put("protocol", dataProtocol);
+                        obj.put("length", Length);
 
                     } else if (packet.hasProtocol(Protocol.UDP)) {
                         UDPPacket packet1 = (UDPPacket) packet.getPacket(Protocol.UDP);
-                        Time = formatter.format(new Date(packet1.getArrivalTime() / 1000));
-                        Source = packet1.getSourceIP();
-                        Destination = packet1.getDestinationIP();
-                        dataProtocol = packet1.getProtocol().toString();
-                        Length = packet1.getTotalLength();
+                        String Time = formatter.format(new Date(packet1.getArrivalTime() / 1000));
+                        String Source = packet1.getSourceIP();
+                        String Destination = packet1.getDestinationIP();
+                        String dataProtocol = packet1.getProtocol().toString();
+                        Long Length = packet1.getTotalLength();
+
+                        obj.put("time", Time);
+                        obj.put("source", Source);
+                        obj.put("destination", Destination);
+                        obj.put("protocol", dataProtocol);
+                        obj.put("length", Length);
 
                     } else {
                         System.out.println("Not found protocol. | " + packet.getProtocol());
                     }
-
-                    obj.put("Time", Time);
-                    obj.put("Source", Source);
-                    obj.put("Destination", Destination);
-                    obj.put("Protocol", dataProtocol);
-                    obj.put("Length", Length);
                     arr.add(obj);
                     return packet.getNextPacket() != null;
                 }

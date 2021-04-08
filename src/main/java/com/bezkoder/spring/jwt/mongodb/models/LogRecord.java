@@ -9,7 +9,7 @@ public class LogRecord {
     @Id
     private String _id;
     private double no;
-    private double time;
+    private String time;
     private String source;
     private String destination;
     private String protocol;
@@ -32,11 +32,11 @@ public class LogRecord {
         this.no = no;
     }
 
-    public double getTime() {
-        return time;
+    public String getTime() {
+        return String.valueOf(time);
     }
 
-    public void setTime(double time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

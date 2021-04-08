@@ -29,6 +29,7 @@ class View extends Component {
       loading: true,
     });
   }
+  //download as pdf
   exportPDF = () => {
     const unit = "pt";
     const size = "A4"; // Use A1, A2, A3 or A4
@@ -47,14 +48,7 @@ class View extends Component {
     let content = {
       startY: 50,
       head: headers,
-      body: data,
-      columnStyles:{
-        0: {cellWidth: 45},
-        1: {cellWidth: 95},
-        2: {cellWidth: 95},
-        3: {cellWidth: 50},
-        4: {cellWidth: 50}
-      }
+      body: data
 
     }
     doc.text(title, marginLeft, 40);
@@ -62,7 +56,7 @@ class View extends Component {
     doc.save("report.pdf");
 
   }
-
+ //export to FTP
   exportFTP = () =>{
         const data = this.state.ipData.toString();
         alert("Data Send to FTP server");
@@ -77,6 +71,22 @@ class View extends Component {
     const data = {
       columns: [
         {
+          label: "Protocol",
+          field: "protocol",
+          sort: "asc",
+        },
+        {
+          label: "Destination",
+          field: "destination",
+          sort: "asc",
+        },
+
+        {
+          label: "Length",
+          field: "length",
+          sort: "asc",
+        },
+        {
           label: "Time",
           field: "time",
           sort: "asc",
@@ -86,29 +96,16 @@ class View extends Component {
           field: "source",
           sort: "asc",
         },
-        {
-          label: "Destination",
-          field: "destination",
-          sort: "asc",
-        },
-        {
-          label: "Protocol",
-          field: "protocol",
-          sort: "asc",
-        },
-        {
-          label: "Length",
-          field: "length",
-          sort: "asc",
-        },
+
       ],
       rows: [
         ...this.state.ipData.map((data, i) => ({
+          protocol: data.protocol,
+          destination: data.destination,
+          length: data.length,
           time: data.time,
           source: data.source,
-          destination: data.destination,
-          protocol: data.protocol,
-          length: data.length,
+
         })),
       ],
     };
