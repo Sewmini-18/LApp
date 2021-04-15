@@ -1,8 +1,6 @@
 package com.bezkoder.spring.jwt.mongodb.controllers;
 
 import com.bezkoder.spring.jwt.mongodb.models.LogFile;
-import com.bezkoder.spring.jwt.mongodb.models.LogRecord;
-import com.bezkoder.spring.jwt.mongodb.models.LogRecordCollection;
 import com.bezkoder.spring.jwt.mongodb.repository.LogFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

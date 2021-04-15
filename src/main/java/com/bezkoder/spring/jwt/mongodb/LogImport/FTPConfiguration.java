@@ -1,7 +1,5 @@
 package com.bezkoder.spring.jwt.mongodb.LogImport;
-import io.pkts.Pcap;
-import io.pkts.buffer.Buffer;
-import io.pkts.framer.PcapFramer;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -16,21 +14,20 @@ import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.List;
 
-//sample
 @Configuration
 public class FTPConfiguration {
-    /*@ServiceActivator(inputChannel = "ftpLS")
+    //set the ftp connection
     @Bean
-    public FtpOutboundGateway getGW() {
-        FtpOutboundGateway gateway = new FtpOutboundGateway(sf(), "ls", "payload");
-        gateway.setOption(AbstractRemoteFileOutboundGateway.Option.NAME_ONLY);
-        gateway.setOutputChannelName("results");
-        return gateway;
-    }*/
+    public DefaultFtpSessionFactory sf() {
+        DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
+        sf.setHost("localhost");
+        sf.setPort(2121);
+        sf.setUsername("anonymous");
+        sf.setPassword("");
+        return sf;
+    }
 
     @ServiceActivator(inputChannel = "ftpMGET")
     @Bean
@@ -52,12 +49,6 @@ public class FTPConfiguration {
         return channel;
     }
 
-    /*@Bean
-    public MessageChannel results() {
-        DirectChannel channel = new DirectChannel();
-        channel.addInterceptor(tap());
-        return channel;
-    }*/
     @Bean
     public WireTap tap() {
         return new WireTap("logging");
@@ -70,22 +61,8 @@ public class FTPConfiguration {
         logger.setLogExpressionString("'Files:' + payload");
         return logger;
     }
-    @Bean
-    public DefaultFtpSessionFactory sf() {
-        DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
-        sf.setHost("localhost");
-        sf.setPort(2121);
-        sf.setUsername("anonymous");
-        sf.setPassword("");
-        return sf;
-    }
 
-    /*@MessagingGateway(defaultRequestChannel = "ftpLS", defaultReplyChannel = "results")
-    public interface Gate {
 
-        List list(String directory);
-
-    }*/
 
     @MessagingGateway(defaultRequestChannel = "ftpMGET", defaultReplyChannel = "fileResults")
     public interface GateFile {

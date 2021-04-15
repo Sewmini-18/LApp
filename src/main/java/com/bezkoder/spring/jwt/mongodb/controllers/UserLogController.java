@@ -1,7 +1,5 @@
 package com.bezkoder.spring.jwt.mongodb.controllers;
 
-import com.bezkoder.spring.jwt.mongodb.models.LogRecord;
-import com.bezkoder.spring.jwt.mongodb.models.LogRecordCollection;
 import com.bezkoder.spring.jwt.mongodb.models.UserLogRecord;
 import com.bezkoder.spring.jwt.mongodb.repository.UserLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
