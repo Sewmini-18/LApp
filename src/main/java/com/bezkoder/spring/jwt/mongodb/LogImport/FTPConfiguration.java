@@ -1,4 +1,5 @@
 package com.bezkoder.spring.jwt.mongodb.LogImport;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -14,8 +15,20 @@ import org.springframework.messaging.MessageChannel;
 
 import java.io.File;
 import java.util.List;
+
 @Configuration
 public class FTPConfiguration {
+    //set the ftp connection
+    @Bean
+    public DefaultFtpSessionFactory sf() {
+        DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
+        sf.setHost("localhost");
+        sf.setPort(2121);
+        sf.setUsername("anonymous");
+        sf.setPassword("");
+        return sf;
+    }
+
     @ServiceActivator(inputChannel = "ftpMGET")
     @Bean
     public FtpOutboundGateway getFiles() {
@@ -48,15 +61,9 @@ public class FTPConfiguration {
         logger.setLogExpressionString("'Files:' + payload");
         return logger;
     }
-    @Bean
-    public DefaultFtpSessionFactory sf() {
-        DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
-        sf.setHost("localhost");
-        sf.setPort(2121);
-        sf.setUsername("anonymous");
-        sf.setPassword("");
-        return sf;
-    }
+
+
+
     @MessagingGateway(defaultRequestChannel = "ftpMGET", defaultReplyChannel = "fileResults")
     public interface GateFile {
 

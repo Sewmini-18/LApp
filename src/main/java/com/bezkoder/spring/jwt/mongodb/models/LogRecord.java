@@ -8,12 +8,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class LogRecord {
     @Id
     private String _id;
-    private double no;
+    //private double no;
     private String time;
     private String source;
     private String destination;
     private String protocol;
     private double length;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    private String fileName;
     //private String info;
 
     public String get_id() {
@@ -24,13 +34,13 @@ public class LogRecord {
         this._id = _id;
     }
 
-    public double getNo() {
+    /*public double getNo() {
         return no;
     }
 
     public void setNo(double no) {
         this.no = no;
-    }
+    }*/
 
     public String getTime() {
         return String.valueOf(time);
@@ -72,11 +82,4 @@ public class LogRecord {
         this.length = length;
     }
 
-    /*public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }*/
 }

@@ -1,13 +1,12 @@
 package com.bezkoder.spring.jwt.mongodb.models;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "LogFile")
 public class LogFile {
     @Id
-    private String  _id;
+    private String _id;
     private String fileName;
     private String date;
 
