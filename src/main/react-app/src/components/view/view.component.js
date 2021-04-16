@@ -35,7 +35,6 @@ class View extends Component {
         const unit = "pt";
         const size = "A4"; // Use A1, A2, A3 or A4
         const orientation = "portrait"; // portrait or landscape
-
         const marginLeft = 30;
         const doc = new jsPDF(orientation, unit, size);
 
@@ -43,20 +42,19 @@ class View extends Component {
 
         const title = "Report";
         const headers = [["Time", "Source", "Destination", "Protocol", "Length"]];
-
         const data = this.state.ipData.map(elt => [elt.time, elt.source, elt.destination, elt.protocol, elt.length]);
 
         let content = {
             startY: 50,
             head: headers,
             body: data,
-
         }
+
         doc.text(title, marginLeft, 40);
         doc.autoTable(content);
         doc.save(this.state.ipData.fileName);
-
     }
+
     //export to FTP
     exportFTP = () => {
         const data = this.state.ipData.toString();
@@ -65,7 +63,6 @@ class View extends Component {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-
             })
     }
 
@@ -113,8 +110,8 @@ class View extends Component {
         return (
             <div>
                 <div className="container">
-                    <div classname="row g-3">
-                        <div classname="col">
+                    <div className="row g-3">
+                        <div className="col">
                             <h2 className="text-center my-5 text-weight-3 text-dark">
                                 Data Table
                             </h2>
@@ -137,9 +134,7 @@ class View extends Component {
                                     }}
                                     data={this.state.ipData}
                                 >
-                                    <button type="button" className="btn btn-outline-danger">
-                                        Export as csv<i className="fas fa-download p-2"></i>
-                                    </button>
+                                    <button type="button" className="btn btn-outline-danger">Export as csv</button>
                                 </CsvDownload>
                                 <button style={{marginRight: "2%", marginTop: "0.25%"}} type="button"
                                         className="btn btn-outline-info" onClick={() => this.exportPDF()}> Export as pdf
@@ -153,7 +148,6 @@ class View extends Component {
                             <div className="text-center" style={{marginTop: "20%", marginBottom: "30%"}}>
                                 <HashLoader color={"#292b2c"} loading={true} size={150}/>
                             </div>
-
                         )}
                     </div>
                 </div>

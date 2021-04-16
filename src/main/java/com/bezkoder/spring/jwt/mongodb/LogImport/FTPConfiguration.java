@@ -18,7 +18,6 @@ import java.util.List;
 
 @Configuration
 public class FTPConfiguration {
-    //set the ftp connection
     @Bean
     public DefaultFtpSessionFactory sf() {
         DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
@@ -61,8 +60,6 @@ public class FTPConfiguration {
         logger.setLogExpressionString("'Files:' + payload");
         return logger;
     }
-
-
 
     @MessagingGateway(defaultRequestChannel = "ftpMGET", defaultReplyChannel = "fileResults")
     public interface GateFile {

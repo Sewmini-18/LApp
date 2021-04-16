@@ -2,7 +2,6 @@ package com.bezkoder.spring.jwt.mongodb;
 
 import com.bezkoder.spring.jwt.mongodb.LogImport.FTPConfiguration;
 import org.json.simple.JSONArray;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +22,10 @@ import java.util.*;
 @EnableMongoRepositories("com.bezkoder") //to activate MongoDB repositories
 public class SpringBootSecurityJwtMongodbApplication {
 
+    public SpringBootSecurityJwtMongodbApplication(LogImport logimport) {
+        this.logimport = logimport;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(SpringBootSecurityJwtMongodbApplication.class, args);
     }
@@ -38,6 +41,6 @@ public class SpringBootSecurityJwtMongodbApplication {
         };
     }
 
-    @Autowired
+    final
     LogImport logimport;
 }

@@ -18,9 +18,6 @@ class Chart extends Component {
         labels4: [[]],
         data5: [],
         labels5: [[]],
-        data6:[],
-        labels6: [[]],
-
     };
 
     async componentDidMount() {
@@ -36,15 +33,14 @@ class Chart extends Component {
                 })
                 let tmp1 = [];
                 let count1 = 1
-                res.data.map((o, i) => {
-                    const existing = tmp1.find(e => e.source == o.source);
+                res.data.map((o) => {
+                    const existing = tmp1.find(e => e.source === o.source);
                     if (existing) {
                         existing.count1++;
                     } else {
                         tmp1.push({count1: count1, source: o.source});
                     }
                 })
-
                 this.setState({
                     data1: tmp1.map(o => o.count1),
                     labels1: tmp1.map(o => o.source),
@@ -75,7 +71,6 @@ class Chart extends Component {
                     data3: dataArrayY3,
                     labels3: dataArrayX3,
                 });
-
                 //4th chart
                 const dataArrayY4 = [];
                 res.data.map(item => {
@@ -83,15 +78,14 @@ class Chart extends Component {
                 })
                 let tmp4 = [];
                 let count4 = 1;
-                res.data.map((o, i) => {
-                    const existing = tmp4.find(e => e.destination == o.destination);
+                res.data.map((o) => {
+                    const existing = tmp4.find(e => e.destination === o.destination);
                     if (existing) {
                         existing.count4++;
                     } else {
                         tmp4.push({count4: count4, destination: o.destination});
                     }
                 })
-
                 this.setState({
                     data4: tmp4.map(o => o.count4),
                     labels4: tmp4.map(o => o.destination),
@@ -103,33 +97,18 @@ class Chart extends Component {
                 })
                 let tmp5 = [];
                 let count5 = 1;
-                res.data.map((o, i) => {
-                    const existing = tmp5.find(e => e.protocol == o.protocol);
+                res.data.map((o) => {
+                    const existing = tmp5.find(e => e.protocol === o.protocol);
                     if (existing) {
                         existing.count5++;
                     } else {
                         tmp5.push({count5: count5, protocol: o.protocol});
                     }
                 })
-
                 this.setState({
                     data5: tmp5.map(o => o.count5),
                     labels5: tmp5.map(o => o.protocol),
                 });
-                //6th chart
-                const dataArrayY6=[];
-                res.data.map(item => {
-                    dataArrayY6.push(item.length);
-                })
-                const dataArrayX6=[];
-                res.data.map(item => {
-                    dataArrayX6.push(item.source);
-                })
-
-                this.setState({
-                    data6:dataArrayY6,
-                    labels6:dataArrayX6
-                })
             })
             .catch(function (error) {
                 console.log(error);
@@ -141,25 +120,22 @@ class Chart extends Component {
 
 
     render() {
-
         return (
             <div>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Source vs Count</Card.Title>
+                        <Card.Title>No. of times each source address accessed</Card.Title>
                         <Bar
                             data={{
                                 labels: this.state.labels1,
                                 datasets: [{
-                                    label: 'Source vs count',
+                                    label: 'X-axis: Source address, Y-axis: Count',
                                     data: this.state.data1,
                                     backgroundColor: '#FFFF66',
                                     scaleBeginAtZero: true,
                                     borderColor: 'red',
                                     borderWidth: 2
                                 }],
-
                             }}
                             height={20}
                             width={95}
@@ -173,19 +149,17 @@ class Chart extends Component {
                                     }]
                                 }
                             }}
-
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Source vs Length</Card.Title>
+                        <Card.Title>Packet Length of each source addresses</Card.Title>
                         <Line
                             data={{
                                 labels: this.state.labels2,
                                 datasets: [{
-                                    label: 'source vs Length',
+                                    label: 'X-axis: Source address, Y-axis: Packet Length',
                                     data: this.state.data2,
                                     borderColor: 'blue',
                                     backgroundColor: '#99ccff',
@@ -205,19 +179,17 @@ class Chart extends Component {
                                     }]
                                 }
                             }}
-
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Destination vs Length</Card.Title>
+                        <Card.Title>Packet Length of each destination addresses</Card.Title>
                         <Line
                             data={{
                                 labels: this.state.labels3,
                                 datasets: [{
-                                    label: 'destination vs length',
+                                    label: 'X-axis: Destination address, Y-axis: Packet Length',
                                     data: this.state.data3,
                                     borderColor: 'green',
                                     backgroundColor: '#90ee90',
@@ -236,19 +208,17 @@ class Chart extends Component {
                                     }]
                                 }
                             }}
-
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Destination vs Count</Card.Title>
+                        <Card.Title>No. of times each destination address accessed</Card.Title>
                         <Bar
                             data={{
                                 labels: this.state.labels4,
                                 datasets: [{
-                                    label: 'Destination vs count',
+                                    label: 'X-axis: Destination address, Y-axis: Count',
                                     data: this.state.data4,
                                     backgroundColor: '#fed8b1',
                                     scaleBeginAtZero: true,
@@ -268,19 +238,17 @@ class Chart extends Component {
                                     }]
                                 }
                             }}
-
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Protocol vs Count</Card.Title>
+                        <Card.Title>No. of times each Protocol accessed</Card.Title>
                         <Bar
                             data={{
                                 labels: this.state.labels5,
                                 datasets: [{
-                                    label: 'Protocol vs count',
+                                    label: 'X-axis: Type of Protocol, Y-axis: Count',
                                     data: this.state.data5,
                                     backgroundColor: '#b19cd9',
                                     scaleBeginAtZero: true,
@@ -300,44 +268,10 @@ class Chart extends Component {
                                     }]
                                 }
                             }}
-
-                        />
-                    </Card.Body>
-                </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
-                    <Card.Body>
-                        <Card.Title>Source vs Length</Card.Title>
-                        <Bar
-                            data={{
-                                labels: this.state.labels6,
-                                datasets: [{
-                                    label: 'source vs Length',
-                                    data: this.state.data6,
-                                    borderColor: 'blue',
-                                    backgroundColor: '#99ccff',
-                                    scaleBeginAtZero: true,
-                                    lineJoin: round
-                                }],
-                            }}
-                            height={20}
-                            width={95}
-                            options={{
-                                maintainAspectRatio: false, scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-
                         />
                     </Card.Body>
                 </Card>
             </div>
-
         );
     }
 }
