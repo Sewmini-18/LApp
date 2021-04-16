@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {MDBDataTable, MDBNavLink} from "mdbreact";
+import {MDBDataTable} from "mdbreact";
 import {Link} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import CsvDownload from "react-json-to-csv";
@@ -73,8 +73,8 @@ class Folder extends Component {
         return (
             <div>
                 <div className="container">
-                    <div classname="row g-3">
-                        <div classname="col">
+                    <div className="row g-3">
+                        <div className="col">
                             <h2 className="text-center my-5 text-weight-3 text-dark">
                                 Data Folders
                             </h2>

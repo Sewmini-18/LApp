@@ -2,7 +2,6 @@ package com.bezkoder.spring.jwt.mongodb.LogImport;
 
 import com.bezkoder.spring.jwt.mongodb.models.LogFile;
 import com.bezkoder.spring.jwt.mongodb.repository.LogFileRepository;
-import com.bezkoder.spring.jwt.mongodb.repository.LogRecordRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
@@ -26,9 +25,8 @@ import java.util.stream.Collectors;
 
 @Configuration
 public class LogImport {
-    public LogImport(LogFileRepository logfileRepo, LogRecordRepository logrecordRepo) {
+    public LogImport(LogFileRepository logfileRepo) {
         this.logfileRepo = logfileRepo;
-        this.logrecordRepo = logrecordRepo;
     }
 
     public void run(File file, JSONArray arr) throws IOException {
@@ -42,40 +40,18 @@ public class LogImport {
 
                     if (packet.hasProtocol(Protocol.TCP)) {
                         TCPPacket packet1 = (TCPPacket) packet.getPacket(Protocol.TCP);
-                        String Time = formatter.format(new Date(packet1.getArrivalTime() / 1000));
-                        String Source = packet1.getSourceIP();
-                        String Destination = packet1.getDestinationIP();
-                        String dataProtocol = packet1.getProtocol().toString();
-                        Long Length = packet1.getTotalLength();
-
-                        obj.put("time", Time);
-                        obj.put("source", Source);
-                        obj.put("destination", Destination);
-                        obj.put("protocol", dataProtocol);
-                        obj.put("length", Length);
+                        dataArray(arr, formatter, obj, packet1.getArrivalTime(), packet1.getSourceIP(), packet1.getDestinationIP(), packet1.getProtocol(), packet1.getTotalLength());
 
                     } else if (packet.hasProtocol(Protocol.UDP)) {
-                        UDPPacket packet1 = (UDPPacket) packet.getPacket(Protocol.UDP);
-                        String Time = formatter.format(new Date(packet1.getArrivalTime() / 1000));
-                        String Source = packet1.getSourceIP();
-                        String Destination = packet1.getDestinationIP();
-                        String dataProtocol = packet1.getProtocol().toString();
-                        Long Length = packet1.getTotalLength();
-
-                        obj.put("time", Time);
-                        obj.put("source", Source);
-                        obj.put("destination", Destination);
-                        obj.put("protocol", dataProtocol);
-                        obj.put("length", Length);
-
+                        UDPPacket packet2 = (UDPPacket) packet.getPacket(Protocol.UDP);
+                        dataArray(arr, formatter, obj, packet2.getArrivalTime(), packet2.getSourceIP(), packet2.getDestinationIP(), packet2.getProtocol(), packet2.getTotalLength());
                     }
-                    obj.put("fileName", fileName);
-                    arr.add(obj);
+
+
                     return packet.getNextPacket() != null;
                 }
         );
-        System.out.println(arr);
-        //System.out.println(fileName);
+        //System.out.println(arr);
         Calendar calendar = Calendar.getInstance();
         String now = String.valueOf(calendar.getTime());
 
@@ -91,6 +67,19 @@ public class LogImport {
         database.getCollection(String.valueOf(logId)).insertMany(documents);
     }
 
+    private void dataArray(JSONArray arr, SimpleDateFormat formatter, JSONObject obj, long arrivalTime, String sourceIP, String destinationIP, Protocol protocol, long totalLength) {
+        String Time = formatter.format(new Date(arrivalTime / 1000));
+        String dataProtocol = protocol.toString();
+        Long Length = totalLength;
+
+        obj.put("time", Time);
+        obj.put("source", sourceIP);
+        obj.put("destination", destinationIP);
+        obj.put("protocol", dataProtocol);
+        obj.put("length", Length);
+
+        arr.add(obj);
+    }
+
     private final LogFileRepository logfileRepo;
-    private final LogRecordRepository logrecordRepo;
 }
