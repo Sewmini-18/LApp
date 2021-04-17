@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {Bar, Line} from 'react-chartjs-2'
-
 import {Card} from "react-bootstrap";
 import {round} from "@tensorflow/tfjs-core";
 
