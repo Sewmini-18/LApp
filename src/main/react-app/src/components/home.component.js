@@ -122,7 +122,7 @@ class Home extends Component {
                       >
                         <blockquote className="blockquote mb-0 card-body">
                           <p>
-                            LApp - Team Fork
+                            Team Fork
                             <br /> Logging Solution System
                           </p>
                         </blockquote>
