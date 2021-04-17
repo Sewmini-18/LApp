@@ -82,8 +82,8 @@ class Folder extends Component {
                     </div>
                 </div>
                 <div className="container p-3"> {
-                    this.state.loading ? (<
-                            div>
+                    this.state.loading ? (
+                        <div>
                             <MDBDataTable responsive striped bordered hover data={data}/>
                             <CsvDownload filename="data.csv"
                                          style={
