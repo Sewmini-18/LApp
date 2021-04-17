@@ -6,6 +6,14 @@ import "jspdf-autotable";
 import HashLoader from "react-spinners/HashLoader";
 import CsvDownload from "react-json-to-csv";
 
+
+function  jsonBlob(obj) {
+  return new Blob([JSON.stringify(obj)], {
+    type: "application/json",
+  });
+}
+
+
 class View extends Component {
     state = {
         ipData: [], loading: false
@@ -56,15 +64,22 @@ class View extends Component {
     }
 
     //export to FTP
-    exportFTP = () => {
-        const data = this.state.ipData.toString();
-        alert("Data Send to FTP server");
-        axios.post(`https://localhost:8080/sendToFTP`, {data})
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-            })
-    }
+  exportFTP = () => {
+
+    const formData = new FormData();
+    formData.append("file", jsonBlob(this.state.ipData))
+    alert("Logs export to FTP server")
+
+    axios({
+      method: "post",
+      url: "http://localhost:8080/api/auth/uploadfiles",
+      data: formData,
+      headers: {
+        Accept: "application/json ,text/plain, */*",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  };
 
     render() {
         const data = {

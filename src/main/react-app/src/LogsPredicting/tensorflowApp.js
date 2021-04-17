@@ -1,16 +1,17 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { createModel, generateData, trainModel, data } from "./tensor";
+import {createModel, generateData, trainModel, data, getactual} from "./tensor";
 import { OPTIMIZERS } from "./optimizers";
 import * as tf from "@tensorflow/tfjs-core";
 import "./tensstyle.css";
 import { Button } from "react-bootstrap";
 
-data();
+
 const initialModelOptions = {
   optimizer: "adam",
   learningRate: 0.01,
-  epochs: 50,
+  epochs: 150,
 };
+
 
 function modelReducer(state, action) {
   switch (action.type) {
@@ -25,20 +26,26 @@ function modelReducer(state, action) {
   }
 }
 
+function getdifference(){
+  const predictedvalue = this
+  const difference = predictedvalue - 25;
+}
+
 function TensorflowApp() {
+
   const [input, label] = generateData();
   const [modelOptions, dispatch] = useReducer(
     modelReducer,
     initialModelOptions
   );
+
   const [modelReady, setModelReady] = useState(true);
   const [target, setTarget] = useState(0);
   const [prediction, setPrediction] = useState("");
-  //const [targetPredict, setTargetPredict] = useState(target * 2 + 5);
   const [model, setModel] = useState(createModel(modelOptions));
 
   const handleChangeTarget = (e) => {
-    setTarget(Number(e.target.value));
+    const datavalue = setTarget(Number(e.target.value));
   };
 
   const handleChangeModelOptions = (action) => (e) => {
@@ -65,8 +72,8 @@ function TensorflowApp() {
       .then((data) => setPrediction(parseFloat(data).toFixed(2).toString()));
   };
 
+  // wii affect after render the function, re render after every update.
   useEffect(() => {
-    // setTargetPredict(target * 2 + 5);
     setModal();
   }, [target]);
 
@@ -141,7 +148,7 @@ function TensorflowApp() {
 
       <section className="sectionx" style={mTop}>
         <h2 style={{ color: "#36005a" }}> -- -- - Predict-- -- - </h2>
-        <label htmlFor="target"> Input </label>
+        <label htmlFor="target"> Input time of log file</label>
         <input
           className="inputx"
           id="target"
@@ -161,8 +168,12 @@ function TensorflowApp() {
         <br />
         <p>
           {" "}
-          Predicted result: <strong> {prediction} </strong>{" "}
+          Predicted length of request: <strong> {prediction} </strong>{" "}
         </p>
+      <p>
+        {""}
+        different : <strong>{getdifference}</strong>
+      </p>
       </section>
     </div>
   );
