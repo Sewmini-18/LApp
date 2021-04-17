@@ -195,7 +195,7 @@ export default class EditUser extends Component {
                                     src={userPic}
                                   />
                                   <Figure.Caption>
-                                    Change Profile Picture
+                                    Profile Picture
                                   </Figure.Caption>
                                 </Figure>
                               </div>
