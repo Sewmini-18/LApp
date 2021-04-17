@@ -190,17 +190,18 @@ class Home extends Component {
                     >
                       <Card.Body>
                         <Card.Title>
+                          Logs Predictions
                           {" "}
-                          Logs Predictions Identification{" "}
                         </Card.Title>{" "}
                         <br />
                         <Card.Text>
                           View predictions using log files{" "}
                         </Card.Text>{" "}
                         <br />
+                        <br />
                         <Button href="/home/plot" variant={theme}>
                           {" "}
-                          View predicted plot{" "}
+                          View predictions{" "}
                         </Button>
                       </Card.Body>
                     </Card>
