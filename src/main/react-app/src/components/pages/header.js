@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   Navbar,
-  NavDropdown,
   Nav,
   Col,
   Form,
@@ -35,8 +34,6 @@ class Header extends Component {
     const currentUser = AuthService.getCurrentUser();
 
     const userId = currentUser.id;
-    console.log("id: " + currentUser.id);
-    console.log("name: " + currentUser.theme);
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });
@@ -57,8 +54,6 @@ class Header extends Component {
             theme: "#d3d5fd",
             redirect: "/home/profile",
           });
-          console.log("newt " + this.state.theme);
-          console.log("new2t " + this.initialState);
         }
       })
       .catch((error) => {
@@ -145,11 +140,8 @@ class Header extends Component {
   };
 
   render() {
-    const { currentUser, showAdminBoard, theme } = this.state;
-
-    const mTop = {
-      marginTop: "20px",
-    };
+    const { currentUser,theme } = this.state;
+    const mTop = {marginTop: "20px"};
 
     return (
       <div>

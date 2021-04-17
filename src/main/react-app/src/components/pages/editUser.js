@@ -7,7 +7,6 @@ import {
   InputGroup,
   FormControl,
   Button,
-  ButtonGroup,
   Form,
 } from "react-bootstrap";
 import userPic from "../pages/images/user.png";
@@ -52,15 +51,12 @@ export default class EditUser extends Component {
 
   resetUser = () => {
     this.setState(() => this.initialState);
-    //return this.props.history.push("/home/profile/edit/userId=?"+this.state.id);
   };
 
   componentDidMount() {
     document.title = "Edit Profile";
     const currentUser = AuthService.getCurrentUser();
     const userId = currentUser.id;
-    console.log("id: " + currentUser.id);
-    console.log("name: " + currentUser.username);
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });
@@ -78,21 +74,18 @@ export default class EditUser extends Component {
             username: response.data.username,
             nic: response.data.nic,
             phone: response.data.phone,
+            
           });
-          console.log("Hi Hi " + this.state.name + " ll");
         }
       })
       .catch((error) => {
         console.error("Error - " + error);
         this.setState({ redirect: "/home" });
       });
-    console.log("Hi Hi " + this.state.name + " ll");
   };
 
   updateUser = (event) => {
     event.preventDefault();
-    console.log("Button clicked");
-
     this.setState({
       message: "",
       successful: false,
@@ -128,8 +121,6 @@ export default class EditUser extends Component {
       );
     }
     this.setState(this.initialState);
-    console.log("name: " + this.state.name);
-    //console.log("username: " +currentUser.username);
     setTimeout(() => this.profile(), 3000);
   };
 
@@ -277,6 +268,38 @@ export default class EditUser extends Component {
                                     {errors.username.length > 0 && (
                                       <span className="errorEdit">
                                         {errors.username}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="col-sm-6 m-b-10">
+                                  <p className="m-b-10 f-w-600">Password</p>
+                                  <div>
+                                    <InputGroup size="sm" className="mb-3">
+                                      <FormControl
+                                        aria-label="Small"
+                                        name="password"
+                                        value={this.state.password}
+                                        onChange={this.handleProfile}
+                                        aria-describedby="inputGroup-sizing-sm"
+                                      />
+                                    </InputGroup>
+                                  </div>
+                                  <div>
+                                    <InputGroup size="sm" className="mb-3">
+                                      <FormControl
+                                        aria-label="Small"
+                                        name="confirm password"
+                                        value={this.state.password}
+                                        onChange={this.handleProfile}
+                                        aria-describedby="inputGroup-sizing-sm"
+                                      />
+                                    </InputGroup>
+                                  </div>
+                                  <div>
+                                    {errors.phone.length > 0 && (
+                                      <span className="errorEdit">
+                                        {errors.phone}
                                       </span>
                                     )}
                                   </div>

@@ -3,9 +3,7 @@ import "./css/customerFormStyle.css";
 import { Button, withStyles } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
 import { Row, Jumbotron } from "react-bootstrap";
-
 import IconButton from "@material-ui/core/IconButton";
-
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Tooltip from "@material-ui/core/Tooltip";
 import ActionAlerts from "../alert";
@@ -16,10 +14,8 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText(purple[500]),
     backgroundColor: "#ff4b5a",
     borderRadius: "25px 25px",
-    // marginLeft: '15px',
     width: "150px",
     height: "40px",
-
     "&:hover": {
       backgroundColor: "#eb3746",
     },
@@ -54,9 +50,7 @@ class CustomerForm extends Component {
   }
 
   submitCustomer = (event) => {
-    //alert(this.state.password);
     event.preventDefault();
-    console.log(this.state);
     let cemail = this.state.cemail.toLowerCase();
     let date = new Date().toLocaleString() + "";
 
@@ -101,16 +95,17 @@ class CustomerForm extends Component {
           <Row>
             <div className="wrapper p-b-45">
               <div style={{ textAlign: "right" }}>
-                <Tooltip title="Add Request" placement="top">
+                <Tooltip title="Request Details" placement="top">
                   <IconButton
                     href="/home/request"
                     aria-label="delete"
                     ontSize="small"
                   >
+                  
                     <ListAltIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-              </div>{" "}
+              </div>
               <Jumbotron style={{ width: "60rem" }}>
                 <div>
                   <div>
@@ -121,11 +116,11 @@ class CustomerForm extends Component {
                           Customer Details Collection Form:{" "}
                         </h2>
                         <br />
-                      </div>{" "}
+                      </div>
                       <div className="card-body">
                         <form id="customerForm">
                           <div className="form-row">
-                            <div className="name"> Customer Name </div>{" "}
+                            <div className="name"> Customer Name </div>
                             <div className="value">
                               <div className="input-group">
                                 <input
@@ -136,14 +131,15 @@ class CustomerForm extends Component {
                                   name="cname"
                                   value={cname}
                                   minLength="5"
+                                  pattern
                                   onChange={this.custChange}
                                   required
                                 />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
+                              </div>
+                            </div>
+                          </div>
                           <div className="form-row">
-                            <div className="name"> NIC No </div>{" "}
+                            <div className="name"> NIC No </div>
                             <div className="value">
                               <div className="input-group">
                                 <input
@@ -155,11 +151,11 @@ class CustomerForm extends Component {
                                   onChange={this.custChange}
                                   required
                                 />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
+                              </div>
+                            </div>
+                          </div>
                           <div className="form-row">
-                            <div className="name"> Email </div>{" "}
+                            <div className="name"> Email </div>
                             <div className="value">
                               <div className="input-group">
                                 <input
@@ -171,11 +167,11 @@ class CustomerForm extends Component {
                                   onChange={this.custChange}
                                   required
                                 />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
+                              </div>
+                            </div>
+                          </div>
                           <div className="form-row">
-                            <div className="name"> Contact Number </div>{" "}
+                            <div className="name"> Contact Number </div>
                             <div className="value">
                               <div className="input-group">
                                 <input
@@ -187,11 +183,11 @@ class CustomerForm extends Component {
                                   onChange={this.custChange}
                                   required
                                 />
-                              </div>{" "}
-                            </div>{" "}
+                              </div>
+                            </div>
                           </div>
                           <div className="form-row">
-                            <div className="name"> Reason / Request </div>{" "}
+                            <div className="name"> Reason / Request </div>
                             <div className="value">
                               <div className="input-group">
                                 <input
@@ -203,8 +199,8 @@ class CustomerForm extends Component {
                                   onChange={this.custChange}
                                   required
                                 />
-                              </div>{" "}
-                            </div>{" "}
+                              </div>
+                            </div>
                           </div>
                           <div>
                             <ColorButton
@@ -213,14 +209,13 @@ class CustomerForm extends Component {
                               variant="contained"
                               className="abutton"
                             >
-                              {" "}
-                              Submit{" "}
+                              Submit
                             </ColorButton>
                           </div>
-                          <br /><br/>
-                          <div style={{alignItems:'center'}}>
-                            {" "}
-                            <br />{" "}
+                          <br />
+                          <br />
+                          <div style={{ alignItems: "center" }}>
+                            <br />
                             {this.state.alert === "error" ? (
                               <ActionAlerts
                                 name="alert"
@@ -230,7 +225,7 @@ class CustomerForm extends Component {
                                   message: "Something went wrong...!",
                                 }}
                               />
-                            ) : null}{" "}
+                            ) : null}
                             {this.state.alert === "success" ? (
                               <ActionAlerts
                                 name="alert"
@@ -241,17 +236,17 @@ class CustomerForm extends Component {
                                 }}
                               />
                             ) : null}
-                            &nbsp;&nbsp;{" "}
-                          </div>{" "}
-                        </form>{" "}
-                      </div>{" "}
-                    </div>{" "}
-                  </div>{" "}
-                </div>{" "}
-              </Jumbotron>{" "}
+                            &nbsp;&nbsp;
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Jumbotron>
             </div>
-          </Row>{" "}
-        </div>{" "}
+          </Row>
+        </div>
       </div>
     );
   }

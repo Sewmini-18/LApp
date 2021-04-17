@@ -13,7 +13,6 @@ class Signup extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.userChange = this.userChange.bind(this);
 
-
     this.state = {
       username: "",
       password: "",

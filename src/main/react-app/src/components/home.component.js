@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Button, Col, Container, Card, CardDeck } from "react-bootstrap";
 import AuthService from "../services/auth.service";
 import axios from "axios";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 
 class Home extends Component {
@@ -24,7 +24,6 @@ class Home extends Component {
   componentDidMount() {
     document.title = "Home";
     const currentUser = AuthService.getCurrentUser();
-    console.log("theme:-" + currentUser.theme);
 
     const userId = currentUser.id;
     if (userId) {
@@ -45,7 +44,6 @@ class Home extends Component {
           this.setState({
             theme: response.data.theme,
           });
-          console.log("theme2:-" + this.state.theme);
 
           let themec = this.state.theme;
           switch (themec) {
@@ -65,7 +63,6 @@ class Home extends Component {
               break;
           }
           this.setState({ theme: themec, loading: true });
-          console.log("new color:- " + themec);
         }
       })
       .catch((error) => {

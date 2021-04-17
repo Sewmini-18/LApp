@@ -28,17 +28,15 @@ export default class Footer extends Component {
           this.setState({
             theme: response.data.theme,
           });
-          //console.log("footer color "+this.state.theme);
         }
       })
       .catch((error) => {
         console.error("Error - " + error);
       });
   };
+
   render() {
-    const mTop = {
-      marginTop: "100px",
-    };
+    const mTop = { marginTop: "100px"};
     const { theme } = this.state;
 
     return (

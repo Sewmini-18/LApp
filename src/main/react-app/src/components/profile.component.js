@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import "./pages/css/profile.css";
-import { Figure, Card, Button } from "react-bootstrap";
+import { Figure, Button } from "react-bootstrap";
 import userPic from "./pages/images/user.png";
 import axios from "axios";
 import HashLoader from "react-spinners/HashLoader";
@@ -26,9 +26,9 @@ export default class Profile extends Component {
   componentDidMount() {
     document.title = "Profile";
     const currentUser = AuthService.getCurrentUser();
-    console.log("id: " + currentUser.id);
     const userId = currentUser.id;
-    console.log("name: " + currentUser.name);
+    console.log("Current User Id: " + userId);
+    
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });
@@ -70,14 +70,12 @@ export default class Profile extends Component {
               break;
           }
           this.setState({ theme: themec, loading: true });
-          console.log("new color:- " + themec);
         }
       })
       .catch((error) => {
         console.error("Error - " + error);
         this.setState({ redirect: "/home" });
       });
-    console.log("Hi Hi2 " + this.setState.name + " ll");
   };
 
   render() {

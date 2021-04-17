@@ -79,5 +79,7 @@ public class CustomerRequest {
     public void setDate(String date) {
         this.date = date;
     }
+
+    
 }
 
