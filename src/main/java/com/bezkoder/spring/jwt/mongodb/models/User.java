@@ -35,6 +35,9 @@ public class User {
   @Size(max = 120)
   private String password;
 
+  @NotBlank
+  private Boolean emailVerified;
+
   @DBRef
   private Set<Role> roles = new HashSet<>();
 
@@ -52,8 +55,7 @@ public class User {
     this.date = date;
     this.password = password;
     this.theme = theme;
-
-
+    this.emailVerified= false;
   }
 
   public String getId() {
@@ -126,5 +128,13 @@ public class User {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }

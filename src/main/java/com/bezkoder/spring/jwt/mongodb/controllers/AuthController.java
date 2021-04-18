@@ -1,19 +1,24 @@
 package com.bezkoder.spring.jwt.mongodb.controllers;
 
-import com.bezkoder.spring.jwt.mongodb.models.ERole;
-import com.bezkoder.spring.jwt.mongodb.models.Role;
-import com.bezkoder.spring.jwt.mongodb.models.User;
-import com.bezkoder.spring.jwt.mongodb.models.UserLogRecord;
+import com.bezkoder.spring.jwt.mongodb.exception.BadRequestException;
+import com.bezkoder.spring.jwt.mongodb.exception.UserNotVerifiedException;
+import com.bezkoder.spring.jwt.mongodb.models.*;
 import com.bezkoder.spring.jwt.mongodb.payload.request.LoginRequest;
+import com.bezkoder.spring.jwt.mongodb.payload.request.ResetPasswordRequest;
+import com.bezkoder.spring.jwt.mongodb.payload.request.ResetPasswordVerifyRequest;
 import com.bezkoder.spring.jwt.mongodb.payload.request.SignupRequest;
-import com.bezkoder.spring.jwt.mongodb.payload.response.JwtResponse;
-import com.bezkoder.spring.jwt.mongodb.payload.response.MessageResponse;
+import com.bezkoder.spring.jwt.mongodb.payload.response.*;
 import com.bezkoder.spring.jwt.mongodb.repository.RoleRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.UserLogRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.UserRepository;
+import com.bezkoder.spring.jwt.mongodb.security.CustomUserDetailsService;
+import com.bezkoder.spring.jwt.mongodb.security.TokenProvider;
 import com.bezkoder.spring.jwt.mongodb.security.jwt.JwtUtils;
 import com.bezkoder.spring.jwt.mongodb.security.services.UserDetailsImpl;
 import com.bezkoder.spring.jwt.mongodb.security.services.UserDetailsServiceImpl;
+import com.bezkoder.spring.jwt.mongodb.service.AuthService;
+import com.bezkoder.spring.jwt.mongodb.service.EmailSenderService;
+import com.bezkoder.spring.jwt.mongodb.service.TempTokenGenerateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +26,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +41,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    @Autowired
+    private AuthService authService;
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -54,8 +65,29 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
+    private TempTokenGenerateService tempTokenGenerateService;
+
+    @Autowired
+    private EmailSenderService emailService;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private TokenProvider tokenProvider;
+
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        UserDetails user = userDetailsService.loadUserByUsername(loginRequest.getUsername());
+
+        if (userDetailsService.isAccountVerified(user.getUsername()) == false) {
+            throw new UserNotVerifiedException("Account is not Verified. Please check for confirmation email.");
+        }
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -83,6 +115,25 @@ public class AuthController {
                 roles
         ));
     }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+//        UserDetails user = userDetailsService.loadUserByUsername(loginRequest.getUsername());
+//
+//        if (userDetailsService.isAccountVerified(user.getUsername()) == false) {
+//            throw new UserNotVerifiedException("Account is not Verified. Please check for confirmation email.");
+//        }
+//
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        String token = tokenProvider.createToken(authentication);
+//        UserResponse userData = new UserResponse(authService.findByEmail(loginRequest.getUsername()));
+//
+//        return ResponseEntity.ok(new AuthResponse(userData, token, "Login Success"));
+//
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
@@ -122,7 +173,9 @@ public class AuthController {
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
+
                         break;
+
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -130,40 +183,135 @@ public class AuthController {
                 }
             });
         }
+
         user.setRoles(roles);
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
+        ConfirmationToken confirmationToken = authService.createToken(user);
+        emailSenderService.sendConfirmationMail(user.getUsername(), confirmationToken.getConfirmationToken());
+
+        return ResponseEntity.ok(new MessageResponse("Signup Successfully. Confirmation mail sent"));
     }
 
+
+//    @PostMapping("/register")
+//    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+//
+//        if (authService.existsByEmail(signUpRequest.getUsername())) {
+//            throw new BadRequestException("Email Already Exists.");
+//        }
+//
+//        User user = authService.saveUser(signUpRequest);
+//        ConfirmationToken confirmationToken = authService.createToken(user);
+//        emailSenderService.sendConfirmationMail(user.getUsername(), confirmationToken.getConfirmationToken());
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").buildAndExpand(user.getId()).toUri();
+//
+//        return ResponseEntity.created(location).body(new ApiResponse(true, "Signup Successfully. Confirmation mail sent"));
+//    }
+
+    @GetMapping("confirm-account")
+    public ResponseEntity<?> getMethodName(@RequestParam("token") String token) {
+        ConfirmationToken confirmationToken = authService.findByConfirmationToken(token);
+
+        if (confirmationToken == null) {
+            throw new BadRequestException("Invalid token");
+        }
+
+        User user = confirmationToken.getUser();
+        Calendar calendar = Calendar.getInstance();
+
+        if (user.getEmailVerified()) {
+            throw new BadRequestException("Account Already Verified");
+        }
+
+        if((confirmationToken.getExpiryDate().getTime() - calendar.getTime().getTime()) <= 0) {
+            ConfirmationToken newToken = authService.createToken(user);
+            emailSenderService.sendConfirmationMail(user.getUsername(), newToken.getConfirmationToken());
+            return ResponseEntity.ok(new ApiResponse(true, "Token Expired. New confirmation mail sent. Please check Inbox"));
+        }
+
+        user.setEmailVerified(true);
+        authService.save(user);
+        return ResponseEntity.ok(new ApiResponse(true, "Email Verified Successfully!"));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest emailRequest) {
+        if(authService.existsByEmail(emailRequest.getUsername())) {
+            Integer token = tempTokenGenerateService.generateToken(emailRequest.getUsername());
+            if (token == -1)
+            {
+                throw new BadRequestException("Unable to Reset Password. Try Again");
+            }
+
+            if(emailService.sendPasswordResetMail(emailRequest.getUsername(), Integer.toString(token))) {
+                return ResponseEntity.ok(new ApiResponse(true, "Password Reset Mail sent Successfully"));
+            }
+            throw new BadRequestException("Unable to Reset Password. Try Again");
+        } else {
+            throw new BadRequestException("Invalid Email.");
+        }
+    }
+
+    @PostMapping("/reset-password-verify")
+    public ResponseEntity<?> resetPasswordVerify(@Valid @RequestBody ResetPasswordVerifyRequest resetpasswordRequest) {
+        System.out.println("AuthControll : resetpasswordRequest "+resetpasswordRequest);
+        System.out.println("AuthControll : resetpasswordRequest "+resetpasswordRequest.getToken());
+        System.out.println("AuthControll : resetpasswordRequest "+resetpasswordRequest.getUsername());
+        System.out.println("AuthControll : resetpasswordRequest "+resetpasswordRequest.getPassword());
+        if(resetpasswordRequest.getToken() != null) {
+            Integer cacheToken = tempTokenGenerateService.getToken(resetpasswordRequest.getUsername());
+            if (cacheToken.equals(resetpasswordRequest.getToken()))
+            {
+                tempTokenGenerateService.clearToken(resetpasswordRequest.getUsername());
+                if(authService.changePassword(resetpasswordRequest.getUsername(), resetpasswordRequest.getPassword())) {
+                    return ResponseEntity.ok(new ApiResponse(true, "Password changed successfully"));
+                } else {
+                    throw new BadRequestException("Unable to change password. Try again!");
+                }
+            }
+            tempTokenGenerateService.clearToken(resetpasswordRequest.getUsername());
+        }
+        throw new BadRequestException("Invalid Token");
+    }
+
+
     @GetMapping("/users")
-    public List<User> findAll() {
+    public List<User> findAll () {
+
         return userRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> findByUsername(@PathVariable String id) {
+    public Optional<User> findByUsername (@PathVariable String id){
+
         return userRepository.findById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable String id) {
+    public ResponseEntity<User> updateUser (@RequestBody User user, @PathVariable String id){
         Optional<User> userData = userRepository.findById(id);
         if (userData.isPresent()) {
             System.out.println("reading user");
             User _user = userData.get();
+
             _user.setUsername(user.getUsername());
             _user.setName(user.getName());
             _user.setNic(user.getNic());
             _user.setPhone(user.getPhone());
             _user.setTheme(user.getTheme());
+
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
     }
 
     @PutMapping("color/{id}")
-    public ResponseEntity<User> updateUserTheme(@RequestBody User user, @PathVariable String id) {
+    public ResponseEntity<User> updateUserTheme (@RequestBody User user, @PathVariable String id){
         Optional<User> userData = userRepository.findById(id);
         if (userData.isPresent()) {
             System.out.println("reading theme color");
@@ -173,20 +321,26 @@ public class AuthController {
             //_user.setPassword((encoder.encode(user.getPassword())));
             //encoder.encode(signUpRequest.getPassword()))
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> removeUser(@PathVariable String id) {
         try {
             userRepository.deleteById(id);
-            System.out.println("Deleted user: " + id);
+            System.out.println("Deleted user: "+ id);
             ResponseEntity.ok(new MessageResponse("User deleted!"));
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
+
+
 }
