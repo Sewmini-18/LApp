@@ -28,7 +28,6 @@ export default class Footer extends Component {
           this.setState({
             theme: response.data.theme,
           });
-          //console.log("footer color "+this.state.theme);
         }
       })
       .catch((error) => {
@@ -44,18 +43,17 @@ export default class Footer extends Component {
     return (
       <div className="footer" fixed="bottom" style={{ position: "bottom" }}>
         <Col sm={6} style={mTop}>
-          {" "}
-        </Col>{" "}
+        </Col>
         <Navbar fixed="bottom" style={{ background: theme }}>
           <Container style={{ background: theme }}>
             <Col
               className="text-center"
               style={{ color: theme === "#d3d5fd" ? "#666666" : "#cccccc" }}
             >
-              <div> All rights reserved </div>{" "}
-            </Col>{" "}
-          </Container>{" "}
-        </Navbar>{" "}
+              <div> All rights reserved </div>
+            </Col>
+          </Container>
+        </Navbar>
       </div>
     );
   }

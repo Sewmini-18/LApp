@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.validation.Valid;       
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -21,9 +21,8 @@ public class CustomerDetailsController {
 
     @Autowired
     CustomerRequestRepository customerRequestRepository;
-
-
     
+    //add request
     @PostMapping("/customer")
     public ResponseEntity<?> customerRequest(@Valid @RequestBody CustomerRequest customerRequest) {
         CustomerDetails request = new CustomerDetails(customerRequest.getEmail(),
@@ -39,7 +38,7 @@ public class CustomerDetailsController {
         return ResponseEntity.ok(new MessageResponse("Customer request saved successfully!"));
     }
 
-
+    //get requests
     @GetMapping("/requests")
     public List<CustomerDetails> getAllCustomerRequests() {
         System.out.println("Get all Customer Requests...");
@@ -47,6 +46,7 @@ public class CustomerDetailsController {
         return customerRequestRepository.findAll();
     }
 
+    //delete requests
     @DeleteMapping("/request/{id}")
     public ResponseEntity<HttpStatus> removeRequest(@PathVariable String id) {
         try {
@@ -60,11 +60,5 @@ public class CustomerDetailsController {
         }
 
     }
-
-
-
-
-
-
 
 }

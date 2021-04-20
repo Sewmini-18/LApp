@@ -722,7 +722,7 @@ input {
      ========================================================================== */
 
 .title {
-    font-size: 24px;
+    font-size: 20px;
     text-transform: uppercase;
     font-weight: 700;
     text-align: center;
@@ -765,6 +765,13 @@ input {
 .card-5 .card-body {
     padding: 12px 25px;
     padding-bottom: 23px;
+}
+
+.error-form {
+    color: #db2269;
+    font-size: 12px;
+    display: relative;
+    padding: 20px;
 }
 
 @media (max-width: 767px) {

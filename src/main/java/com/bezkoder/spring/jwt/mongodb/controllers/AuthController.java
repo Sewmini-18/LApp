@@ -54,6 +54,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    //User login
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -84,15 +85,23 @@ public class AuthController {
                 ));
     }
 
+
+    //User register
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByNic(signUpRequest.getNic()) && userRepository.existsByUsername(signUpRequest.getUsername()) ) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: NIC and Email is already in use!"));
+        }
+        
+        else if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByNic(signUpRequest.getNic())) {
+        else if (userRepository.existsByNic(signUpRequest.getNic())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: NIC is already in use!"));
@@ -146,6 +155,7 @@ public class AuthController {
             return userRepository.findAll();
         }
 
+        //View user
         @GetMapping("/{id}")
         public Optional<User> findByUsername (@PathVariable String id){
 
@@ -172,6 +182,7 @@ public class AuthController {
 
         }
 
+    //change theme color
     @PutMapping("color/{id}")
     public ResponseEntity<User> updateUserTheme (@RequestBody User user, @PathVariable String id){
         Optional<User> userData = userRepository.findById(id);
@@ -188,6 +199,7 @@ public class AuthController {
 
     }
 
+    //delete user
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> removeUser(@PathVariable String id) {
         try {

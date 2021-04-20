@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import "./pages/css/profile.css";
-import { Figure, Card, Button } from "react-bootstrap";
+import { Figure, Button } from "react-bootstrap";
 import userPic from "./pages/images/user.png";
 import axios from "axios";
 import HashLoader from "react-spinners/HashLoader";
@@ -26,9 +26,8 @@ export default class Profile extends Component {
   componentDidMount() {
     document.title = "Profile";
     const currentUser = AuthService.getCurrentUser();
-    console.log("id: " + currentUser.id);
     const userId = currentUser.id;
-    console.log("name: " + currentUser.name);
+
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });
@@ -70,14 +69,12 @@ export default class Profile extends Component {
               break;
           }
           this.setState({ theme: themec, loading: true });
-          console.log("new color:- " + themec);
         }
       })
       .catch((error) => {
         console.error("Error - " + error);
         this.setState({ redirect: "/home" });
       });
-    console.log("Hi Hi2 " + this.setState.name + " ll");
   };
 
   render() {
@@ -98,12 +95,12 @@ export default class Profile extends Component {
                     <div className="row container">
                       <div className="col-xl-12 col-md-12">
                         <div className="row m-l-0 m-r-0">
-                          <div className="col-sm-4 bg-c-lite-green user-profile">
+                          <div className="col-sm-4 bg-c-lite-color user-profile">
                             <div
                               style={{ color: "black" }}
                               className="card-block text-center "
                             >
-                              <div className="m-b-25">
+                              <div className="m-b-25 ">
                                 <Figure>
                                   <Figure.Image
                                     width={120}
@@ -116,9 +113,11 @@ export default class Profile extends Component {
                                   </Figure.Caption>
                                 </Figure>
                               </div>
-                              <h4 className="f-w-600 name-style">{this.state.name}</h4>
+                              <h4 className="f-w-600 name-style">
+                                {this.state.name}
+                              </h4>
                               <br />
-                            
+
                               {currentUser.roles.includes("ROLE_ADMIN") ? (
                                 <p>Admin</p>
                               ) : (

@@ -1,35 +1,15 @@
 import React, { Component } from "react";
 import "./css/customerFormStyle.css";
-import { Button, withStyles } from "@material-ui/core";
-import { purple } from "@material-ui/core/colors";
-import { Row, Jumbotron } from "react-bootstrap";
-
+import { Row, Jumbotron, Form, Button } from "react-bootstrap";
 import IconButton from "@material-ui/core/IconButton";
-
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Tooltip from "@material-ui/core/Tooltip";
-import ActionAlerts from "../alert";
 import axios from "axios";
 
-const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(purple[500]),
-    backgroundColor: "#ff4b5a",
-    borderRadius: "25px 25px",
-    // marginLeft: '15px',
-    width: "150px",
-    height: "40px",
-
-    "&:hover": {
-      backgroundColor: "#eb3746",
-    },
-    "&:disabled": {
-      backgroundColor: "#d66a73",
-      opacity: 0.7,
-      color: "white",
-    },
-  },
-}))(Button);
+const validEmailRegex = RegExp(
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
+const validNic = RegExp(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/);
 
 class CustomerForm extends Component {
   constructor(props) {
@@ -42,11 +22,20 @@ class CustomerForm extends Component {
 
   intialState = {
     cname: "",
+    successful: false,
+    message: "",
     cemail: "",
     cphone: "",
     creason: "",
     cnic: "",
     alert: "",
+    errors: {
+      cname: "",
+      cemail: "",
+      cphone: "",
+      cnic: "",
+      creason: "",
+    },
   };
 
   componentDidMount() {
@@ -54,9 +43,12 @@ class CustomerForm extends Component {
   }
 
   submitCustomer = (event) => {
-    //alert(this.state.password);
     event.preventDefault();
     console.log(this.state);
+    this.setState({
+      message: "",
+      successful: false,
+    });
     let cemail = this.state.cemail.toLowerCase();
     let date = new Date().toLocaleString() + "";
 
@@ -73,26 +65,49 @@ class CustomerForm extends Component {
       .post("http://localhost:8080/api/auth/customer", customerReq)
       .then((response) => {
         if (response.data != null) {
-          this.setState({ alert: "success" });
-          setTimeout(() => this.setState({ alert: "" }), 2000);
+          this.setState({ message: "success", successful: true });
+          setTimeout(() => this.setState({ message: "" }), 3000);
+          setTimeout(() => this.setState(this.intialState), 2000);
           console.log("Succesfully added");
         }
+        //this.setState(this.intialState);
       })
       .catch((error) => {
-        this.setState({ alert: "error" });
-        console.log("Bad crediential");
+        this.setState({ message: "error" });
+        setTimeout(() => this.setState({ message: "" }), 3000);
       });
-    this.setState(this.intialState);
   };
 
   custChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = this.state.errors;
+
+    switch (name) {
+      case "cname":
+        errors.cname =
+          value.length < 5 ? "Name must be at least 5 characters long!" : "";
+        break;
+      case "cemail":
+        errors.cemail = validEmailRegex.test(value)
+          ? ""
+          : "Email is not valid!";
+        break;
+      case "cnic":
+        errors.cnic = validNic.test(value) ? "" : "NIC is not valid!";
+        break;
+      case "cphone":
+        errors.cphone =
+          value.length < 10 ? "Phone Number must be 10 characters long!" : "";
+        break;
+      default:
+        break;
+    }
+    this.setState({ errors, [name]: value });
   };
 
   render() {
-    const { cname, cemail, cnic, cphone, creason, alert } = this.state;
+    const { cname, cemail, cnic, cphone, creason, errors } = this.state;
 
     return (
       <div>
@@ -110,148 +125,159 @@ class CustomerForm extends Component {
                     <ListAltIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-              </div>{" "}
-              <Jumbotron style={{ width: "60rem" }}>
-                <div>
+              </div>
+              <Form onSubmit={this.submitCustomer}>
+                <Jumbotron style={{ width: "60rem" }}>
                   <div>
-                    <div className="card card-5">
-                      <div className="card-heading">
-                        <h2 className="title">
-                          {" "}
-                          Customer Details Collection Form:{" "}
-                        </h2>
-                        <br />
-                      </div>{" "}
-                      <div className="card-body">
-                        <form id="customerForm">
-                          <div className="form-row">
-                            <div className="name"> Customer Name </div>{" "}
-                            <div className="value">
-                              <div className="input-group">
-                                <input
-                                  className="input--style-5"
-                                  placeholder="Name here"
-                                  type="text"
-                                  id="name"
-                                  name="cname"
-                                  value={cname}
-                                  minLength="5"
-                                  onChange={this.custChange}
-                                  required
-                                />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
-                          <div className="form-row">
-                            <div className="name"> NIC No </div>{" "}
-                            <div className="value">
-                              <div className="input-group">
-                                <input
-                                  className="input--style-5"
-                                  type="text"
-                                  value={cnic}
-                                  name="cnic"
-                                  placeholder="NIC Number "
-                                  onChange={this.custChange}
-                                  required
-                                />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
-                          <div className="form-row">
-                            <div className="name"> Email </div>{" "}
-                            <div className="value">
-                              <div className="input-group">
-                                <input
-                                  className="input--style-5"
-                                  type="email"
-                                  value={cemail}
-                                  name="cemail"
-                                  placeholder="Email here"
-                                  onChange={this.custChange}
-                                  required
-                                />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>{" "}
-                          <div className="form-row">
-                            <div className="name"> Contact Number </div>{" "}
-                            <div className="value">
-                              <div className="input-group">
-                                <input
-                                  className="input--style-5"
-                                  type="text"
-                                  value={cphone}
-                                  name="cphone"
-                                  placeholder="Contact No here"
-                                  onChange={this.custChange}
-                                  required
-                                />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>
-                          <div className="form-row">
-                            <div className="name"> Reason / Request </div>{" "}
-                            <div className="value">
-                              <div className="input-group">
-                                <input
-                                  className="input--style-5"
-                                  type="text"
-                                  value={creason}
-                                  placeholder="Reason for request"
-                                  name="creason"
-                                  onChange={this.custChange}
-                                  required
-                                />
-                              </div>{" "}
-                            </div>{" "}
-                          </div>
-                          <div>
-                            <ColorButton
-                              type="submit"
-                              onClick={this.submitCustomer}
-                              variant="contained"
-                              className="abutton"
-                            >
-                              {" "}
-                              Submit{" "}
-                            </ColorButton>
-                          </div>
-                          <br /><br/>
-                          <div style={{alignItems:'center'}}>
-                            {" "}
-                            <br />{" "}
-                            {this.state.alert === "error" ? (
-                              <ActionAlerts
-                                name="alert"
-                                value={alert}
-                                children={{
-                                  severity: "error",
-                                  message: "Something went wrong...!",
-                                }}
-                              />
-                            ) : null}{" "}
-                            {this.state.alert === "success" ? (
-                              <ActionAlerts
-                                name="alert"
-                                value={alert}
-                                children={{
-                                  severity: "success",
-                                  message: "Successfully added Request..",
-                                }}
-                              />
+                    <div>
+                      <div className="card card-5">
+                        <div className="card-heading">
+                          <h4 className="title">
+                            Customer Requst Details Collecting Form
+                          </h4>
+                          <br />
+                        </div>
+                        <div className="card-body">
+                          <form id="customerForm">
+                            <div className="form-row">
+                              <div className="name"> Customer Name </div>
+                              <div className="value">
+                                <div>
+                                  {errors.cname.length > 0 && (
+                                    <span className="error-form">
+                                      {errors.cname}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="input-group">
+                                  <input
+                                    className="input--style-5"
+                                    placeholder="Name here"
+                                    type="text"
+                                    id="name"
+                                    name="cname"
+                                    value={cname}
+                                    autoComplete="off"
+                                    onChange={this.custChange}
+                                    required
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="name"> NIC No </div>
+                              <div className="value">
+                                {errors.cnic.length > 0 && (
+                                  <span className="error-form">
+                                    {errors.cnic}
+                                  </span>
+                                )}
+                                <div className="input-group">
+                                  <input
+                                    className="input--style-5"
+                                    type="text"
+                                    value={cnic}
+                                    name="cnic"
+                                    placeholder="NIC Number "
+                                    autoComplete="off"
+                                    onChange={this.custChange}
+                                    required
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="name"> Email </div>
+                              <div className="value">
+                                {errors.cemail.length > 0 && (
+                                  <span className="error-form">
+                                    {errors.cemail}
+                                  </span>
+                                )}
+                                <div className="input-group">
+                                  <input
+                                    className="input--style-5"
+                                    type="email"
+                                    value={cemail}
+                                    name="cemail"
+                                    placeholder="Email here"
+                                    autoComplete="off"
+                                    onChange={this.custChange}
+                                    required
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="name"> Contact Number </div>
+                              <div className="value">
+                                {errors.cphone.length > 0 && (
+                                  <span className="error-form">
+                                    {errors.cphone}
+                                  </span>
+                                )}
+                                <div className="input-group">
+                                  <input
+                                    className="input--style-5"
+                                    type="text"
+                                    value={cphone}
+                                    name="cphone"
+                                    placeholder="Contact No here"
+                                    onChange={this.custChange}
+                                    autoComplete="off"
+                                    required
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="name"> Reason / Request </div>
+                              <div className="value">
+                                <div className="input-group">
+                                  <input
+                                    className="input--style-5"
+                                    type="text"
+                                    value={creason}
+                                    placeholder="Reason for request"
+                                    name="creason"
+                                    autoComplete="off"
+                                    onChange={this.custChange}
+                                    required
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <Button type="submit" variant="warning">
+                                {" "}
+                                Submit{" "}
+                              </Button>
+                            </div>
+                            <br />
+                            <br />
+                            <div style={{ alignItems: "center" }}>
+                              <br /> &nbsp;&nbsp;{" "}
+                            </div>
+                            {this.state.message === "error" ? (
+                              <div className="alert alert-danger" role="alert">
+                                Please provide valid information!
+                              </div>
                             ) : null}
-                            &nbsp;&nbsp;{" "}
-                          </div>{" "}
-                        </form>{" "}
-                      </div>{" "}
-                    </div>{" "}
-                  </div>{" "}
-                </div>{" "}
-              </Jumbotron>{" "}
+                            {this.state.message === "success" ? (
+                              <div className="alert alert-success" role="alert">
+                                Successfully added a new customer request
+                              </div>
+                            ) : null}
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Jumbotron>
+              </Form>
             </div>
-          </Row>{" "}
-        </div>{" "}
+          </Row>
+        </div>
       </div>
     );
   }
