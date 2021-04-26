@@ -155,8 +155,7 @@ class View extends Component {
                                         className="btn btn-outline-info" onClick={() => this.exportPDF()}> Export as pdf
                                 </button>
                                 <button style={{marginRight: "2%", marginTop: "0.25%"}} type="button"
-                                        className="btn btn-outline-success" onClick={() => this.exportFTP()}> Export to
-                                    FTP
+                                        className="btn btn-outline-success" onClick={() => this.exportFTP()}> Export to FTP
                                 </button>
                             </div>
                         ) : (

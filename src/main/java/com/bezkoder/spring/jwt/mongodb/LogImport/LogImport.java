@@ -14,6 +14,7 @@ import org.bson.types.ObjectId;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,9 +31,9 @@ public class LogImport {
     }
 
     public void run(File file, JSONArray arr) throws IOException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
         Pcap pcap = Pcap.openStream(file);
-
         String fileName = file.getName();
         pcap.loop(
                 packet -> {
@@ -44,14 +45,13 @@ public class LogImport {
 
                     } else if (packet.hasProtocol(Protocol.UDP)) {
                         UDPPacket packet2 = (UDPPacket) packet.getPacket(Protocol.UDP);
-                        dataArray(arr, formatter, obj, packet2.getArrivalTime(), packet2.getSourceIP(), packet2.getDestinationIP(), packet2.getProtocol(), packet2.getTotalLength());
+                        dataArray(arr, formatter, obj, packet2.getArrivalTime(), packet2.getSourceIP(),packet2.getDestinationIP(), packet2.getProtocol(), packet2.getTotalLength());
                     }
 
 
                     return packet.getNextPacket() != null;
                 }
         );
-        //System.out.println(arr);
         Calendar calendar = Calendar.getInstance();
         String now = String.valueOf(calendar.getTime());
 
