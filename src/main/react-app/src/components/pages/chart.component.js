@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {Bar, Line} from 'react-chartjs-2'
-
 import {Card} from "react-bootstrap";
+import {round} from "@tensorflow/tfjs-core";
 
-class HorizontalBarChart extends Component {
+class Chart extends Component {
     state = {
-        data1: [],
         loading: false,
+        data1: [],
         labels1: [[]],
         data2: [],
         labels2: [[]],
@@ -17,10 +17,6 @@ class HorizontalBarChart extends Component {
         labels4: [[]],
         data5: [],
         labels5: [[]],
-        data6: [],
-        labels6: [[]],
-        data7: [],
-        labels7: [[]]
     };
 
     async componentDidMount() {
@@ -29,24 +25,29 @@ class HorizontalBarChart extends Component {
                 `http://localhost:8080/api/auth/log?fileId=${this.props.match.params.id}`
             )
             .then((res) => {
-                console.log(res.data);
                 //1st chart
                 const dataArrayY1 = [];
                 res.data.map(item => {
-                    dataArrayY1.push(item.length)
+                    dataArrayY1.push(item.source)
                 })
-                const dataArrayX1 = []
-                res.data.map(item => {
-                    dataArrayX1.push(item.source)
+                let tmp1 = [];
+                let count1 = 1
+                res.data.map((o) => {
+                    const existing = tmp1.find(e => e.source === o.source);
+                    if (existing) {
+                        existing.count1++;
+                    } else {
+                        tmp1.push({count1: count1, source: o.source});
+                    }
                 })
                 this.setState({
-                    data1: dataArrayY1,
-                    labels1: dataArrayX1,
+                    data1: tmp1.map(o => o.count1),
+                    labels1: tmp1.map(o => o.source),
                 });
                 //2nd chart
                 const dataArrayY2 = [];
                 res.data.map(item => {
-                    dataArrayY2.push(item.time)
+                    dataArrayY2.push(item.length)
                 })
                 const dataArrayX2 = []
                 res.data.map(item => {
@@ -72,77 +73,41 @@ class HorizontalBarChart extends Component {
                 //4th chart
                 const dataArrayY4 = [];
                 res.data.map(item => {
-                    dataArrayY4.push(item.time)
+                    dataArrayY4.push(item.destination)
                 })
-                const dataArrayX4 = []
-                res.data.map(item => {
-                    dataArrayX4.push(item.destination)
+                let tmp4 = [];
+                let count4 = 1;
+                res.data.map((o) => {
+                    const existing = tmp4.find(e => e.destination === o.destination);
+                    if (existing) {
+                        existing.count4++;
+                    } else {
+                        tmp4.push({count4: count4, destination: o.destination});
+                    }
                 })
                 this.setState({
-                    data4: dataArrayY4,
-                    labels4: dataArrayX4,
+                    data4: tmp4.map(o => o.count4),
+                    labels4: tmp4.map(o => o.destination),
                 });
                 //5th chart
                 const dataArrayY5 = [];
                 res.data.map(item => {
-                    dataArrayY5.push(item.source)
+                    dataArrayY5.push(item.protocol)
                 })
                 let tmp5 = [];
-                let count5=1
-                res.data.map((o, i) => {
-                    const existing = tmp5.find(e => e.source == o.source);
+                let count5 = 1;
+                res.data.map((o) => {
+                    const existing = tmp5.find(e => e.protocol === o.protocol);
                     if (existing) {
                         existing.count5++;
                     } else {
-                        tmp5.push({count5: count5, source: o.source});
+                        tmp5.push({count5: count5, protocol: o.protocol});
                     }
                 })
-
                 this.setState({
                     data5: tmp5.map(o => o.count5),
-                    labels5: tmp5.map(o => o.source),
+                    labels5: tmp5.map(o => o.protocol),
                 });
-                //6th chart
-                const dataArrayY6 = [] ;
-                res.data.map(item => {
-                    dataArrayY6.push(item.destination)
-                })
-                let tmp6 = [];
-                let count6=1;
-                res.data.map((o, i) => {
-                    const existing = tmp6.find(e => e.destination == o.destination);
-                    if (existing) {
-                        existing.count6++ ;
-                    } else {
-                        tmp6.push({count6: count6, destination: o.destination});
-                    }
-                })
-
-                this.setState({
-                    data6: tmp6.map(o => o.count6),
-                    labels6: tmp6.map(o => o.destination),
-                });
-                //7th chart
-                const dataArrayY7 = [] ;
-                res.data.map(item => {
-                    dataArrayY7.push(item.protocol)
-                })
-                let tmp7 = [];
-                let count7=1;
-                res.data.map((o, i) => {
-                    const existing = tmp7.find(e => e.protocol == o.protocol);
-                    if (existing) {
-                        existing.count7++ ;
-                    } else {
-                        tmp7.push({count7: count7, protocol: o.protocol});
-                    }
-                })
-
-                this.setState({
-                    data7: tmp7.map(o => o.count7),
-                    labels7: tmp7.map(o => o.protocol),
-                });
-
             })
             .catch(function (error) {
                 console.log(error);
@@ -154,155 +119,160 @@ class HorizontalBarChart extends Component {
 
 
     render() {
-
         return (
             <div>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Source vs Length</Card.Title>
+                        <Card.Title>No. of times each source address accessed</Card.Title>
                         <Bar
                             data={{
                                 labels: this.state.labels1,
                                 datasets: [{
-                                    label: 'source vs Length',
+                                    label: 'X-axis: Source address, Y-axis: Count',
                                     data: this.state.data1,
-                                    backgroundColor: 'blue'
+                                    backgroundColor: '#FFFF66',
+                                    scaleBeginAtZero: true,
+                                    borderColor: 'red',
+                                    borderWidth: 2
                                 }],
                             }}
                             height={20}
                             width={95}
-                            options={{maintainAspectRatio: false}}
-
+                            options={{
+                                maintainAspectRatio: false, scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Source vs Time</Card.Title>
+                        <Card.Title>Packet Length of each source addresses</Card.Title>
                         <Line
                             data={{
                                 labels: this.state.labels2,
                                 datasets: [{
-                                    label: 'source vs time',
+                                    label: 'X-axis: Source address, Y-axis: Packet Length',
                                     data: this.state.data2,
-                                    borderColor: 'purple'
+                                    borderColor: 'blue',
+                                    backgroundColor: '#99ccff',
+                                    scaleBeginAtZero: true,
+                                    lineJoin: round
                                 }],
                             }}
                             height={20}
                             width={95}
-                            options={{maintainAspectRatio: false}}
-
+                            options={{
+                                maintainAspectRatio: false, scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Destination vs Length</Card.Title>
-                        <Bar
+                        <Card.Title>Packet Length of each destination addresses</Card.Title>
+                        <Line
                             data={{
                                 labels: this.state.labels3,
                                 datasets: [{
-                                    label: 'destination vs length',
+                                    label: 'X-axis: Destination address, Y-axis: Packet Length',
                                     data: this.state.data3,
-                                    backgroundColor: 'green'
+                                    borderColor: 'green',
+                                    backgroundColor: '#90ee90',
+                                    scaleBeginAtZero: true,
                                 }],
                             }}
                             height={20}
                             width={95}
-                            options={{maintainAspectRatio: false}}
-
+                            options={{
+                                maintainAspectRatio: false, scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Destination vs Time</Card.Title>
-                        <Line
+                        <Card.Title>No. of times each destination address accessed</Card.Title>
+                        <Bar
                             data={{
                                 labels: this.state.labels4,
                                 datasets: [{
-                                    label: 'destination vs time',
+                                    label: 'X-axis: Destination address, Y-axis: Count',
                                     data: this.state.data4,
-                                    borderColor: 'red'
+                                    backgroundColor: '#fed8b1',
+                                    scaleBeginAtZero: true,
+                                    borderWidth: 2,
+                                    borderColor: 'Maroon'
                                 }],
                             }}
                             height={20}
                             width={95}
-                            options={{maintainAspectRatio: false}}
-
+                            options={{
+                                maintainAspectRatio: false, scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
                         />
                     </Card.Body>
                 </Card>
                 <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
                     <Card.Body>
-                        <Card.Title>Source vs Count</Card.Title>
+                        <Card.Title>No. of times each Protocol accessed</Card.Title>
                         <Bar
                             data={{
                                 labels: this.state.labels5,
                                 datasets: [{
-                                    label: 'Source vs count',
+                                    label: 'X-axis: Type of Protocol, Y-axis: Count',
                                     data: this.state.data5,
-                                    borderColor: 'red',
-                                    backgroundColor: 'yellow'
+                                    backgroundColor: '#b19cd9',
+                                    scaleBeginAtZero: true,
+                                    borderWidth: 2,
+                                    borderColor: 'Purple'
                                 }],
                             }}
                             height={20}
                             width={95}
-                            options={{maintainAspectRatio: false}}
-
-                        />
-                    </Card.Body>
-                </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
-                    <Card.Body>
-                        <Card.Title>Destination vs Count</Card.Title>
-                        <Bar
-                            data={{
-                                labels: this.state.labels6,
-                                datasets: [{
-                                    label: 'Destination vs count',
-                                    data: this.state.data6,
-                                    borderColor: 'red',
-                                    backgroundColor: 'orange'
-                                }],
+                            options={{
+                                maintainAspectRatio: false, scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
                             }}
-                            height={20}
-                            width={95}
-                            options={{maintainAspectRatio: false}}
-
-                        />
-                    </Card.Body>
-                </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Header></Card.Header>
-                    <Card.Body>
-                        <Card.Title>Protocol vs Count</Card.Title>
-                        <Bar
-                            data={{
-                                labels: this.state.labels7,
-                                datasets: [{
-                                    label: 'Protocol vs count',
-                                    data: this.state.data7,
-                                    backgroundColor: 'brown'
-                                }],
-                            }}
-                            height={20}
-                            width={95}
-                            options={{maintainAspectRatio: false}}
-
                         />
                     </Card.Body>
                 </Card>
             </div>
-
         );
     }
 }
 
-export default HorizontalBarChart;
+export default Chart;

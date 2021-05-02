@@ -25,5 +25,3 @@ npm install
 ######  customer request form: http://localhost:8081/home/customerform
 ######  request details: http://localhost:8081/home/request
 
-
-

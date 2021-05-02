@@ -39,6 +39,7 @@ export default class EditUser extends Component {
     nic: "",
     phone: "",
     id: "",
+    alert: "",
     currentUser: { id: "" },
     errors: {
       name: "",
@@ -57,6 +58,7 @@ export default class EditUser extends Component {
     document.title = "Edit Profile";
     const currentUser = AuthService.getCurrentUser();
     const userId = currentUser.id;
+
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });
@@ -87,7 +89,6 @@ export default class EditUser extends Component {
   updateUser = (event) => {
     event.preventDefault();
     this.setState({
-      message: "",
       successful: false,
     });
 
@@ -101,7 +102,7 @@ export default class EditUser extends Component {
       ).then(
         (response) => {
           this.setState({
-            message: response.data.message,
+            message: "",
             successful: true,
           });
         },
@@ -120,8 +121,11 @@ export default class EditUser extends Component {
         }
       );
     }
-    this.setState(this.initialState);
-    setTimeout(() => this.profile(), 3000);
+
+    this.setState({ alert: "success" });
+    setTimeout(() => this.setState({ alert: " " }), 3000);
+    setTimeout(() => this.profile(), 1000);
+
   };
 
   setColor1 = (color) => {
@@ -175,7 +179,7 @@ export default class EditUser extends Component {
                     <div className="row container">
                       <div className="col-xl-12 col-md-12">
                         <div className="row m-l-0 m-r-0">
-                          <div className="col-sm-4 bg-c-lite-green user-profile">
+                          <div className="col-sm-4 bg-c-lite-color user-profile">
                             <div className="card-block text-center text-white">
                               <div className="m-b-25">
                                 <Figure>
@@ -326,22 +330,31 @@ export default class EditUser extends Component {
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="row mt-3 m-l-5">
-                              <Button
-                                variant="primary"
-                                type="submit"
-                                className="ml-3"
-                              >
-                                Update
-                              </Button>
-                              <Button
-                                className="ml-3"
-                                href="../profile"
-                                variant="danger"
-                              >
-                                Cancel
-                              </Button>
+                              {this.state.alert === "success" ? (
+                                <div
+                                  className="alert alert-primary"
+                                  role="alert"
+                                  size="sm"
+                                >
+                                  Profile updated!
+                                </div>
+                              ) : null}
+                              <div className="row mt-3 m-l-5 m-b-5">
+                                <Button
+                                  variant="primary"
+                                  type="submit"
+                                  className="ml-3"
+                                >
+                                  Update
+                                </Button>
+                                <Button
+                                  className="ml-3"
+                                  href="../profile"
+                                  variant="danger"
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </div>

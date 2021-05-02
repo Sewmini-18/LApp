@@ -1,12 +1,7 @@
 import React, { Component } from "react";
-import {
-  Navbar,
-  Nav,
-  Col,
-  Form,
-  ButtonGroup,
-  Button,
-} from "react-bootstrap";
+
+import { Navbar, Nav, Col, Form, ButtonGroup, Button } from "react-bootstrap";
+
 import { withRouter } from "react-router-dom";
 import { Dvr } from "@material-ui/icons";
 import AuthService from "../../services/auth.service";
@@ -140,8 +135,13 @@ class Header extends Component {
   };
 
   render() {
-    const { currentUser,theme } = this.state;
-    const mTop = {marginTop: "20px"};
+
+    const { currentUser, theme } = this.state;
+
+    const mTop = {
+      marginTop: "20px",
+    };
+
 
     return (
       <div>
