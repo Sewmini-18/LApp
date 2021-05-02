@@ -89,12 +89,13 @@ public class AuthController {
     //User register
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
         if (userRepository.existsByNic(signUpRequest.getNic()) && userRepository.existsByUsername(signUpRequest.getUsername()) ) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: NIC and Email is already in use!"));
         }
-        
+
         else if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -106,6 +107,8 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: NIC is already in use!"));
         }
+
+        
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
@@ -173,6 +176,11 @@ public class AuthController {
     }
 
 
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+
 
     //change theme color
     @PutMapping("color/{id}")
@@ -202,5 +210,8 @@ public class AuthController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+    }
+
     }
 }

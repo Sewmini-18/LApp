@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Button, Col, Container, Card, CardDeck } from "react-bootstrap";
 import AuthService from "../services/auth.service";
 import axios from "axios";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 
 class Home extends Component {
@@ -44,7 +44,6 @@ class Home extends Component {
           this.setState({
             theme: response.data.theme,
           });
-          console.log("theme2:-" + this.state.theme);
 
           let themec = this.state.theme;
           switch (themec) {

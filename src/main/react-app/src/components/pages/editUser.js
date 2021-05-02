@@ -7,7 +7,6 @@ import {
   InputGroup,
   FormControl,
   Button,
-  ButtonGroup,
   Form,
 } from "react-bootstrap";
 import userPic from "../pages/images/user.png";
@@ -77,6 +76,7 @@ export default class EditUser extends Component {
             username: response.data.username,
             nic: response.data.nic,
             phone: response.data.phone,
+            
           });
         }
       })
@@ -88,7 +88,6 @@ export default class EditUser extends Component {
 
   updateUser = (event) => {
     event.preventDefault();
-
     this.setState({
       successful: false,
     });
@@ -122,9 +121,11 @@ export default class EditUser extends Component {
         }
       );
     }
+
     this.setState({ alert: "success" });
     setTimeout(() => this.setState({ alert: " " }), 3000);
     setTimeout(() => this.profile(), 1000);
+
   };
 
   setColor1 = (color) => {
@@ -271,6 +272,38 @@ export default class EditUser extends Component {
                                     {errors.username.length > 0 && (
                                       <span className="errorEdit">
                                         {errors.username}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="col-sm-6 m-b-10">
+                                  <p className="m-b-10 f-w-600">Password</p>
+                                  <div>
+                                    <InputGroup size="sm" className="mb-3">
+                                      <FormControl
+                                        aria-label="Small"
+                                        name="password"
+                                        value={this.state.password}
+                                        onChange={this.handleProfile}
+                                        aria-describedby="inputGroup-sizing-sm"
+                                      />
+                                    </InputGroup>
+                                  </div>
+                                  <div>
+                                    <InputGroup size="sm" className="mb-3">
+                                      <FormControl
+                                        aria-label="Small"
+                                        name="confirm password"
+                                        value={this.state.password}
+                                        onChange={this.handleProfile}
+                                        aria-describedby="inputGroup-sizing-sm"
+                                      />
+                                    </InputGroup>
+                                  </div>
+                                  <div>
+                                    {errors.phone.length > 0 && (
+                                      <span className="errorEdit">
+                                        {errors.phone}
                                       </span>
                                     )}
                                   </div>

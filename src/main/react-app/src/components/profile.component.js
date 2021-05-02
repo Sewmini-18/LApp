@@ -27,7 +27,6 @@ export default class Profile extends Component {
     document.title = "Profile";
     const currentUser = AuthService.getCurrentUser();
     const userId = currentUser.id;
-
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });

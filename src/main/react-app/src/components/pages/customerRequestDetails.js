@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Table, OverlayTrigger } from "react-bootstrap";
+import React, { Component } from "react";
+import { Table } from "react-bootstrap";
 import axios from "axios";
 import HashLoader from "react-spinners/HashLoader";
 import IconButton from "@material-ui/core/IconButton";
@@ -22,28 +22,24 @@ class customerRequestDetails extends Component {
       .get("http://localhost:8080/api/auth/requests")
       .then((response) => response.data)
       .then((data) => {
-        console.log("hijjhh");
         this.setState({ requests: data, loading: true });
       });
     document.title = "Customer Requests";
   }
 
   deleteReq = (reqId) => {
-    //this.props.deleteBook(bookId);
-
+ 
     axios
       .delete("http://localhost:8080/api/auth/request/" + reqId)
       .then((response) => {
         if (response.data != null) {
-          this.setState({ show: true });
-          setTimeout(() => this.setState({ show: false }), 3000);
           this.setState({
             requests: this.state.requests.filter((data) => data.id !== reqId),
           });
-          // window.location.reload(false);
-        } else {
-          this.setState({ show: false });
         }
+      })
+      .catch((error) => {
+        console.error("Error - " + error);
       });
   };
 

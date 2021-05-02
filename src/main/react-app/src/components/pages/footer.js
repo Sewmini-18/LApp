@@ -34,10 +34,9 @@ export default class Footer extends Component {
         console.error("Error - " + error);
       });
   };
+
   render() {
-    const mTop = {
-      marginTop: "100px",
-    };
+    const mTop = { marginTop: "100px"};
     const { theme } = this.state;
 
     return (

@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import "./css/customerFormStyle.css";
+
+import { Button, withStyles } from "@material-ui/core";
+import { purple } from "@material-ui/core/colors";
+
 import { Row, Jumbotron, Form, Button } from "react-bootstrap";
+
 import IconButton from "@material-ui/core/IconButton";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
 
+
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 );
 const validNic = RegExp(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/);
+
 
 class CustomerForm extends Component {
   constructor(props) {
@@ -44,11 +51,7 @@ class CustomerForm extends Component {
 
   submitCustomer = (event) => {
     event.preventDefault();
-    console.log(this.state);
-    this.setState({
-      message: "",
-      successful: false,
-    });
+
     let cemail = this.state.cemail.toLowerCase();
     let date = new Date().toLocaleString() + "";
 
@@ -116,16 +119,18 @@ class CustomerForm extends Component {
           <Row>
             <div className="wrapper p-b-45">
               <div style={{ textAlign: "right" }}>
-                <Tooltip title="Add Request" placement="top">
+                <Tooltip title="Request Details" placement="top">
                   <IconButton
                     href="/home/request"
                     aria-label="delete"
                     ontSize="small"
                   >
+                  
                     <ListAltIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
               </div>
+
               <Form onSubmit={this.submitCustomer}>
                 <Jumbotron style={{ width: "60rem" }}>
                   <div>

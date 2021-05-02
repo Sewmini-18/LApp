@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import AuthService from "../../services/auth.service";
+
 import { Table, Button } from "react-bootstrap";
+
 import axios from "axios";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -26,7 +28,6 @@ class UserDetails extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        //loading: true,
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
@@ -50,8 +51,6 @@ class UserDetails extends Component {
       .delete("http://localhost:8080/api/auth/" + userId)
       .then((response) => {
         if (response.data != null) {
-          this.setState({ show: true });
-          setTimeout(() => this.setState({ show: false }), 3000);
           this.setState({
             userdetails: this.state.userdetails.filter(
               (data) => data.id !== userId
@@ -60,6 +59,7 @@ class UserDetails extends Component {
         } else {
           this.setState({ show: false });
         }
+
       });
   };
 
@@ -123,6 +123,7 @@ class UserDetails extends Component {
                       this.state.userdetails.map((user, i) => (
                         <tbody>
                           {user.roles &&
+
                             user.id !== currentUser.id &&
                             user.roles.map((role, index) => (
                               <tr key={index}>
@@ -139,6 +140,7 @@ class UserDetails extends Component {
                                   <td>{user.date}</td>
                                 ) : null}
                               </tr>
+
                             ))}
                           {user.id === currentUser.id && (
                             <tr
