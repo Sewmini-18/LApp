@@ -54,6 +54,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    //User login
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -84,15 +85,23 @@ public class AuthController {
         ));
     }
 
+
+    //User register
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByNic(signUpRequest.getNic()) && userRepository.existsByUsername(signUpRequest.getUsername()) ) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: NIC and Email is already in use!"));
+        }
+        
+        else if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByNic(signUpRequest.getNic())) {
+        else if (userRepository.existsByNic(signUpRequest.getNic())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: NIC is already in use!"));
@@ -133,35 +142,39 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
 
-    @GetMapping("/users")
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<User> findByUsername(@PathVariable String id) {
-        return userRepository.findById(id);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable String id) {
-        Optional<User> userData = userRepository.findById(id);
-        if (userData.isPresent()) {
-            System.out.println("reading user");
-            User _user = userData.get();
-            _user.setUsername(user.getUsername());
-            _user.setName(user.getName());
-            _user.setNic(user.getNic());
-            _user.setPhone(user.getPhone());
-            _user.setTheme(user.getTheme());
-            return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        @GetMapping("/users")
+        public List<User> findAll () {
+
+            return userRepository.findAll();
+        }
+
+        //View user
+        @GetMapping("/{id}")
+        public Optional<User> findByUsername (@PathVariable String id){
+
+            return userRepository.findById(id);
+        }
+
+        @PutMapping("/{id}")
+        public ResponseEntity<User> updateUser (@RequestBody User user, @PathVariable String id){
+            Optional<User> userData = userRepository.findById(id);
+            if (userData.isPresent()) {
+                System.out.println("reading user");
+                User _user = userData.get();
+
+                _user.setUsername(user.getUsername());
+                _user.setName(user.getName());
+                _user.setNic(user.getNic());
+                _user.setPhone(user.getPhone());
+
     }
 
+
+
+    //change theme color
     @PutMapping("color/{id}")
     public ResponseEntity<User> updateUserTheme(@RequestBody User user, @PathVariable String id) {
         Optional<User> userData = userRepository.findById(id);
@@ -178,6 +191,7 @@ public class AuthController {
         }
     }
 
+    //delete user
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> removeUser(@PathVariable String id) {
         try {

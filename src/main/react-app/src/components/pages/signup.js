@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import { Row, Col } from "react-bootstrap";
-import CheckButton from "react-validation/build/button";
 import AuthService from "../../services/auth.service";
 import "./css/style.css";
 import {
@@ -12,16 +11,6 @@ import {
   VisibilityOutlined,
   VisibilityOffOutlined,
 } from "@material-ui/icons";
-
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -173,10 +162,11 @@ export default class Signin extends Component {
                       value={this.state.name}
                       onChange={this.handleChange}
                       noValidate
+                      required
                     />
                   </div>
 
-                  <div>
+                  <div title="Ex: example@gmail.com">
                     {errors.username.length > 0 && (
                       <span className="error">{errors.username}</span>
                     )}
@@ -198,7 +188,7 @@ export default class Signin extends Component {
                     />
                   </div>
 
-                  <div>
+                  <div title="Ex:123456789V">
                     {errors.nic.length > 0 && (
                       <span className="error">{errors.nic}</span>
                     )}
@@ -218,7 +208,7 @@ export default class Signin extends Component {
                       required
                     />
                   </div>
-                  <div>
+                  <div title="Should contain capital, simple letters and numeric characters.">
                     {errors.password.length > 0 && (
                       <span className="error">{errors.password}</span>
                     )}
@@ -261,7 +251,7 @@ export default class Signin extends Component {
                     <Row className="text-center">
                       <Col>
                         &nbsp; I agree all statement in{" "}
-                        <a className="alink" href="/">
+                        <a className="alink" href="#terms">
                           Terms & Conditions
                         </a>
                         <br />
@@ -270,13 +260,11 @@ export default class Signin extends Component {
                       </Col>
                     </Row>
                   </div>
-
                   <div className="form-login">
                     <Row>
                       <Col className="text-right" xs={6}>
                         <button className="btn abutton ">REGISTER</button>
                       </Col>
-
                       <Col className="text-center">
                         <p>
                           &nbsp;Already have an account?
@@ -314,13 +302,6 @@ export default class Signin extends Component {
                   </div>
                 </div>
               )}
-
-              <CheckButton
-                style={{ display: "none" }}
-                ref={(c) => {
-                  this.checkBtn = c;
-                }}
-              />
             </Form>
           </div>
         </div>

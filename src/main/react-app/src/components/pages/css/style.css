@@ -188,7 +188,7 @@ h3 {
 
 .eye-reg {
     /* IE10 */
-    width: 10px;
+    width: 8px;
     position: fixed;
     margin-bottom: 10px;
     margin-top: 8px;
@@ -281,13 +281,13 @@ h3 {
         margin: auto;
     }
     .eye {
-        width: 90%;
+        width: 80%;
         position: fixed;
         margin-top: 8px;
         margin-left: 70%;
     }
     .eye-reg {
-        width: 90%;
+        width: 80%;
         position: fixed;
         margin-top: 8px;
         margin-left: 70%;

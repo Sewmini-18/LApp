@@ -48,7 +48,6 @@ class customerRequestDetails extends Component {
   };
 
   render() {
-    const { cname, cnic, cemail, cphone, creason, date } = this.state;
 
     return (
       <div>
