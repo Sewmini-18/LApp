@@ -227,7 +227,7 @@ class UserDetails extends Component {
               )}
             </div>
           )}
-        </div>
+        </div><br/>
       </div>
     );
   }
