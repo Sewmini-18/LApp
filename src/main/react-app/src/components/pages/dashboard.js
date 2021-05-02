@@ -35,6 +35,7 @@ class Dashboard extends React.Component {
           <Route path={`${match.path}/user_history`} component={UserHistory} />
           <Route path={`${match.path}/folder`} component={Folder} />
           <Route path={`${match.path}/view/:id`} component={View} />
+
           <Route
             path={`${match.path}/chartcomponent/:id`}
             component={chartcomponent}
@@ -43,9 +44,14 @@ class Dashboard extends React.Component {
             path={`${match.path}/request`}
             component={CustomerRequestDetails}
           />
+
+          <Route path={`${match.path}/chartcomponent/:id`} component={chartcomponent} />
+          <Route path={`${match.path}/request`} component={CustomerRequestDetails}/>
+
           <Route path={`${match.path}/edit`} component={EditUser} />
           <Route path={`${match.path}/userdetails`} component={UserDetails} />
           <Route path={`${match.path}/plot`} component={TensorflowApp} />
+          <Route path={`${match.path}/view/:id`} component={View} />
         </Switch>
         <Footer />
       </div>

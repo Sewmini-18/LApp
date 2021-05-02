@@ -82,7 +82,7 @@ public class AuthController {
                 userDetails.getDate(),
                 userDetails.getTheme(),
                 roles
-                ));
+        ));
     }
 
 
@@ -115,7 +115,7 @@ public class AuthController {
                 signUpRequest.getDate(),
                 signUpRequest.getTheme(),
                 encoder.encode(signUpRequest.getPassword())
-                );
+        );
 
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -131,9 +131,7 @@ public class AuthController {
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
-
                         break;
-
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -141,12 +139,10 @@ public class AuthController {
                 }
             });
         }
-
         user.setRoles(roles);
         userRepository.save(user);
-
-
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
         }
 
         @GetMapping("/users")
@@ -174,29 +170,25 @@ public class AuthController {
                 _user.setNic(user.getNic());
                 _user.setPhone(user.getPhone());
 
-                return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+    }
 
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
 
-        }
 
     //change theme color
     @PutMapping("color/{id}")
-    public ResponseEntity<User> updateUserTheme (@RequestBody User user, @PathVariable String id){
+    public ResponseEntity<User> updateUserTheme(@RequestBody User user, @PathVariable String id) {
         Optional<User> userData = userRepository.findById(id);
         if (userData.isPresent()) {
             System.out.println("reading theme color");
             User _user = userData.get();
+            //_user.setId(id);
             _user.setTheme(user.getTheme());
-
+            //_user.setPassword((encoder.encode(user.getPassword())));
+            //encoder.encode(signUpRequest.getPassword()))
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
-
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
 
     //delete user
@@ -204,15 +196,11 @@ public class AuthController {
     public ResponseEntity<HttpStatus> removeUser(@PathVariable String id) {
         try {
             userRepository.deleteById(id);
-            System.out.println("Deleted user: "+ id);
+            System.out.println("Deleted user: " + id);
             ResponseEntity.ok(new MessageResponse("User deleted!"));
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
-
-
-    }
+}

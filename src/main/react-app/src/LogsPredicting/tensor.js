@@ -3,9 +3,16 @@ import { OPTIMIZERS } from "./optimizers";
 
 import modeData from "./modeldata.json";
 
+export function getactual(){
+  const values = modeData
+      .map((nat) => ({
+        fileLength: nat.Length,
+      }));
+  return values;
+}
+
 export function data() {
-  // const getData = await fetch(modeData);
-  // const jsonData = await getData.json();
+
   const values = modeData
     .map((nat) => ({
       time: nat.Time,
@@ -15,26 +22,12 @@ export function data() {
   return values;
 }
 
-function makeTensors(data) {
-  const getInput = data.map((nat) => nat.time);
-  const getLable = data.map((nat) => nat.fileLength);
-
-  const input = tf.tensor(getInput, [getInput.length, 1]);
-  const label = tf.tensor(getLable, [getLable.length, 1]);
-  return [input, label];
-}
-
 export function generateData() {
   return tf.tidy(() => {
-    // console.log(data)
-    // Step 1. Shuffle the data
-    // tf.util.shuffle(data());
-    //
 
     const getInput = data().map((nat) => nat.time);
     const getLable = data().map((nat) => nat.fileLength);
-    // console.log(getInput)
-    // console.log(getLable)
+
     const input = tf.tensor(getInput, [getInput.length, 1]);
     const label = tf.tensor(getLable, [getLable.length, 1]);
 
