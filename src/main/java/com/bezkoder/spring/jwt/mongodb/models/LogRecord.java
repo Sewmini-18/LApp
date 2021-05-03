@@ -15,15 +15,6 @@ public class LogRecord {
     private String protocol;
     private double length;
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    private String fileName;
     //private String info;
 
     public String get_id() {

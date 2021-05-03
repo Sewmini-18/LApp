@@ -31,7 +31,6 @@ public class FTPConfiguration {
     @ServiceActivator(inputChannel = "ftpMGET")
     @Bean
     public FtpOutboundGateway getFiles() {
-
         FtpOutboundGateway gateway = new FtpOutboundGateway(sf(), "mget", "payload");
         gateway.setAutoCreateDirectory(true);
         gateway.setLocalDirectory(new File("./downloads/"));
@@ -63,8 +62,8 @@ public class FTPConfiguration {
 
     @MessagingGateway(defaultRequestChannel = "ftpMGET", defaultReplyChannel = "fileResults")
     public interface GateFile {
-
         List<File> mget(String directory);
-
     }
+
+
 }

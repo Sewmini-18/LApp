@@ -18,11 +18,8 @@ public class FTPConfig {
         ftp.connect("localhost", 2121);
         System.out.println(ftp.getReplyCode());
         ftp.login("anonymous", "abc12345");
-
         ftp.setFileType(FTP.BINARY_FILE_TYPE);
-
         return ftp;
     }
-
 
 }
