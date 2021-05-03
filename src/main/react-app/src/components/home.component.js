@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Button, Col, Container, Card, CardDeck } from "react-bootstrap";
 import AuthService from "../services/auth.service";
 import axios from "axios";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 
 class Home extends Component {
@@ -24,7 +24,6 @@ class Home extends Component {
   componentDidMount() {
     document.title = "Home";
     const currentUser = AuthService.getCurrentUser();
-    console.log("theme:-" + currentUser.theme);
 
     const userId = currentUser.id;
     if (userId) {
@@ -45,7 +44,6 @@ class Home extends Component {
           this.setState({
             theme: response.data.theme,
           });
-          console.log("theme2:-" + this.state.theme);
 
           let themec = this.state.theme;
           switch (themec) {
@@ -65,7 +63,6 @@ class Home extends Component {
               break;
           }
           this.setState({ theme: themec, loading: true });
-          console.log("new color:- " + themec);
         }
       })
       .catch((error) => {
@@ -88,7 +85,6 @@ class Home extends Component {
               <Col>
                 <Container>
                   <CardDeck>
-                    {" "}
                     {currentUser && (
                       <Card
                         border={theme}
@@ -102,15 +98,14 @@ class Home extends Component {
                           <Card.Title> View and Export Logs </Card.Title> <br />
                           <Card.Text>
                             You can sort, view and export log files.{" "}
-                          </Card.Text>{" "}
+                          </Card.Text>
                           <br />
                           <Button href="/home/folder" variant={theme}>
-                            {" "}
                             View / Export log files{" "}
                           </Button>
                         </Card.Body>
                       </Card>
-                    )}{" "}
+                    )}
                     {currentUser && (
                       <Card
                         bg={theme === "outline-dark" ? "light" : theme}
@@ -141,19 +136,18 @@ class Home extends Component {
                           <Card.Title> Logs Visualization </Card.Title> <br />
                           <Card.Text>
                             Analyze and view logs using charts{" "}
-                          </Card.Text>{" "}
+                          </Card.Text>
                           <br />
                           <Button href="home/chart" variant={theme}>
-                            {" "}
                             Logs visualization{" "}
                           </Button>
                         </Card.Body>
                       </Card>
-                    )}{" "}
-                  </CardDeck>{" "}
-                </Container>{" "}
-              </Col>{" "}
-            </Row>{" "}
+                    )}
+                  </CardDeck>
+                </Container>
+              </Col>
+            </Row>
             <br />
             <br />
             <Row>
@@ -170,15 +164,14 @@ class Home extends Component {
                     >
                       <Card.Body>
                         <Card.Title> Backup Log Files </Card.Title> <br />
-                        <Card.Text>Logs manually backup </Card.Text> <br />{" "}
+                        <Card.Text>Logs manually backup </Card.Text> <br />
                         <br />
                         <Button href="/home" variant={theme}>
-                          {" "}
                           Backup log files{" "}
-                        </Button>{" "}
+                        </Button>
                       </Card.Body>
                     </Card>
-                  )}{" "}
+                  )}
                   {showAdminBoard && (
                     <Card
                       border={theme}
@@ -190,18 +183,17 @@ class Home extends Component {
                     >
                       <Card.Body>
                         <Card.Title>
-                          Logs Predictions
-                          {" "}
-                        </Card.Title>{" "}
+
+                          Logs Predictions Identification{" "}
+                        </Card.Title>
                         <br />
-                        <Card.Text>
-                          View predictions using log files{" "}
-                        </Card.Text>{" "}
+                        <Card.Text>View predictions using log files </Card.Text>
                         <br />
                         <br />
                         <Button href="/home/plot" variant={theme}>
                           {" "}
                           View predictions{" "}
+
                         </Button>
                       </Card.Body>
                     </Card>
@@ -219,18 +211,17 @@ class Home extends Component {
                         <Card.Title> Customer Request Form </Card.Title> <br />
                         <Card.Text>
                           Collect customer requests details{" "}
-                        </Card.Text>{" "}
+                        </Card.Text>
                         <br /> <br />
                         <Button href="/home/customerform" variant={theme}>
-                          {" "}
                           Request Form{" "}
                         </Button>
                       </Card.Body>
                     </Card>
                   )}
-                </CardDeck>{" "}
-              </Container>{" "}
-            </Row>{" "}
+                </CardDeck>
+              </Container>
+            </Row>
             <br /> <br />
             <Row>
               <Container>
@@ -245,16 +236,13 @@ class Home extends Component {
                       }}
                     >
                       <Card.Body>
-                        <Card.Title> Customer Request Details </Card.Title>{" "}
+                        <Card.Title> Customer Request Details </Card.Title>
                         <br />
-                        <Card.Text>
-                          View customer request details{" "}
-                        </Card.Text>{" "}
+                        <Card.Text>View customer request details </Card.Text>
                         <br /> <br />
                         <Button href="home/request" variant={theme}>
-                          {" "}
                           view request details{" "}
-                        </Button>{" "}
+                        </Button>
                       </Card.Body>
                     </Card>
                   )}
@@ -271,17 +259,15 @@ class Home extends Component {
                         <Card.Title> User Management </Card.Title>
                         <br />
                         <Card.Text>
-                          {" "}
                           View users details and manage users{" "}
                         </Card.Text>
                         <br /> <br />
                         <Button href="home/userdetails" variant={theme}>
-                          {" "}
                           view users{" "}
-                        </Button>{" "}
-                      </Card.Body>{" "}
+                        </Button>
+                      </Card.Body>
                     </Card>
-                  )}{" "}
+                  )}
                   {showAdminBoard && (
                     <Card
                       border={theme}
@@ -294,20 +280,17 @@ class Home extends Component {
                       <Card.Body>
                         <Card.Title> View User Login History </Card.Title>{" "}
                         <br />
-                        <Card.Text>
-                          You can view user login history.{" "}
-                        </Card.Text>{" "}
+                        <Card.Text>You can view user login history.</Card.Text>
                         <br /> <br />
                         <Button href="/home/user_history" variant={theme}>
-                          {" "}
                           View Login History{" "}
                         </Button>
                       </Card.Body>
                     </Card>
-                  )}{" "}
-                </CardDeck>{" "}
-              </Container>{" "}
-            </Row>{" "}
+                  )}
+                </CardDeck>
+              </Container>
+            </Row>
           </Container>
         ) : (
           <div className="text-center" style={{ marginTop: "20%" }}>

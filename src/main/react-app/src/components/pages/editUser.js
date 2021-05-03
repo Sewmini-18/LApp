@@ -7,7 +7,6 @@ import {
   InputGroup,
   FormControl,
   Button,
-  ButtonGroup,
   Form,
 } from "react-bootstrap";
 import userPic from "../pages/images/user.png";
@@ -40,6 +39,7 @@ export default class EditUser extends Component {
     nic: "",
     phone: "",
     id: "",
+    alert: "",
     currentUser: { id: "" },
     errors: {
       name: "",
@@ -52,15 +52,13 @@ export default class EditUser extends Component {
 
   resetUser = () => {
     this.setState(() => this.initialState);
-    //return this.props.history.push("/home/profile/edit/userId=?"+this.state.id);
   };
 
   componentDidMount() {
     document.title = "Edit Profile";
     const currentUser = AuthService.getCurrentUser();
     const userId = currentUser.id;
-    console.log("id: " + currentUser.id);
-    console.log("name: " + currentUser.username);
+
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });
@@ -78,23 +76,19 @@ export default class EditUser extends Component {
             username: response.data.username,
             nic: response.data.nic,
             phone: response.data.phone,
+            
           });
-          console.log("Hi Hi " + this.state.name + " ll");
         }
       })
       .catch((error) => {
         console.error("Error - " + error);
         this.setState({ redirect: "/home" });
       });
-    console.log("Hi Hi " + this.state.name + " ll");
   };
 
   updateUser = (event) => {
     event.preventDefault();
-    console.log("Button clicked");
-
     this.setState({
-      message: "",
       successful: false,
     });
 
@@ -108,7 +102,7 @@ export default class EditUser extends Component {
       ).then(
         (response) => {
           this.setState({
-            message: response.data.message,
+            message: "",
             successful: true,
           });
         },
@@ -127,10 +121,11 @@ export default class EditUser extends Component {
         }
       );
     }
-    this.setState(this.initialState);
-    console.log("name: " + this.state.name);
-    //console.log("username: " +currentUser.username);
-    setTimeout(() => this.profile(), 3000);
+
+    this.setState({ alert: "success" });
+    setTimeout(() => this.setState({ alert: " " }), 3000);
+    setTimeout(() => this.profile(), 1000);
+
   };
 
   setColor1 = (color) => {
@@ -184,7 +179,7 @@ export default class EditUser extends Component {
                     <div className="row container">
                       <div className="col-xl-12 col-md-12">
                         <div className="row m-l-0 m-r-0">
-                          <div className="col-sm-4 bg-c-lite-green user-profile">
+                          <div className="col-sm-4 bg-c-lite-color user-profile">
                             <div className="card-block text-center text-white">
                               <div className="m-b-25">
                                 <Figure>
@@ -282,6 +277,38 @@ export default class EditUser extends Component {
                                   </div>
                                 </div>
                                 <div className="col-sm-6 m-b-10">
+                                  <p className="m-b-10 f-w-600">Password</p>
+                                  <div>
+                                    <InputGroup size="sm" className="mb-3">
+                                      <FormControl
+                                        aria-label="Small"
+                                        name="password"
+                                        value={this.state.password}
+                                        onChange={this.handleProfile}
+                                        aria-describedby="inputGroup-sizing-sm"
+                                      />
+                                    </InputGroup>
+                                  </div>
+                                  <div>
+                                    <InputGroup size="sm" className="mb-3">
+                                      <FormControl
+                                        aria-label="Small"
+                                        name="confirm password"
+                                        value={this.state.password}
+                                        onChange={this.handleProfile}
+                                        aria-describedby="inputGroup-sizing-sm"
+                                      />
+                                    </InputGroup>
+                                  </div>
+                                  <div>
+                                    {errors.phone.length > 0 && (
+                                      <span className="errorEdit">
+                                        {errors.phone}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="col-sm-6 m-b-10">
                                   <p className="m-b-10 f-w-600">Telephone</p>
                                   <div>
                                     <InputGroup size="sm" className="mb-3">
@@ -303,22 +330,31 @@ export default class EditUser extends Component {
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="row mt-3 m-l-5">
-                              <Button
-                                variant="primary"
-                                type="submit"
-                                className="ml-3"
-                              >
-                                Update
-                              </Button>
-                              <Button
-                                className="ml-3"
-                                href="../profile"
-                                variant="danger"
-                              >
-                                Cancel
-                              </Button>
+                              {this.state.alert === "success" ? (
+                                <div
+                                  className="alert alert-primary"
+                                  role="alert"
+                                  size="sm"
+                                >
+                                  Profile updated!
+                                </div>
+                              ) : null}
+                              <div className="row mt-3 m-l-5 m-b-5">
+                                <Button
+                                  variant="primary"
+                                  type="submit"
+                                  className="ml-3"
+                                >
+                                  Update
+                                </Button>
+                                <Button
+                                  className="ml-3"
+                                  href="../profile"
+                                  variant="danger"
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </div>

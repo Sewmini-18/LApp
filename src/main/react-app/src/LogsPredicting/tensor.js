@@ -3,13 +3,6 @@ import { OPTIMIZERS } from "./optimizers";
 
 import modeData from "./modeldata.json";
 
-export function getactual(){
-  const values = modeData
-      .map((nat) => ({
-        fileLength: nat.Length,
-      }));
-  return values;
-}
 
 export function data() {
 
