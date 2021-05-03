@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import {createModel, generateData, trainModel, data, getactual} from "./tensor";
+import {createModel, generateData, trainModel,} from "./tensor";
 import { OPTIMIZERS } from "./optimizers";
 import * as tf from "@tensorflow/tfjs-core";
 import "./tensstyle.css";
@@ -24,11 +24,6 @@ function modelReducer(state, action) {
     default:
       return state;
   }
-}
-
-function getdifference(){
-  const predictedvalue = this
-  const difference = predictedvalue - 25;
 }
 
 function TensorflowApp() {
@@ -160,20 +155,13 @@ function TensorflowApp() {
         <br />
       </section>
 
-      <section
-        className="sectionx"
-        style={{ marginTop: "30px", marginBottom: "80px" }}
-      >
+      <section className="sectionx" style={{ marginTop: "30px", marginBottom: "80px" }}>
         <h2 style={{ color: "#36005a" }}> -- -- - Results-- -- - </h2>
         <br />
         <p>
           {" "}
           Predicted length of request: <strong> {prediction} </strong>{" "}
         </p>
-      <p>
-        {""}
-        different : <strong>{getdifference}</strong>
-      </p>
       </section>
     </div>
   );

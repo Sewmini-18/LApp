@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./css/customerFormStyle.css";
 
-import { Button, withStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
 
 import { Row, Jumbotron, Form, Button } from "react-bootstrap";

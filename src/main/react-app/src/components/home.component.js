@@ -186,19 +186,11 @@ class Home extends Component {
 
                           Logs Predictions Identification{" "}
                         </Card.Title>
-
-                          Logs Predictions
-                          {" "}
-                        </Card.Title>{" "}
-
                         <br />
                         <Card.Text>View predictions using log files </Card.Text>
                         <br />
                         <br />
                         <Button href="/home/plot" variant={theme}>
-
-                          View predicted plot{" "}
-
                           {" "}
                           View predictions{" "}
 
