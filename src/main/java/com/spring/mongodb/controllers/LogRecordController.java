@@ -21,8 +21,10 @@ public class LogRecordController {
     @GetMapping("")
     public ResponseEntity<?> getAllLogRecordsByLogFileId(@RequestParam("fileId") String fileId) {
         try{
+
             LogRecordCollection logRecordCollection = new LogRecordCollection();
             logRecordCollection.setCollectionName(fileId);
+
             // List<LogRecord> logRecords = logRecordRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "no"))).getContent();
             List<LogRecord> logRecords = logRecordRepository.findAll();
             return ResponseEntity.ok().body(logRecords);

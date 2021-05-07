@@ -166,7 +166,7 @@ class Home extends Component {
                         <Card.Title> Backup Log Files </Card.Title> <br />
                         <Card.Text>Logs manually backup </Card.Text> <br />
                         <br />
-                        <Button href="/home" variant={theme}>
+                        <Button href="/home/backup" variant={theme}>
                           Backup log files{" "}
                         </Button>
                       </Card.Body>
