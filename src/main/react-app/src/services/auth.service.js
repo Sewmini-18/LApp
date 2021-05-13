@@ -30,6 +30,36 @@ class AuthService {
     });
   }
 
+  confirmAccount(token) {
+    return axios
+      .get(API_URL + `confirm-account?token=${token}`)
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  resetPassword(username) {
+    return axios
+      .post(API_URL + `reset-password`, {
+        username,
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  resetPasswordVerify(username, token, password) {
+    return axios
+      .post(API_URL + `reset-password-verify`, {
+        username,
+        token,
+        password,
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
   update(username, name, nic, phone) {
     const currentUser = this.getCurrentUser();
     const userId = currentUser.id;
