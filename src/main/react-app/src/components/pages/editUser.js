@@ -276,38 +276,7 @@ export default class EditUser extends Component {
                                     )}
                                   </div>
                                 </div>
-                                <div className="col-sm-6 m-b-10">
-                                  <p className="m-b-10 f-w-600">Password</p>
-                                  <div>
-                                    <InputGroup size="sm" className="mb-3">
-                                      <FormControl
-                                        aria-label="Small"
-                                        name="password"
-                                        value={this.state.password}
-                                        onChange={this.handleProfile}
-                                        aria-describedby="inputGroup-sizing-sm"
-                                      />
-                                    </InputGroup>
-                                  </div>
-                                  <div>
-                                    <InputGroup size="sm" className="mb-3">
-                                      <FormControl
-                                        aria-label="Small"
-                                        name="confirm password"
-                                        value={this.state.password}
-                                        onChange={this.handleProfile}
-                                        aria-describedby="inputGroup-sizing-sm"
-                                      />
-                                    </InputGroup>
-                                  </div>
-                                  <div>
-                                    {errors.phone.length > 0 && (
-                                      <span className="errorEdit">
-                                        {errors.phone}
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
+                              
                                 <div className="col-sm-6 m-b-10">
                                   <p className="m-b-10 f-w-600">Telephone</p>
                                   <div>
