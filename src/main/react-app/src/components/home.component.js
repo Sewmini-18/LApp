@@ -116,10 +116,10 @@ class Home extends Component {
                         className="text-center p-3"
                       >
                         <blockquote className="blockquote mb-0 card-body">
-                          <p>
+                          <h2>
                             Team Fork
                             <br /> Logging Solution System
-                          </p>
+                          </h2>
                         </blockquote>
                       </Card>
                     )}
