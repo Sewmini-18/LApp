@@ -161,6 +161,10 @@ class Signup extends Component {
                       <a className="alink " href="/register">
                         Register
                       </a>
+                      <a className="alink " href="/forgot-password">
+                        {" "}
+                        Forgot Password
+                      </a>
                     </p>
                   </Col>
                 </Row>

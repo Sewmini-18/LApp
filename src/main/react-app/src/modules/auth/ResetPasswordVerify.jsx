@@ -1,21 +1,15 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import { Row, Col } from "react-bootstrap";
+import CheckButton from "react-validation/build/button";
 import AuthService from "../../services/auth.service";
-import "./css/style.css";
+import "../../components/pages/css/style.css";
 import {
-  Person,
   Lock,
-  Email,
-  AccountBoxRounded,
   VisibilityOutlined,
   VisibilityOffOutlined,
 } from "@material-ui/icons";
 
-const validEmailRegex = RegExp(
-  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-);
-const validNic = RegExp(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/);
 const validPassword = RegExp(
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
 );
@@ -25,11 +19,9 @@ const validateForm = (errors) => {
   return valid;
 };
 
-export default class Signin extends Component {
+export default class ResetPasswordVerify extends Component {
   constructor(props) {
     super(props);
-    this.handleRegister = this.handleRegister.bind(this);
-    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
       nic: "",
@@ -38,18 +30,26 @@ export default class Signin extends Component {
       successful: false,
       message: "",
       isPasswordShown: false,
+      isConfirmPasswordShown: false,
       errors: {
-        name: "",
-        username: "",
-        nic: "",
         password: "",
-        req: "",
+        confirmPassword: "",
       },
     };
   }
 
   componentDidMount() {
-    document.title = "Register";
+    document.title = "Reset Password";
+    const email = new URLSearchParams(this.props.location.search).get("email");
+    const token = new URLSearchParams(this.props.location.search).get("token");
+
+    console.log("ResetPasswordVerify : email : ", email);
+    console.log("ResetPasswordVerify : token : ", token);
+
+    this.setState({
+      email,
+      token,
+    });
   }
 
   handleChange = (event) => {
@@ -57,23 +57,24 @@ export default class Signin extends Component {
     const { name, value } = event.target;
     let errors = this.state.errors;
 
+    console.log("password :  ", this.state.password);
+    console.log("value :  ", value);
+    console.log(
+      "this.state.password != value :  ",
+      this.state.password != value
+    );
+
+    // debugger;
     switch (name) {
-      case "req":
-        errors.req = value.length = 0 ? "required long!" : " long!";
-        break;
-      case "name":
-        errors.name = value.length < 5 ? "Name must be 5 characters long!" : "";
-        break;
-      case "username":
-        errors.username = validEmailRegex.test(value)
-          ? ""
-          : "Email is not valid!";
-        break;
-      case "nic":
-        errors.nic = validNic.test(value) ? "" : "NIC is not valid!";
-        break;
       case "password":
         errors.password = validPassword.test(value) ? "" : "Invalid password!";
+        break;
+      case "confirmPassword":
+        if (this.state.password != value) {
+          errors.confirmPassword = "Password Mismatch!";
+        } else {
+          errors.confirmPassword = "";
+        }
         break;
       default:
         break;
@@ -87,7 +88,12 @@ export default class Signin extends Component {
     this.setState({ isPasswordShown: !isPasswordShown });
   };
 
-  handleRegister(e) {
+  toggleConfirmPasswordVisibility = () => {
+    const { isConfirmPasswordShown } = this.state;
+    this.setState({ isConfirmPasswordShown: !isConfirmPasswordShown });
+  };
+
+  handleForgotPasswordVerify = (e) => {
     e.preventDefault();
 
     this.setState({
@@ -96,24 +102,21 @@ export default class Signin extends Component {
     });
 
     if (validateForm(this.state.errors)) {
-      let username = this.state.username.toLowerCase();
-      AuthService.register(
-        this.state.name,
+      let username = this.state.email.toLowerCase();
+      AuthService.resetPasswordVerify(
         username,
-        this.state.nic,
+        this.state.token,
         this.state.password
       ).then(
         (response) => {
           this.setState({
-            message: response.data.message,
+            message: response.message,
             successful: true,
           });
         },
         (error) => {
           const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
+            (error.response && error.response.message) ||
             error.message ||
             error.toString();
 
@@ -124,95 +127,26 @@ export default class Signin extends Component {
         }
       );
     }
-  }
+  };
 
   render() {
-    const { errors, isPasswordShown } = this.state;
+    const { errors, isPasswordShown, isConfirmPasswordShown } = this.state;
 
     return (
       <div>
         <div className="Wrapper">
           <div className="inner">
             <Form
-              onSubmit={this.handleRegister}
+              onSubmit={this.handleForgotPasswordVerify}
               ref={(c) => {
                 this.form = c;
               }}
             >
-              <h3>REGISTER</h3>
+              <h3>RESET PASSWORD</h3>
               <br />
 
               {!this.state.successful && (
                 <div>
-                  <div>
-                    {errors.name.length > 0 && (
-                      <span className="error">{errors.name}</span>
-                    )}
-                  </div>
-                  <div className="form-holder active">
-                    <span className="icon">
-                      <Person />
-                    </span>
-                    <input
-                      placeholder="Full Name"
-                      autoComplete="off"
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      value={this.state.name}
-                      onChange={this.handleChange}
-                      noValidate
-                      required
-                    />
-                  </div>
-
-                  <div title="Ex: example@gmail.com">
-                    {errors.username.length > 0 && (
-                      <span className="error">{errors.username}</span>
-                    )}
-                  </div>
-
-                  <div className="form-holder">
-                    <span className="icon">
-                      <Email />
-                    </span>
-                    <input
-                      placeholder="e-mail"
-                      autoComplete="off"
-                      type="email"
-                      className="form-control"
-                      name="username"
-                      value={this.state.username}
-                      onChange={this.handleChange}
-                      noValidate
-                    />
-                  </div>
-
-                  <div title="Ex:123456789V">
-                    {errors.nic.length > 0 && (
-                      <span className="error">{errors.nic}</span>
-                    )}
-                  </div>
-                  <div className="form-holder ">
-                    <span className="icon">
-                      <AccountBoxRounded />
-                    </span>
-                    <input
-                      placeholder="NIC"
-                      autoComplete="off"
-                      type="text"
-                      className="form-control"
-                      name="nic"
-                      value={this.state.nic}
-                      onChange={this.handleChange}
-                      required
-                    />
-                  </div>
-                  <div title="Should contain capital, simple letters and numeric characters.">
-                    {errors.password.length > 0 && (
-                      <span className="error">{errors.password}</span>
-                    )}
-                  </div>
                   <div className="form-holder ">
                     <span className="icon">
                       <Lock />
@@ -246,12 +180,56 @@ export default class Signin extends Component {
                       )}
                     </div>
                   </div>
+                  <div>
+                    {errors.password.length > 0 && (
+                      <span className="error">{errors.password}</span>
+                    )}
+                  </div>
+
+                  <div className="form-holder ">
+                    <span className="icon">
+                      <Lock />
+                    </span>
+                    <input
+                      className="form-control"
+                      type={isConfirmPasswordShown ? "text" : "password"}
+                      placeholder="confirm password"
+                      name="confirmPassword"
+                      value={this.state.confirmPassword}
+                      onChange={this.handleChange}
+                    />
+                    <div
+                      className="eye-reg"
+                      title={
+                        isPasswordShown ? "hide password" : "show password"
+                      }
+                    >
+                      {isPasswordShown ? (
+                        <VisibilityOffOutlined
+                          title="hide"
+                          type="button"
+                          onClick={this.toggleConfirmPasswordVisibility}
+                        />
+                      ) : (
+                        <VisibilityOutlined
+                          title="show"
+                          type="button"
+                          onClick={this.toggleConfirmPasswordVisibility}
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    {errors.confirmPassword.length > 0 && (
+                      <span className="error">{errors.confirmPassword}</span>
+                    )}
+                  </div>
 
                   <div>
                     <Row className="text-center">
                       <Col>
                         &nbsp; I agree all statement in{" "}
-                        <a className="alink" href="#terms">
+                        <a className="alink" href="/">
                           Terms & Conditions
                         </a>
                         <br />
@@ -260,11 +238,13 @@ export default class Signin extends Component {
                       </Col>
                     </Row>
                   </div>
+
                   <div className="form-login">
                     <Row>
                       <Col className="text-right" xs={6}>
-                        <button className="btn abutton ">REGISTER</button>
+                        <button className="btn abutton ">SUBMIT</button>
                       </Col>
+
                       <Col className="text-center">
                         <p>
                           &nbsp;Already have an account?
@@ -306,6 +286,13 @@ export default class Signin extends Component {
                   </div>
                 </div>
               )}
+
+              <CheckButton
+                style={{ display: "none" }}
+                ref={(c) => {
+                  this.checkBtn = c;
+                }}
+              />
             </Form>
           </div>
         </div>
