@@ -54,8 +54,12 @@ class Folder extends Component {
                     fileName: data.fileName,
                     date: data.date,
                     action1: (
-                        <Link to={
-                            {pathname: `/home/view/${data._id}`}}>
+                        <Link to={{
+                            pathname: `/home/view/${data._id}`,
+                            state: {
+                                    fName:`${data.fileName}`
+                            }
+                        }}>
                             <u style={
                                 {color: 'blue'}}> open document < /u>
                         </Link>

@@ -33,7 +33,6 @@ public class LogFileController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }
-
     @DeleteMapping
     public void deleteFiles(@Valid @RequestBody DeleteFileRequest request) {
         List<String> recordIds = request.getRecordIds();
