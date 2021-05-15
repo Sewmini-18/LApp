@@ -128,7 +128,7 @@ async componentDidMount() {
                     <div className="row g-3">
                         <div className="col">
                             <h2 className="text-center my-5 text-weight-3 text-dark">
-                                Data Table
+                                {this.props.history.location.state.fName}
                             </h2>
                         </div>
                     </div>
