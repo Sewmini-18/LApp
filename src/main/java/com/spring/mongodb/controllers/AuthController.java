@@ -1,19 +1,31 @@
 package com.spring.mongodb.controllers;
 
+import com.spring.mongodb.exception.BadRequestException;
+import com.spring.mongodb.exception.UserNotVerifiedException;
+import com.spring.mongodb.models.*;
 import com.spring.mongodb.models.ERole;
 import com.spring.mongodb.models.Role;
 import com.spring.mongodb.models.User;
 import com.spring.mongodb.models.UserLogRecord;
 import com.spring.mongodb.payload.request.LoginRequest;
+import com.spring.mongodb.payload.request.ResetPasswordRequest;
+import com.spring.mongodb.payload.request.ResetPasswordVerifyRequest;
 import com.spring.mongodb.payload.request.SignupRequest;
+import com.spring.mongodb.payload.response.*;
 import com.spring.mongodb.payload.response.JwtResponse;
 import com.spring.mongodb.payload.response.MessageResponse;
 import com.spring.mongodb.repository.RoleRepository;
 import com.spring.mongodb.repository.UserLogRepository;
 import com.spring.mongodb.repository.UserRepository;
+import com.spring.mongodb.security.CustomUserDetailsService;
+import com.spring.mongodb.security.TokenProvider;
 import com.spring.mongodb.security.jwt.JwtUtils;
 import com.spring.mongodb.security.services.UserDetailsImpl;
 import com.spring.mongodb.security.services.UserDetailsServiceImpl;
+import com.spring.mongodb.service.AuthService;
+
+import com.spring.mongodb.service.EmailSenderService;
+import com.spring.mongodb.service.TempTokenGenerateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +33,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +48,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    @Autowired
+    private AuthService authService;
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -54,57 +72,22 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    // @PostMapping("/signin")
-    // public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    @Autowired
+    private EmailSenderService emailSenderService;
 
-    //     Authentication authentication = authenticationManager.authenticate(
-    //             new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    @Autowired
+    private TempTokenGenerateService tempTokenGenerateService;
 
-    //     SecurityContextHolder.getContext().setAuthentication(authentication);
-    //     String jwt = jwtUtils.generateJwtToken(authentication);
+    @Autowired
+    private EmailSenderService emailService;
 
-    //     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    //     List<String> roles = userDetails.getAuthorities().stream()
-    //             .map(item -> item.getAuthority())
-    //             .collect(Collectors.toList());
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
-    //     String currentDate = new Date().toString();
-    //     UserLogRecord userLogRecord = new UserLogRecord(userDetails.getUsername(), currentDate);
-    //     userLogRepository.save(userLogRecord);
+    @Autowired
+    private TokenProvider tokenProvider;
 
-    //     return ResponseEntity.ok(new JwtResponse(jwt,
-    //             userDetails.getId(),
-    //             userDetails.getUsername(),
-    //             userDetails.getName(),
-    //             userDetails.getNic(),
-    //             userDetails.getPhone(),
-    //             userDetails.getDate(),
-    //             userDetails.getTheme(),
-    //             roles
-    //     ));
-    // }
-
-    // @PostMapping("/signup")
-    // public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
-    //     if (userRepository.existsByNic(signUpRequest.getNic()) && userRepository.existsByUsername(signUpRequest.getUsername()) ) {
-    //         return ResponseEntity
-    //                 .badRequest()
-    //                 .body(new MessageResponse("Error: NIC and Email is already in use!"));
-    //     }
-
-    //     else if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-    //         return ResponseEntity
-    //                 .badRequest()
-    //                 .body(new MessageResponse("Error: Username is already taken!"));
-    //     }
-
-    //     else if (userRepository.existsByNic(signUpRequest.getNic())) {
-    //         return ResponseEntity
-    //                 .badRequest()
-    //                 .body(new MessageResponse("Error: NIC is already in use!"));
-    //     }
-
+    
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         UserDetails user = userDetailsService.loadUserByUsername(loginRequest.getUsername());
@@ -131,7 +114,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getName(),
+                userDetails.getName(), 
                 userDetails.getNic(),
                 userDetails.getPhone(),
                 userDetails.getDate(),
@@ -219,21 +202,21 @@ public class AuthController {
         }
 
 
-//    @PostMapping("/register")
-//    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-//
-//        if (authService.existsByEmail(signUpRequest.getUsername())) {
-//            throw new BadRequestException("Email Already Exists.");
-//        }
-//
-//        User user = authService.saveUser(signUpRequest);
-//        ConfirmationToken confirmationToken = authService.createToken(user);
-//        emailSenderService.sendConfirmationMail(user.getUsername(), confirmationToken.getConfirmationToken());
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").buildAndExpand(user.getId()).toUri();
-//
-//        return ResponseEntity.created(location).body(new ApiResponse(true, "Signup Successfully. Confirmation mail sent"));
-//    }
+// //    @PostMapping("/register")
+// //    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+// //
+// //        if (authService.existsByEmail(signUpRequest.getUsername())) {
+// //            throw new BadRequestException("Email Already Exists.");
+// //        }
+// //
+// //        User user = authService.saveUser(signUpRequest);
+// //        ConfirmationToken confirmationToken = authService.createToken(user);
+// //        emailSenderService.sendConfirmationMail(user.getUsername(), confirmationToken.getConfirmationToken());
+// //
+// //        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").buildAndExpand(user.getId()).toUri();
+// //
+// //        return ResponseEntity.created(location).body(new ApiResponse(true, "Signup Successfully. Confirmation mail sent"));
+// //    }
 
     @GetMapping("confirm-account")
     public ResponseEntity<?> getMethodName(@RequestParam("token") String token) {
@@ -299,49 +282,6 @@ public class AuthController {
             tempTokenGenerateService.clearToken(resetpasswordRequest.getUsername());
         }
         throw new BadRequestException("Invalid Token");
-    }
-
-
-
-        // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getName(),
-                signUpRequest.getNic(),
-                signUpRequest.getPhone(),
-                signUpRequest.getDate(),
-                signUpRequest.getTheme(),
-                encoder.encode(signUpRequest.getPassword())
-        );
-
-        Set<String> strRoles = signUpRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     @GetMapping("/users")

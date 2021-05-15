@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -29,14 +30,18 @@ public class User {
   private String nic;
 
   @Size(max=12)
- private String theme;
+  private String theme;
 
   @NotBlank
   @Size(max = 120)
   private String password;
 
-  @DBRef
+  @NotBlank
+  private Boolean emailVerified;
+
+    @DBRef
   private Set<Role> roles = new HashSet<>();
+
 
   private String phone;
   private String date;
@@ -52,8 +57,7 @@ public class User {
     this.date = date;
     this.password = password;
     this.theme = theme;
-
-
+    this.emailVerified= false;
   }
 
   public String getId() {
@@ -126,5 +130,13 @@ public class User {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }
