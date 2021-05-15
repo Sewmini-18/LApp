@@ -89,23 +89,6 @@ class Folder extends Component {
                     this.state.loading ? (
                         <div>
                             <MDBDataTable responsive striped bordered hover data={data}/>
-                            <CsvDownload filename="data.csv"
-                                         style={
-                                             {
-                                                 display: "inline-block",
-                                                 cursor: "pointer",
-                                                 color: "#ffffff",
-                                                 fontSize: "15px",
-                                                 fontWeight: "bold",
-                                                 padding: "3px 6px",
-                                             }
-                                         }
-                                         data={this.state.folders}>
-                                <button type="button"
-                                        className="btn btn-dark">
-                                    Download Data <i className="fas fa-download p-2"> </i>
-                                </button>
-                            </CsvDownload>
                         </div>
                     ) : (<div className="text-center"
                               style={
