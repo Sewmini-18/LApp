@@ -15,7 +15,6 @@ import java.util.Date;
 public class TokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
-
     private AppProperties appProperties;
 
     public TokenProvider(AppProperties appProperties) {
