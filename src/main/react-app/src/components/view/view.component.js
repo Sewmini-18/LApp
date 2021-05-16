@@ -16,10 +16,9 @@ function  jsonBlob(obj) {
 
 class View extends Component {
     state = {
-        ipData: [], loading: false
+        ipData: [], loading: false,
     };
-
-    async componentDidMount() {
+async componentDidMount() {
         await axios
             .get(
                 `http://localhost:8080/api/auth/log?fileId=${this.props.match.params.id}`
@@ -39,12 +38,13 @@ class View extends Component {
     }
 
     //download as pdf
-    exportPDF = () => {
+    exportPDF = (props) => {
         const unit = "pt";
         const size = "A4"; // Use A1, A2, A3 or A4
         const orientation = "portrait"; // portrait or landscape
         const marginLeft = 30;
         const doc = new jsPDF(orientation, unit, size);
+
 
         doc.setFontSize(14);
 
@@ -57,10 +57,10 @@ class View extends Component {
             head: headers,
             body: data,
         }
-
+        console.log("about",this.props.history.location.state);
         doc.text(title, marginLeft, 40);
         doc.autoTable(content);
-        doc.save(this.state.ipData.fileName);
+        doc.save(`${this.props.history.location.state.fName}`+".pdf");
     }
 
     //export to FTP
@@ -128,7 +128,7 @@ class View extends Component {
                     <div className="row g-3">
                         <div className="col">
                             <h2 className="text-center my-5 text-weight-3 text-dark">
-                                Data Table
+                                {this.props.history.location.state.fName}
                             </h2>
                         </div>
                     </div>
@@ -138,7 +138,7 @@ class View extends Component {
                             <div style={{marginBottom: "5%"}}>
                                 <MDBDataTable responsive striped bordered hover data={data}/>
                                 <CsvDownload
-                                    filename={this.state.ipData.fileName}
+                                    filename={`${this.props.history.location.state.fName}`+".csv"}
                                     style={{
                                         display: "inline-block",
                                         cursor: "pointer",

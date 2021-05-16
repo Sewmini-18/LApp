@@ -3,7 +3,6 @@ import axios from "axios";
 import {MDBDataTable} from "mdbreact";
 import {Link} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
-import CsvDownload from "react-json-to-csv";
 
 
 class Folder extends Component {
@@ -71,23 +70,7 @@ class Folder extends Component {
                     this.state.loading ? (
                         <div>
                             <MDBDataTable responsive striped bordered hover data={data}/>
-                            <CsvDownload filename="data.csv"
-                                         style={
-                                             {
-                                                 display: "inline-block",
-                                                 cursor: "pointer",
-                                                 color: "#ffffff",
-                                                 fontSize: "15px",
-                                                 fontWeight: "bold",
-                                                 padding: "3px 6px",
-                                             }
-                                         }
-                                         data={this.state.folders}>
-                                <button type="button"
-                                        className="btn btn-dark">
-                                    Download Data < i className="fas fa-download p-2"> </i>
-                                </button>
-                            </CsvDownload></div>
+                        </div>
                     ) : (<div className="text-center"
                               style={
                                   {marginTop: "20%"}}>
