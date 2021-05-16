@@ -21,7 +21,7 @@
         <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.bezkoder</groupId>
+    <groupId>com</groupId>
     <artifactId>spring-boot-security-jwt-mongodb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-security-jwt-mongodb</name>
@@ -165,11 +165,7 @@
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
+
     </dependencies>
 
     <pluginRepositories>
