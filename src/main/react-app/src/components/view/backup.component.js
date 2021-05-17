@@ -117,8 +117,12 @@ class BackupView extends Component {
                         <input type="checkbox" defaultChecked={data.select} onChange={(e)=> this.handleChangeChk(e.target.checked, i)} />
                     ),
                     action1: (
-                        <Link to={
-                            {pathname: `/home/view/${data._id}`}}>
+                        <Link to={{
+                            pathname: `/home/view/${data._id}`,
+                            state: {
+                                fName:`${data.fileName}`
+                            }
+                        }}>
                             <u style={
                                 {color: 'blue'}}> open document < /u>
                         </Link>

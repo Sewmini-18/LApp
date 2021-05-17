@@ -54,8 +54,12 @@ class Folder extends Component {
                     fileName: data.fileName,
                     date: data.date,
                     action1: (
-                        <Link to={
-                            {pathname: `/home/view/${data._id}`}}>
+                        <Link to={{
+                            pathname: `/home/view/${data._id}`,
+                            state: {
+                                    fName:`${data.fileName}`
+                            }
+                        }}>
                             <u style={
                                 {color: 'blue'}}> open document < /u>
                         </Link>
@@ -85,23 +89,6 @@ class Folder extends Component {
                     this.state.loading ? (
                         <div>
                             <MDBDataTable responsive striped bordered hover data={data}/>
-                            <CsvDownload filename="data.csv"
-                                         style={
-                                             {
-                                                 display: "inline-block",
-                                                 cursor: "pointer",
-                                                 color: "#ffffff",
-                                                 fontSize: "15px",
-                                                 fontWeight: "bold",
-                                                 padding: "3px 6px",
-                                             }
-                                         }
-                                         data={this.state.folders}>
-                                <button type="button"
-                                        className="btn btn-dark">
-                                    Download Data <i className="fas fa-download p-2"> </i>
-                                </button>
-                            </CsvDownload>
                         </div>
                     ) : (<div className="text-center"
                               style={
