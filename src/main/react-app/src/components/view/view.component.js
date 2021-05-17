@@ -46,7 +46,7 @@ class View extends Component {
 
     doc.setFontSize(14);
 
-    const title = "Report";
+    const title = `${this.props.history.location.state.fName}`;
     const headers = [["Time", "Source", "Destination", "Protocol", "Length"]];
     const data = this.state.ipData.map((elt) => [
       elt.time,
@@ -70,7 +70,7 @@ class View extends Component {
   //export to FTP
   exportFTP = () => {
     const formData = new FormData();
-    formData.append("file", jsonBlob(this.state.ipData));
+    formData.append("file", jsonBlob(this.state.ipData),`${this.props.history.location.state.fName}`);
     alert("Logs export to FTP server");
 
     axios({
@@ -79,7 +79,6 @@ class View extends Component {
       data: formData,
       headers: {
         Accept: "application/json ,text/plain, */*",
-        "Content-Type": "multipart/form-data",
       },
     });
   };
