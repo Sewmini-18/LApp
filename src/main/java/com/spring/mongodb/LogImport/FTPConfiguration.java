@@ -17,12 +17,12 @@ import java.io.File;
 import java.util.List;
 
 @Configuration
-public class FTPConfiguration {
+public class FTPConfiguration { 
     @Bean
     public DefaultFtpSessionFactory sf() {
         DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
         sf.setHost("localhost");
-        sf.setPort(2121);
+        sf.setPort(2122);
         sf.setUsername("anonymous");
         sf.setPassword("");
         return sf;

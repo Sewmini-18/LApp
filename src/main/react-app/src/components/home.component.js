@@ -13,6 +13,7 @@ class Home extends Component {
       showAdminBoard: false,
       currentUser: undefined,
       loading: false,
+      showRegUserBoard: false,
     };
   }
 
@@ -31,6 +32,7 @@ class Home extends Component {
       this.setState({
         currentUser: currentUser,
         showAdminBoard: currentUser.roles.includes("ROLE_ADMIN"),
+        showRegUserBoard: currentUser.roles.includes("ROLE_USER"),
         theme: this.state.theme,
       });
     }
@@ -71,7 +73,8 @@ class Home extends Component {
   };
 
   render() {
-    const { currentUser, showAdminBoard, theme } = this.state;
+    const { currentUser, showAdminBoard, theme, showRegUserBoard } = this.state;
+
     const mTop = {
       marginTop: "40px",
       border: "2px",
@@ -85,7 +88,28 @@ class Home extends Component {
               <Col>
                 <Container>
                   <CardDeck>
-                    {currentUser && (
+                    {showRegUserBoard && (
+                      <Card
+                        border={theme}
+                        style={{
+                          border: "1px",
+                          borderStyle: "solid",
+                          width: "18rem",
+                        }}
+                      >
+                        <Card.Body>
+                          <Card.Title> View Logs </Card.Title> <br />
+                          <Card.Text>
+                            You can sort and view log files.{" "}
+                          </Card.Text>
+                          <br />
+                          <Button href="/home/folder" variant={theme}>
+                            View log files{" "}
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    )}
+                    {showAdminBoard && (
                       <Card
                         border={theme}
                         style={{
@@ -183,7 +207,6 @@ class Home extends Component {
                     >
                       <Card.Body>
                         <Card.Title>
-
                           Logs Predictions Identification{" "}
                         </Card.Title>
                         <br />
@@ -193,7 +216,6 @@ class Home extends Component {
                         <Button href="/home/plot" variant={theme}>
                           {" "}
                           View predictions{" "}
-
                         </Button>
                       </Card.Body>
                     </Card>
