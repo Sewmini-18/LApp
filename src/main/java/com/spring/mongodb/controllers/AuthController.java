@@ -123,25 +123,6 @@ public class AuthController {
                 ));
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-//        UserDetails user = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-//
-//        if (userDetailsService.isAccountVerified(user.getUsername()) == false) {
-//            throw new UserNotVerifiedException("Account is not Verified. Please check for confirmation email.");
-//        }
-//
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        String token = tokenProvider.createToken(authentication);
-//        UserResponse userData = new UserResponse(authService.findByEmail(loginRequest.getUsername()));
-//
-//        return ResponseEntity.ok(new AuthResponse(userData, token, "Login Success"));
-//
-//    }
-
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -201,22 +182,6 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("Signup Successfully. Confirmation mail sent"));
         }
 
-
-// //    @PostMapping("/register")
-// //    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-// //
-// //        if (authService.existsByEmail(signUpRequest.getUsername())) {
-// //            throw new BadRequestException("Email Already Exists.");
-// //        }
-// //
-// //        User user = authService.saveUser(signUpRequest);
-// //        ConfirmationToken confirmationToken = authService.createToken(user);
-// //        emailSenderService.sendConfirmationMail(user.getUsername(), confirmationToken.getConfirmationToken());
-// //
-// //        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user").buildAndExpand(user.getId()).toUri();
-// //
-// //        return ResponseEntity.created(location).body(new ApiResponse(true, "Signup Successfully. Confirmation mail sent"));
-// //    }
 
     @GetMapping("confirm-account")
     public ResponseEntity<?> getMethodName(@RequestParam("token") String token) {
