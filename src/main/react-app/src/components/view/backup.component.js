@@ -86,26 +86,26 @@ class BackupView extends Component {
                 {
                     label: "Select",
                     field: "action3",
-                    sort: "asc",
+                    sort: "disabled",
                 },{
                     label: "File Name",
                     field: "fileName",
-                    sort: "asc",
+                    sort: "disabled",
                 },
                 {
                     label: "Date",
                     field: "date",
-                    sort: "asc",
+                    sort: "disabled",
                 },
                 {
                     label: "Document",
                     field: "action1",
-                    sort: "asc",
+                    sort: "disabled",
                 },
                 {
                     label: "Chart",
                     field: "action2",
-                    sort: "asc",
+                    sort: "disabled",
                 },
 
             ],
@@ -151,7 +151,7 @@ class BackupView extends Component {
                 <div className="container p-3"> {
                     this.state.loading ? (
                         <div>
-                            <MDBDataTable responsive striped bordered  hover data={data} />
+                            <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data} materialSearch striped bordered style={{backgroundColor : "#f0f5fa"}}/>
                             <button style={{marginRight: "2%", marginTop: "0.25%"}} type="button"
                                     className="btn btn-outline-danger"
                                     onClick={(e)=>this.onDeleteFiles(e)}

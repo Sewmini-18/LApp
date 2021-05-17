@@ -31,22 +31,22 @@ class Folder extends Component {
         {
           label: "File Name",
           field: "fileName",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Date",
           field: "date",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Document",
           field: "action1",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Chart",
           field: "action2",
-          sort: "asc",
+          sort: "disable",
         },
       ],
       rows: [
@@ -88,7 +88,7 @@ class Folder extends Component {
           {" "}
           {this.state.loading ? (
             <div>
-              <MDBDataTable responsive striped bordered hover data={data} />
+              <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data} materialSearch striped bordered style={{backgroundColor : "#f0f5fa"}}/>
             </div>
           ) : (
             <div className="text-center" style={{ marginTop: "20%" }}>

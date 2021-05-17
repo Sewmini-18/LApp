@@ -181,7 +181,13 @@
 
 
 
-
+        <!--Firebase-->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>7.3.0</version>
+        </dependency>
+        <!--End Firebase-->
         <dependency>
             <groupId>io.pkts</groupId>
             <artifactId>pkts-parent</artifactId>

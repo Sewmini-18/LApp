@@ -7,6 +7,7 @@ import com.spring.mongodb.models.LogRecordCollection;
 import com.spring.mongodb.payload.request.BackupRequest;
 import com.spring.mongodb.repository.LogFileRepository;
 import com.spring.mongodb.repository.LogRecordRepository;
+import com.spring.mongodb.util.LogFileCreator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.IOUtils;
@@ -34,6 +35,8 @@ public class BackupController {
     private LogRecordRepository logRecordRepository;
     @Autowired
     private LogFileRepository logFileRepository;
+    @Autowired
+    private LogFileCreator logFileCreator;
 
     @PostMapping(produces = "application/zip")
     public ResponseEntity<StreamingResponseBody> backupFile(@Valid @RequestBody BackupRequest request) throws IOException {
@@ -46,29 +49,9 @@ public class BackupController {
             if (!fileOptional.isPresent()) {
                 continue;
             }
-            File file = new File(fileOptional.get().getFileName() + ".csv");
-
             List<LogRecord> records = getLogFiles(oneRecordId);
-            try (FileWriter fileWriter = new FileWriter(file);
-                 CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.EXCEL.withHeader(
-                         "_id",
-                         "time",
-                         "source",
-                         "destination",
-                         "protocol",
-                         "length"
-                 ))) {
-                for (LogRecord record : records) {
-                    csvPrinter.printRecord(
-                            record.get_id(),
-                            record.getTime(),
-                            record.getSource(),
-                            record.getDestination(),
-                            record.getProtocol(),
-                            record.getLength()
-                    );
-                }
-            }
+            File file = logFileCreator.createFile(fileOptional.get().getFileName(), records);
+
             fileList.add(file);
         }
 

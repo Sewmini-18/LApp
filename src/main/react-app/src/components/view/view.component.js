@@ -89,27 +89,27 @@ class View extends Component {
         {
           label: "Time",
           field: "time",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Source",
           field: "source",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Destination",
           field: "destination",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Protocol",
           field: "protocol",
-          sort: "asc",
+          sort: "disable",
         },
         {
           label: "Length",
           field: "length",
-          sort: "asc",
+          sort: "disable",
         },
       ],
       rows: [
@@ -138,7 +138,7 @@ class View extends Component {
           <div className="container p-3">
             {this.state.loading ? (
               <div style={{ marginBottom: "5%" }}>
-                <MDBDataTable responsive striped bordered hover data={data} />
+                <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data} materialSearch striped bordered style={{backgroundColor : "#f0f5fa"}}/>
                 <CsvDownload
                   filename={
                     `${this.props.history.location.state.fName}` + ".csv"

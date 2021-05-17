@@ -24,13 +24,14 @@ class UserHistory extends Component {
         });
     }
 
+
     render() {
         const data = {
             columns: [
                 {
                     label: "User Name",
                     field: "userName",
-                    sort: "asc",
+                    sort: "disabled",
                 },
                 {
                     label: "Date / Time",
@@ -59,7 +60,9 @@ class UserHistory extends Component {
                 <div className="container p-3">
                     {this.state.loading ? (
                         <div>
-                            <MDBDataTable responsive striped bordered hover data={data}/>
+                            <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data}
+                                          materialSearch striped bordered style={{backgroundColor: "#f0f5fa"}} />
+
                         </div>
                     ) : (
                         <div className="text-center" style={{marginTop: "20%"}}>

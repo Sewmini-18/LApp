@@ -9,6 +9,7 @@ public class LogFile {
     private String _id;
     private String fileName;
     private String date;
+    private Boolean isBackupInCloud;
 
     public LogFile(String _id, String fileName, String date) {
         this._id = _id;
@@ -38,5 +39,13 @@ public class LogFile {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Boolean getBackupInCloud() {
+        return isBackupInCloud;
+    }
+
+    public void setBackupInCloud(Boolean backupInCloud) {
+        isBackupInCloud = backupInCloud;
     }
 }
