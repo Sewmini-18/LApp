@@ -1,4 +1,4 @@
-package com.bezkoder.spring.jwt.mongodb;
+package com.spring.mongodb;
 
 public class mongoDbOutboundGateway {
 }
