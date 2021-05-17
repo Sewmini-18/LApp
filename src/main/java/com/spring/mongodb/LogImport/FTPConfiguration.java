@@ -22,7 +22,7 @@ public class FTPConfiguration {
     public DefaultFtpSessionFactory sf() {
         DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
         sf.setHost("localhost");
-        sf.setPort(2122);
+        sf.setPort(2121);
         sf.setUsername("anonymous");
         sf.setPassword("");
         return sf;

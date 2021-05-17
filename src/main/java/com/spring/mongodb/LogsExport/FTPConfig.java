@@ -15,7 +15,7 @@ public class FTPConfig {
     public FTPClient client() throws IOException {
         var ftp = new FTPClient();
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
-        ftp.connect("localhost", 2122);
+        ftp.connect("localhost", 2121);
         System.out.println(ftp.getReplyCode());
         ftp.login("anonymous","abc12345");
         ftp.setFileType(FTP.BINARY_FILE_TYPE);
