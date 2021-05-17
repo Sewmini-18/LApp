@@ -6,8 +6,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import com.spring.mongodb.config.AppProperties;
+
 
 @SpringBootApplication
+@EnableConfigurationProperties(AppProperties.class)
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth/logFile")
