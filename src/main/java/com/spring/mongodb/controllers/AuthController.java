@@ -125,6 +125,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
+        if (userRepository.existsByNic(signUpRequest.getNic()) && userRepository.existsByUsername(signUpRequest.getUsername()) ) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: NIC and Email is already in use!"));
+        }
+
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
