@@ -3,9 +3,6 @@ import axios from "axios";
 import {MDBDataTable} from "mdbreact";
 import {Link} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
-import CsvDownload from "react-json-to-csv";
-import {cos} from "@tensorflow/tfjs-core";
-
 
 class BackupView extends Component {
     state = {folders: [], loading: false};
@@ -162,7 +159,7 @@ class BackupView extends Component {
                                     className="btn btn-outline-success"
                                     onClick={(e)=>this.onBackupFile(e)}
                             >
-                                Backup Files <i className="fas fa-download p-2"> </i>
+                                Compress Files <i className="fas fa-download p-2"> </i>
                             </button>
                         </div>
                     ) : (<div className="text-center"

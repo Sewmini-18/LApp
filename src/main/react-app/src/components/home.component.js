@@ -187,11 +187,11 @@ class Home extends Component {
                       }}
                     >
                       <Card.Body>
-                        <Card.Title> Backup Log Files </Card.Title> <br />
-                        <Card.Text>Logs manually backup </Card.Text> <br />
+                        <Card.Title> Compress Log Files </Card.Title> <br />
+                        <Card.Text>Logs manually compress</Card.Text> <br />
                         <br />
                         <Button href="/home/backup" variant={theme}>
-                          Backup log files{" "}
+                          Compress log files{" "}
                         </Button>
                       </Card.Body>
                     </Card>

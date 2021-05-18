@@ -23,7 +23,7 @@ public class FTPScheduler {
         this.gateFile = gateFile;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 600000)
     public void execute(){
         List<File> files = gateFile.mget(".");
         for (File file : files) {

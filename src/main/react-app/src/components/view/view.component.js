@@ -5,6 +5,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import HashLoader from "react-spinners/HashLoader";
 import CsvDownload from "react-json-to-csv";
+import AuthService from "../../services/auth.service";
 
 function jsonBlob(obj) {
   return new Blob([JSON.stringify(obj)], {
@@ -16,21 +17,32 @@ class View extends Component {
   state = {
     ipData: [],
     loading: false,
+    showAdminBoard: false,
+    currentUser: undefined,
   };
   async componentDidMount() {
-    await axios
-      .get(
-        `http://localhost:8080/api/auth/log?fileId=${this.props.match.params.id}`
-      )
-      .then((res) => {
-        console.log("data:" + res);
-        this.setState({
-          ipData: res.data,
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
+    const currentUser = AuthService.getCurrentUser();
+
+    const userId = currentUser.id;
+    if (userId) {
+      this.setState({
+        currentUser: currentUser,
+        showAdminBoard: currentUser.roles.includes("ROLE_ADMIN"),
       });
+    }
+    await axios
+        .get(
+            `http://localhost:8080/api/auth/log?fileId=${this.props.match.params.id}`
+        )
+        .then((res) => {
+          console.log("data:" + res);
+          this.setState({
+            ipData: res.data,
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     this.setState({
       loading: true,
     });
@@ -84,6 +96,7 @@ class View extends Component {
   };
 
   render() {
+    const { showAdminBoard } = this.state;
     const data = {
       columns: [
         {
@@ -125,68 +138,75 @@ class View extends Component {
     console.log("sx: " + this.props.match.params.id);
 
     return (
-      <div>
-        <div className="container">
-          <div className="row g-3">
-            <div className="col">
-              <h2 className="text-center my-5 text-weight-3 text-dark">
-                {this.props.history.location.state.fName}
-              </h2>
+        <div>
+          <div className="container">
+            <div className="row g-3">
+              <div className="col">
+                <h2 className="text-center my-5 text-weight-3 text-dark">
+                  {this.props.history.location.state.fName}
+                </h2>
+              </div>
+            </div>
+
+            <div className="container p-3">
+              {this.state.loading ? (
+                  <div style={{ marginBottom: "5%" }}>
+                    <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data} materialSearch striped bordered style={{backgroundColor : "#f0f5fa"}}/>
+                    <CsvDownload
+                        filename={
+                          `${this.props.history.location.state.fName}` + ".csv"
+                        }
+                        style={{
+                          display: "inline-block",
+                          cursor: "pointer",
+                          color: "#ffffff",
+                          fontSize: "15px",
+                          fontWeight: "bold",
+                          padding: "3px 6px",
+                        }}
+                        data={this.state.ipData}
+                    >
+                    {showAdminBoard && (
+                        <button type="button" className="btn btn-outline-danger">
+                          Export as csv
+                        </button>
+                    )}
+                      </CsvDownload>
+
+                    {showAdminBoard && (
+                        <div>
+                          <button
+                              style={{ marginRight: "2%", marginTop: "0.25%" }}
+                              type="button"
+                              className="btn btn-outline-info"
+                              onClick={() => this.exportPDF()}
+                          >
+                            {" "}
+                            Export as pdf
+                          </button>
+                          <button
+                              style={{ marginRight: "2%", marginTop: "0.25%" }}
+                              type="button"
+                              className="btn btn-outline-success"
+                              onClick={() => this.exportFTP()}
+                          >
+                            {" "}
+                            Export to FTP
+                          </button>
+                        </div>
+                    )}
+                  </div>
+              ) : (
+                  <div
+                      className="text-center"
+                      style={{ marginTop: "20%", marginBottom: "30%" }}
+                  >
+                    <HashLoader color={"#292b2c"} loading={true} size={150} />
+                  </div>
+              )}
             </div>
           </div>
-
-          <div className="container p-3">
-            {this.state.loading ? (
-              <div style={{ marginBottom: "5%" }}>
-                <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data} materialSearch striped bordered style={{backgroundColor : "#f0f5fa"}}/>
-                <CsvDownload
-                  filename={
-                    `${this.props.history.location.state.fName}` + ".csv"
-                  }
-                  style={{
-                    display: "inline-block",
-                    cursor: "pointer",
-                    color: "#ffffff",
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                    padding: "3px 6px",
-                  }}
-                  data={this.state.ipData}
-                >
-                  <button type="button" className="btn btn-outline-danger">
-                    Export as csv
-                  </button>
-                </CsvDownload>
-                <button
-                  style={{ marginRight: "2%", marginTop: "0.25%" }}
-                  type="button"
-                  className="btn btn-outline-info"
-                  onClick={() => this.exportPDF()}
-                >
-                  {" "}
-                  Export as pdf
-                </button>
-                <button
-                  style={{ marginRight: "2%", marginTop: "0.25%" }}
-                  type="button"
-                  className="btn btn-outline-success"
-                  onClick={() => this.exportFTP()}
-                >
-                  {" "}
-                  Export to FTP
-                </button>
-              </div>
-            ) : (
-              <div
-                className="text-center"
-                style={{ marginTop: "20%", marginBottom: "30%" }}
-              >
-                <HashLoader color={"#292b2c"} loading={true} size={150} />
-              </div>
-            )}
-          </div>
         </div>
-      </div>
     );
   }
 }
