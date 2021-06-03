@@ -4,6 +4,9 @@ import AuthService from "../services/auth.service";
 import axios from "axios";
 import {withRouter} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
+import "./home.css"
+import BackImage from './pages/images/HomeBack1.jpg'
+
 
 class Home extends Component {
   constructor(props) {
@@ -25,7 +28,9 @@ class Home extends Component {
   componentDidMount() {
     document.title = "Home";
     const currentUser = AuthService.getCurrentUser();
-
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
     const userId = currentUser.id;
     if (userId) {
       this.findUserById(userId);
@@ -75,13 +80,8 @@ class Home extends Component {
   render() {
     const {currentUser, showAdminBoard, theme, showRegUserBoard} = this.state;
 
-    const mTop = {
-      marginTop: "40px",
-      border: "2px",
-    };
-
     return (
-        <div className="container" style={mTop}>
+        <div className="container" >
           {this.state.loading ? (
               <Container>
                 <Row>
@@ -95,6 +95,8 @@ class Home extends Component {
                                   border: "1px",
                                   borderStyle: "solid",
                                   width: "18rem",
+                                  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                  transition: "all ease 300ms",
                                 }}
                             >
                               <Card.Body>
@@ -117,6 +119,8 @@ class Home extends Component {
                                   border: "1px",
                                   borderStyle: "solid",
                                   width: "18rem",
+                                  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                  transition: "all ease 300ms",
                                 }}
                             >
                               <Card.Body>
@@ -138,6 +142,8 @@ class Home extends Component {
                                 border="outline-dark"
                                 style={{
                                   color: theme === "outline-dark" ? "black" : "#f1f1f1",
+                                  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                  transition: "all ease 300ms",
                                 }}
                                 className="text-center p-3"
                             >
@@ -157,6 +163,8 @@ class Home extends Component {
                                   border: "1px",
                                   borderStyle: "solid",
                                   width: "18rem",
+                                  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                  transition: "all ease 300ms",
                                 }}
                             >
                               <Card.Body>
@@ -188,13 +196,14 @@ class Home extends Component {
                                 border: "1px",
                                 borderStyle: "solid",
                                 width: "18rem",
+                                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                transition: "all ease 300ms",
                               }}
                           >
                             <Card.Body>
                               <Card.Title>Compress Log Files</Card.Title>
                               <br/>
                               <Card.Text>Logs manually Compress</Card.Text>
-                              <br/>
                               <br/>
                               <Button href="/home/backup" variant={theme}>
                                 Compress Log Files{" "}
@@ -209,6 +218,8 @@ class Home extends Component {
                                 border: "1px",
                                 borderStyle: "solid",
                                 width: "18rem",
+                                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                transition: "all ease 300ms",
                               }}
                           >
                             <Card.Body>
@@ -217,7 +228,6 @@ class Home extends Component {
                               </Card.Title>
                               <br/>
                               <Card.Text>View predictions using log files</Card.Text>
-                              <br/>
                               <br/>
                               <Button href="/home/plot" variant={theme}>
                                 {" "}
@@ -233,6 +243,8 @@ class Home extends Component {
                                 border: "1px",
                                 borderStyle: "solid",
                                 width: "18rem",
+                                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                transition: "all ease 300ms",
                               }}
                           >
                             <Card.Body>
@@ -241,7 +253,6 @@ class Home extends Component {
                               <Card.Text>
                                 Collect customer requests details{" "}
                               </Card.Text>
-                              <br/>
                               <br/>
                               <Button href="/home/customerform" variant={theme}>
                                 Request Form{" "}
@@ -264,6 +275,8 @@ class Home extends Component {
                                 border: "1px",
                                 borderStyle: "solid",
                                 width: "18rem",
+                                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                transition: "all ease 300ms",
                               }}
                           >
                             <Card.Body>
@@ -271,9 +284,8 @@ class Home extends Component {
                               <br/>
                               <Card.Text>View customer request details</Card.Text>
                               <br/>
-                              <br/>
                               <Button href="home/request" variant={theme}>
-                                view request details{" "}
+                                View request details{" "}
                               </Button>
                             </Card.Body>
                           </Card>
@@ -285,6 +297,8 @@ class Home extends Component {
                                 border: "1px",
                                 borderStyle: "solid",
                                 width: "18rem",
+                                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                transition: "all ease 300ms",
                               }}
                           >
                             <Card.Body>
@@ -294,9 +308,8 @@ class Home extends Component {
                                 View users details and manage users{" "}
                               </Card.Text>
                               <br/>
-                              <br/>
                               <Button href="home/userdetails" variant={theme}>
-                                view users{" "}
+                                View users{" "}
                               </Button>
                             </Card.Body>
                           </Card>
@@ -308,6 +321,8 @@ class Home extends Component {
                                 border: "1px",
                                 borderStyle: "solid",
                                 width: "18rem",
+                                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                transition: "all ease 300ms",
                               }}
                           >
                             <Card.Body>
@@ -315,7 +330,6 @@ class Home extends Component {
                               {" "}
                               <br/>
                               <Card.Text>You can view user login history.</Card.Text>
-                              <br/>
                               <br/>
                               <Button href="/home/user_history" variant={theme}>
                                 View Login History{" "}
