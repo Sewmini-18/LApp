@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {MDBDataTable, MDBNavLink} from "mdbreact";
-import {Link} from "react-router-dom";
+import {MDBDataTable} from "mdbreact";
 import HashLoader from "react-spinners/HashLoader";
 
 class UserHistory extends Component {
