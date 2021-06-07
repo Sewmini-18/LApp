@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import "./css/style.css";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col ,Image} from "react-bootstrap";
 import {
   LockOpen,
   MailOutline,
@@ -10,6 +10,7 @@ import {
 } from "@material-ui/icons";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../../services/auth.service";
+import CompanyLogo from "./images/company-logo.png";
 
 class Signup extends Component {
   constructor(props) {
@@ -80,7 +81,9 @@ class Signup extends Component {
     return (
       <div>
         <div className="Wrapper">
+          <Image src={CompanyLogo} width={300} style={{marginLeft: "15%"}}/>
           <div className="inner">
+
             <Form
               className="login"
               onSubmit={this.handleLogin}

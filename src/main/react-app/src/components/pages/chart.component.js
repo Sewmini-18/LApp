@@ -120,8 +120,8 @@ class Chart extends Component {
 
     render() {
         return (
-            <div>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
+            <div style={{paddingLeft: '30px', paddingRight: '30px'}}>
+                <Card border="primary" style={{width: '90rem', height: '25rem'}}>
                     <Card.Body>
                         <Card.Title>No. of times each source address accessed</Card.Title>
                         <Bar
@@ -151,7 +151,7 @@ class Chart extends Component {
                         />
                     </Card.Body>
                 </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
+                <Card border="primary" style={{width: '90rem', height: '25rem'}}>
                     <Card.Body>
                         <Card.Title>Packet Length of each source addresses</Card.Title>
                         <Line
@@ -181,36 +181,7 @@ class Chart extends Component {
                         />
                     </Card.Body>
                 </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
-                    <Card.Body>
-                        <Card.Title>Packet Length of each destination addresses</Card.Title>
-                        <Line
-                            data={{
-                                labels: this.state.labels3,
-                                datasets: [{
-                                    label: 'X-axis: Destination address, Y-axis: Packet Length',
-                                    data: this.state.data3,
-                                    borderColor: 'green',
-                                    backgroundColor: '#90ee90',
-                                    scaleBeginAtZero: true,
-                                }],
-                            }}
-                            height={20}
-                            width={95}
-                            options={{
-                                maintainAspectRatio: false, scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Card.Body>
-                </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
+                <Card border="primary" style={{width: '90rem', height: '25rem'}}>
                     <Card.Body>
                         <Card.Title>No. of times each destination address accessed</Card.Title>
                         <Bar
@@ -240,7 +211,36 @@ class Chart extends Component {
                         />
                     </Card.Body>
                 </Card>
-                <Card border="primary" style={{width: '95rem', height: '25rem'}}>
+                <Card border="primary" style={{width: '90rem', height: '25rem'}}>
+                    <Card.Body>
+                        <Card.Title>Packet Length of each destination addresses</Card.Title>
+                        <Line
+                            data={{
+                                labels: this.state.labels3,
+                                datasets: [{
+                                    label: 'X-axis: Destination address, Y-axis: Packet Length',
+                                    data: this.state.data3,
+                                    borderColor: 'green',
+                                    backgroundColor: '#90ee90',
+                                    scaleBeginAtZero: true,
+                                }],
+                            }}
+                            height={20}
+                            width={95}
+                            options={{
+                                maintainAspectRatio: false, scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Card.Body>
+                </Card>
+                <Card border="primary" style={{width: '90rem', height: '25rem'}}>
                     <Card.Body>
                         <Card.Title>No. of times each Protocol accessed</Card.Title>
                         <Bar

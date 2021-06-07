@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col ,Image} from "react-bootstrap";
 import AuthService from "../../services/auth.service";
 import "./css/style.css";
 import {
@@ -11,6 +11,7 @@ import {
   VisibilityOutlined,
   VisibilityOffOutlined,
 } from "@material-ui/icons";
+import CompanyLogo from "./images/company-logo.png";
 
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -132,6 +133,7 @@ export default class Signin extends Component {
     return (
       <div>
         <div className="Wrapper">
+          <Image src={CompanyLogo} width={300} style={{marginLeft: "15%"}}/>
           <div className="inner">
             <Form
               onSubmit={this.handleRegister}

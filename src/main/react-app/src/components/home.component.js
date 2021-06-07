@@ -5,7 +5,7 @@ import axios from "axios";
 import {withRouter} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import "./home.css"
-import BackImage from './pages/images/HomeBack1.jpg'
+import BackImage from './pages/images/90456.jpg'
 
 
 class Home extends Component {
@@ -31,6 +31,7 @@ class Home extends Component {
     document.body.style.backgroundImage = `url(${ BackImage })`;
     document.body.style.backgroundRepeat = `no-repeat`;
     document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     const userId = currentUser.id;
     if (userId) {
       this.findUserById(userId);
@@ -81,7 +82,7 @@ class Home extends Component {
     const {currentUser, showAdminBoard, theme, showRegUserBoard} = this.state;
 
     return (
-        <div className="container" >
+        <div className="container">
           {this.state.loading ? (
               <Container>
                 <Row>
