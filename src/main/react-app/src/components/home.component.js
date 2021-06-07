@@ -5,7 +5,7 @@ import axios from "axios";
 import {withRouter} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import "./home.css"
-import BackImage from './pages/images/90456.jpg'
+import BackImage from './pages/images/114.jpg'
 
 
 class Home extends Component {
