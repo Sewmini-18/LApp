@@ -91,7 +91,7 @@ export default class ForgotPassword extends Component {
     return (
       <div>
         <div className="Wrapper">
-        <Image src={CompanyLogo} width={300} style={{marginLeft: "15%"}}/>
+          <Image src={CompanyLogo} width={800} style={{marginLeft: "5%"}}/>
           <div className="inner">
             <Form
               onSubmit={this.handleForgotPassword}
