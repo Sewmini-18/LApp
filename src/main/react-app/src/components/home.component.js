@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {Row, Button, Col, Container, Card, CardDeck} from "react-bootstrap";
+import {Row, Button, Col, Container, Card, CardDeck, Image} from "react-bootstrap";
 import AuthService from "../services/auth.service";
 import axios from "axios";
 import {withRouter} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
 import "./home.css"
 import BackImage from './pages/images/114.jpg'
+import CompanyLogo from "./pages/images/company-logo.png";
 
 
 class Home extends Component {
@@ -150,7 +151,7 @@ class Home extends Component {
                             >
                               <blockquote className="blockquote mb-0 card-body">
                                 <h2>
-                                  Team Fork
+                                  <img src={CompanyLogo} width={80} style={{margin:"auto", borderColor:"white", borderWidth:"20%"}}/>
                                   <br/>
                                   Logging Solution System
                                 </h2>

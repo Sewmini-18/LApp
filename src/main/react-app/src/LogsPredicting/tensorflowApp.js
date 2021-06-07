@@ -9,7 +9,7 @@ import { Button } from "react-bootstrap";
 const initialModelOptions = {
   optimizer: "adam",
   learningRate: 0.01,
-  epochs: 150,
+  epochs: 100,
 };
 
 
@@ -69,6 +69,7 @@ function TensorflowApp() {
 
   // wii affect after render the function, re render after every update.
   useEffect(() => {
+    document.title = "Log Prediction";
     setModal();
   }, [target]);
 
