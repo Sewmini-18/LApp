@@ -21,6 +21,7 @@ class View extends Component {
     currentUser: undefined,
   };
   async componentDidMount() {
+    document.title = "View and Export Logs - File Data";
     const currentUser = AuthService.getCurrentUser();
 
     const userId = currentUser.id;

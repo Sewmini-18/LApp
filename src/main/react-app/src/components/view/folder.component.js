@@ -8,6 +8,7 @@ class Folder extends Component {
   state = { folders: [], loading: false };
 
   async componentDidMount() {
+    document.title = "View and Export Logs - Folders";
     await axios
       .get("http://localhost:8080/api/auth/file")
       .then((res) => {

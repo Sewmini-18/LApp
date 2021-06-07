@@ -7,6 +7,7 @@ class UserHistory extends Component {
     state = {userDetails: [], loading: false};
 
     async componentDidMount() {
+        document.title = "View User Login History";
         await axios
             .get("http://localhost:8080/api/auth/userLog")
             .then((res) => {

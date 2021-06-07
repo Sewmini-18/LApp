@@ -41,7 +41,7 @@ class CustomerForm extends Component {
   };
 
   componentDidMount() {
-    document.title = "Form";
+    document.title = "Customer Form";
   }
 
   submitCustomer = (event) => {

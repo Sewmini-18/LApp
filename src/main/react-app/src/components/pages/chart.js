@@ -8,6 +8,7 @@ class Folder extends Component {
   state = { folders: [], loading: false };
 
   async componentDidMount() {
+    document.title = "Logs Visualization";
     await axios
       .get("http://localhost:8080/api/auth/file")
       .then((res) => {

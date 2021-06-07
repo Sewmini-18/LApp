@@ -9,6 +9,7 @@ class BackupView extends Component {
 
 
     async componentDidMount() {
+        document.title = "Compress Log Files";
         await axios
             .get("http://localhost:8080/api/auth/file")
             .then((res) => {
@@ -135,6 +136,7 @@ class BackupView extends Component {
             ],
         };
         return (
+
             <div>
                 <div className="container">
                     <div className="row g-3">

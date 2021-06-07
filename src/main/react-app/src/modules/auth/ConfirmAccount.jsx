@@ -5,6 +5,7 @@ import "./Auth.css";
 
 class ConfirmAccount extends Component {
   componentDidMount() {
+    document.title = "Confirm Account";
     const token = new URLSearchParams(this.props.location.search).get("token");
     console.log("ConfirmAccount : token : ", token);
     if (token) {

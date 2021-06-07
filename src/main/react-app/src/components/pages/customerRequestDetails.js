@@ -18,6 +18,7 @@ class customerRequestDetails extends Component {
   }
 
   componentDidMount() {
+    document.title = "Customer Request Details";
     axios
       .get("http://localhost:8080/api/auth/requests")
       .then((response) => response.data)

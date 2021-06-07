@@ -20,6 +20,7 @@ class Chart extends Component {
     };
 
     async componentDidMount() {
+        document.title = "Logs Visualization - View Charts";
         await axios
             .get(
                 `http://localhost:8080/api/auth/log?fileId=${this.props.match.params.id}`
