@@ -4,7 +4,7 @@ import { Row, Col, Image} from "react-bootstrap";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../../services/auth.service";
 import "../../components/pages/css/style.css";
-import CompanyLogo from "../../components/pages/images/company-logo.png";
+import CompanyLogo from "../../components/pages/images/1131.jpg";
 import { Email } from "@material-ui/icons";
 
 const validEmailRegex = RegExp(
