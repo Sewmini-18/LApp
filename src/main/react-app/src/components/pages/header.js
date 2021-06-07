@@ -28,7 +28,7 @@ class Header extends Component {
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
 
-    const userId = currentUser.id;
+    const userId = currentUser && currentUser.id;
     if (userId) {
       this.findUserById(userId);
     } else if (!currentUser) this.setState({ redirect: "./" });

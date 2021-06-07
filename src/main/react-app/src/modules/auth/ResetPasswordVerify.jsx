@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Image } from "react-bootstrap";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../../services/auth.service";
 import "../../components/pages/css/style.css";
+import CompanyLogo from "../../components/pages/images/1131.jpg";
 import {
   Lock,
   VisibilityOutlined,
@@ -135,6 +136,7 @@ export default class ResetPasswordVerify extends Component {
     return (
       <div>
         <div className="Wrapper">
+        <Image src={CompanyLogo} width={800} style={{marginLeft: "5%"}}/>
           <div className="inner">
             <Form
               onSubmit={this.handleForgotPasswordVerify}

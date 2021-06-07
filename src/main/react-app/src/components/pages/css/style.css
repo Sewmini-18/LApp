@@ -64,7 +64,6 @@ a:hover {
     min-height: 100vh;
     display: flex;
     align-items: center;
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -72,8 +71,8 @@ a:hover {
 }
 
 .inner {
-    max-width: 700px;
-    margin-left: 10%;
+    max-width: 650px;
+    margin-right: 1%;
     background: rgb(255, 255, 255);
     opacity: 0.9;
     display: flex;
@@ -131,7 +130,7 @@ h3 {
     outline: none;
     border-radius: 23.5px;
     height: 40px;
-    padding: 20 20px;
+    padding: 20px;
     color: #808080;
     font-size: 13px;
     border: none;
@@ -183,7 +182,7 @@ h3 {
     position: fixed;
     margin-bottom: 10px;
     margin-top: 8px;
-    margin-left: 520px;
+    margin-left: 510px;
     color: gray;
 }
 
@@ -268,7 +267,7 @@ h3 {
 }
 
 .login {
-    width: 150%;
+    width: 100%;
 }
 
 .form-login {

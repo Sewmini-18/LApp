@@ -85,7 +85,6 @@ class Folder extends Component {
           </div>
         </div>
         <div className="container p-3">
-          {" "}
           {this.state.loading ? (
             <div>
               <MDBDataTable hover entriesOptions={[10, 20, 50, 100]} entries={10} data={data} materialSearch striped bordered style={{backgroundColor : "#f0f5fa"}}/>
