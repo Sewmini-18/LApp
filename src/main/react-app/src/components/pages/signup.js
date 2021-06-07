@@ -11,7 +11,7 @@ import {
   VisibilityOutlined,
   VisibilityOffOutlined,
 } from "@material-ui/icons";
-import CompanyLogo from "./images/company-logo.png";
+import CompanyLogo from "./images/1131.jpg";
 
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -133,7 +133,7 @@ export default class Signin extends Component {
     return (
       <div>
         <div className="Wrapper">
-          <Image src={CompanyLogo} width={300} style={{marginLeft: "15%"}}/>
+          <Image src={CompanyLogo} width={800} style={{marginLeft: "5%"}}/>
           <div className="inner">
             <Form
               onSubmit={this.handleRegister}
