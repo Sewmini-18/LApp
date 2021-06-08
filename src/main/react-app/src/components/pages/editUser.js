@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import userPic from "../pages/images/user.png";
 import axios from "axios";
+import BackImage from "./images/114.jpg";
 
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -56,6 +57,10 @@ export default class EditUser extends Component {
 
   componentDidMount() {
     document.title = "Edit Profile";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     const currentUser = AuthService.getCurrentUser();
     const userId = currentUser.id;
 

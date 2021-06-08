@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Tooltip from "@material-ui/core/Tooltip";
 import HashLoader from "react-spinners/HashLoader";
+import BackImage from "./images/114.jpg";
 
 class UserDetails extends Component {
   constructor(props) {
@@ -23,6 +24,10 @@ class UserDetails extends Component {
 
   componentDidMount() {
     document.title = "User Details";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     const user = AuthService.getCurrentUser();
 
     if (user) {

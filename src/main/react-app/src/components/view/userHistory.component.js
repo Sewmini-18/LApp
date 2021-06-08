@@ -2,12 +2,17 @@ import React, {Component} from "react";
 import axios from "axios";
 import {MDBDataTable} from "mdbreact";
 import HashLoader from "react-spinners/HashLoader";
+import BackImage from "../pages/images/114.jpg";
 
 class UserHistory extends Component {
     state = {userDetails: [], loading: false};
 
     async componentDidMount() {
         document.title = "View User Login History";
+        document.body.style.backgroundImage = `url(${ BackImage })`;
+        document.body.style.backgroundRepeat = `no-repeat`;
+        document.body.style.backgroundSize = "100%";
+        document.body.style.opacity ="80%";
         await axios
             .get("http://localhost:8080/api/auth/userLog")
             .then((res) => {

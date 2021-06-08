@@ -151,7 +151,7 @@ class Home extends Component {
                             >
                               <blockquote className="blockquote mb-0 card-body">
                                 <h2>
-                                  <img src={CompanyLogo} width={80} style={{margin:"auto", borderColor:"white", borderWidth:"20%"}}/>
+                                  <img src={CompanyLogo} width={90} style={{margin:"auto"}}/>
                                   <br/>
                                   Logging Solution System
                                 </h2>

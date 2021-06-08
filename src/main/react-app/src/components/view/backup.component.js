@@ -3,6 +3,7 @@ import axios from "axios";
 import {MDBDataTable} from "mdbreact";
 import {Link} from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
+import BackImage from "../pages/images/114.jpg";
 
 class BackupView extends Component {
     state = {folders: [], loading: false};
@@ -10,6 +11,10 @@ class BackupView extends Component {
 
     async componentDidMount() {
         document.title = "Compress Log Files";
+        document.body.style.backgroundImage = `url(${ BackImage })`;
+        document.body.style.backgroundRepeat = `no-repeat`;
+        document.body.style.backgroundSize = "100%";
+        document.body.style.opacity ="80%";
         await axios
             .get("http://localhost:8080/api/auth/file")
             .then((res) => {

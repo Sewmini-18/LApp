@@ -6,6 +6,7 @@ import "jspdf-autotable";
 import HashLoader from "react-spinners/HashLoader";
 import CsvDownload from "react-json-to-csv";
 import AuthService from "../../services/auth.service";
+import BackImage from "../pages/images/114.jpg";
 
 function jsonBlob(obj) {
   return new Blob([JSON.stringify(obj)], {
@@ -22,6 +23,10 @@ class View extends Component {
   };
   async componentDidMount() {
     document.title = "View and Export Logs - File Data";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     const currentUser = AuthService.getCurrentUser();
 
     const userId = currentUser.id;

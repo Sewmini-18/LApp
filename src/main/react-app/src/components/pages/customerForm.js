@@ -5,6 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
+import BackImage from "./images/114.jpg";
 
 
 const validEmailRegex = RegExp(
@@ -42,6 +43,10 @@ class CustomerForm extends Component {
 
   componentDidMount() {
     document.title = "Customer Form";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
   }
 
   submitCustomer = (event) => {

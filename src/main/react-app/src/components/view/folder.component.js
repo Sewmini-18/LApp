@@ -3,12 +3,17 @@ import axios from "axios";
 import { MDBDataTable } from "mdbreact";
 import { Link } from "react-router-dom";
 import HashLoader from "react-spinners/HashLoader";
+import BackImage from "../pages/images/114.jpg";
 
 class Folder extends Component {
   state = { folders: [], loading: false };
 
   async componentDidMount() {
     document.title = "View and Export Logs - Folders";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     await axios
       .get("http://localhost:8080/api/auth/file")
       .then((res) => {

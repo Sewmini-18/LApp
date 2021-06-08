@@ -4,6 +4,7 @@ import { OPTIMIZERS } from "./optimizers";
 import * as tf from "@tensorflow/tfjs-core";
 import "./tensstyle.css";
 import { Button } from "react-bootstrap";
+import BackImage from "../components/pages/images/114.jpg";
 
 
 const initialModelOptions = {
@@ -70,6 +71,10 @@ function TensorflowApp() {
   // wii affect after render the function, re render after every update.
   useEffect(() => {
     document.title = "Log Prediction";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     setModal();
   }, [target]);
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import {Bar, Line} from 'react-chartjs-2'
 import {Card} from "react-bootstrap";
 import {round} from "@tensorflow/tfjs-core";
+import BackImage from "./images/114.jpg";
 
 class Chart extends Component {
     state = {
@@ -21,6 +22,10 @@ class Chart extends Component {
 
     async componentDidMount() {
         document.title = "Logs Visualization - View Charts";
+        document.body.style.backgroundImage = `url(${ BackImage })`;
+        document.body.style.backgroundRepeat = `no-repeat`;
+        document.body.style.backgroundSize = "100%";
+        document.body.style.opacity ="80%";
         await axios
             .get(
                 `http://localhost:8080/api/auth/log?fileId=${this.props.match.params.id}`

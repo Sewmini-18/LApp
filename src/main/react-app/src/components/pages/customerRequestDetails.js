@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import Tooltip from "@material-ui/core/Tooltip";
+import BackImage from "./images/114.jpg";
 
 class customerRequestDetails extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ class customerRequestDetails extends Component {
 
   componentDidMount() {
     document.title = "Customer Request Details";
+    document.body.style.backgroundImage = `url(${ BackImage })`;
+    document.body.style.backgroundRepeat = `no-repeat`;
+    document.body.style.backgroundSize = "100%";
+    document.body.style.opacity ="80%";
     axios
       .get("http://localhost:8080/api/auth/requests")
       .then((response) => response.data)
